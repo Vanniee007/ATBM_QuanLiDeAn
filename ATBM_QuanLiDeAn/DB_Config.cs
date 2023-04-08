@@ -100,7 +100,7 @@ namespace ATBM_QuanLiDeAn.Class
             }
             cmd.Dispose();
             cmd = null;
-            if (kq > 0)
+            if (kq < 0)
                 return true;
             return false;
         }
@@ -116,7 +116,6 @@ namespace ATBM_QuanLiDeAn.Class
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.ToString());
             }
             cmd.Dispose();

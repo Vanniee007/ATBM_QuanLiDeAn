@@ -16,7 +16,7 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <TabControl x:Name="Tabcontrol"  Margin="0,0,0,0" BorderBrush ="Gainsboro" TabStripPlacement="Top"  FontSize="16" SelectionChanged="TabControl_SelectionChanged">
+        <TabControl x:Name="Tabcontrol"  Margin="0,0,0,0" BorderBrush ="Gainsboro" TabStripPlacement="Top"  FontSize="16">
             <!--Định dạng memu-->
             <TabControl.Resources >
                 <Style TargetType="TabItem" >
@@ -60,29 +60,24 @@
 
 
             <!--Bắt đầu Tabitem Người dùng-->
-            <TabItem >
+            <TabItem x:Name="Tab_User" Loaded="Tab_User_Loaded">
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Người dùng"    />
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="120"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <DataGrid x:Name="ND_Datagrid" Loaded="ND_Datagrid_Loaded" AutoGenerateColumns="True" CanUserAddRows="False">
-                            <!--<DataGrid.Columns >
-                                <DataGridTextColumn Header="Mã" Binding="{Binding MaHS, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="Họ tên" Binding="{Binding HoTen, Mode=OneWay}"  Width="4*"  />
-                                <DataGridTextColumn Header="Ngày sinh" Binding="{Binding NgaySinh,StringFormat=\{0:dd/MM/yyyy\}, Mode=OneWay}"  Width="2*"  />
-                                <DataGridTextColumn Header="Giới tính" Binding="{Binding GioiTinh, Mode=OneWay}"  Width="1*"  />
-                                <DataGridTextColumn Header="Email" Binding="{Binding Email, Mode=OneWay}"  Width="4*"  />
-                                <DataGridTextColumn Header="SĐT" Binding="{Binding SDT, Mode=OneWay}"  Width="2*"  />
-                                <DataGridTextColumn Header="Địa chỉ" Binding="{Binding DiaChi, Mode=OneWay}"  Width="4*"  />
-                                <DataGridTextColumn x:Name="Tk_column_monday" Header="Môn dạy" Binding="{Binding MonDay}"  Width="2*"  />
-                                <DataGridTextColumn Header="Username" Binding="{Binding username, Mode=OneWay}"  Width="2*"  />
-                                <DataGridCheckBoxColumn CanUserSort="False"/>
-                            </DataGrid.Columns>-->
+                        <DataGrid x:Name="ND_Datagrid" Loaded="ND_Datagrid_Loaded" AutoGenerateColumns="False" CanUserAddRows="False" SelectionChanged="ND_Datagrid_SelectionChanged">
+                            <DataGrid.Columns >
+                                <DataGridTextColumn Header="Username" Binding="{Binding USERNAME, Mode=OneWay}" Width="*"/>
+                                <DataGridTextColumn Header="STATUS" Binding="{Binding STATUS, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="CREATED" SortDirection="Descending" Binding="{Binding CREATED, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="EXPIRY_DATE" Binding="{Binding EXPIRY_DATE, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="LAST_LOGIN" Binding="{Binding LAST_LOGIN, Mode=OneWay}"/>
+                            </DataGrid.Columns>
 
                         </DataGrid>
 
@@ -90,18 +85,20 @@
 
                     <Grid Grid.Column="1">
                         <StackPanel>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
+                            <Button x:Name="ND_Button_CreateUser" Content="Tạo User" Style="{StaticResource MyStyle_Button}" Click="ND_Button_CreateUser_Click" />
+                            <Button x:Name="ND_Button_XoaUser" Content="Xoá User" Style="{StaticResource MyStyle_Button}" Click="ND_Button_XoaUser_Click" />
+                            <Button x:Name="ND_button_EditUser" Content="Edit User" Style="{StaticResource MyStyle_Button}" Click="ND_button_EditUser_Click"/>
+                            <Button x:Name="ND_button_DoiMatKhau" Content="Đổi mật khẩu" Style="{StaticResource MyStyle_Button}" Click="ND_button_DoiMatKhau_Click" />
+                            <Button x:Name="ND_button_KhoaUser" Content="Khoá User" Style="{StaticResource MyStyle_Button}" Click="ND_button_KhoaUser_Click" />
                         </StackPanel>
                     </Grid>
-                    
+                    <Label x:Name="ND_Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-30,0,0" Style="{StaticResource MyStyle_Label}"/>
                 </Grid>
 
                 <!--Kết thúc Tabitem Người dùng-->
             </TabItem>
+
+            <!--Bắt đầu Tabitem Trang Chủ-->
         </TabControl>
 
     </Grid>

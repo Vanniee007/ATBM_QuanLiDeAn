@@ -1,0 +1,37 @@
+﻿<Window x:Class="ATBM_QuanLiDeAn.PH1.Admin_TaoUser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ATBM_QuanLiDeAn.PH1"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="Admin_TaoUser" Height="300" Width="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <Label Content="Username" Style="{StaticResource MyStyle_Label}"/>
+            <Label Content="Password" Style="{StaticResource MyStyle_Label}"/>
+            <Label Content="Role" Style="{StaticResource MyStyle_Label}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="1"  >
+            <TextBox x:Name="TB_Username" Style="{StaticResource MyStyle_TextBox}"/>
+            <PasswordBox x:Name="TB_Password" Style="{StaticResource MyStyle_PasswordBox}"/>
+            <ComboBox x:Name="TB_Role"  Style="{StaticResource MyStyle_ComboBox}"/>
+            <Label x:Name="Label_error" Content="" Style="{StaticResource MyStyle_Label}"/>
+        </StackPanel>
+        <Button x:Name="Button_TaoUser" Click="Button_TaoUser_Click" Grid.Column="2" Grid.Row="1" Content="Tạo Tài Khoản" VerticalAlignment="Bottom" Style="{StaticResource MyStyle_Button}"/>
+    </Grid>
+</Window>
