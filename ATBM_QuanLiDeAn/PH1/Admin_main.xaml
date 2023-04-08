@@ -51,7 +51,7 @@
             <!--Bắt đầu Tabitem Trang Chủ-->
             <TabItem >
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Trang chủ"    />
+                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="USER"    />
                 </TabItem.Header>
                 
                 
@@ -59,45 +59,64 @@
             </TabItem>
 
 
-            <!--Bắt đầu Tabitem Người dùng-->
-            <TabItem >
+            <!--Bắt đầu Tabitem Roles-->
+            <TabItem Loaded="Role_loaded">
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Người dùng"    />
+                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="ROLE"    />
                 </TabItem.Header>
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <DataGrid x:Name="ND_Datagrid" Loaded="ND_Datagrid_Loaded" AutoGenerateColumns="True" CanUserAddRows="False">
-                            <!--<DataGrid.Columns >
-                                <DataGridTextColumn Header="Mã" Binding="{Binding MaHS, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="Họ tên" Binding="{Binding HoTen, Mode=OneWay}"  Width="4*"  />
-                                <DataGridTextColumn Header="Ngày sinh" Binding="{Binding NgaySinh,StringFormat=\{0:dd/MM/yyyy\}, Mode=OneWay}"  Width="2*"  />
-                                <DataGridTextColumn Header="Giới tính" Binding="{Binding GioiTinh, Mode=OneWay}"  Width="1*"  />
-                                <DataGridTextColumn Header="Email" Binding="{Binding Email, Mode=OneWay}"  Width="4*"  />
-                                <DataGridTextColumn Header="SĐT" Binding="{Binding SDT, Mode=OneWay}"  Width="2*"  />
-                                <DataGridTextColumn Header="Địa chỉ" Binding="{Binding DiaChi, Mode=OneWay}"  Width="4*"  />
-                                <DataGridTextColumn x:Name="Tk_column_monday" Header="Môn dạy" Binding="{Binding MonDay}"  Width="2*"  />
-                                <DataGridTextColumn Header="Username" Binding="{Binding username, Mode=OneWay}"  Width="2*"  />
-                                <DataGridCheckBoxColumn CanUserSort="False"/>
-                            </DataGrid.Columns>-->
+                    <Grid Grid.Row="0" Grid.Column="0" >
+
+                        <Label Content="Danh sách role"  FontSize="24"
+                               FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <DataGrid x:Name="Role_Datagrid" Loaded="Role_Datagrid_Loaded" AutoGenerateColumns="False" 
+                                  
+                                  IsReadOnly="True"
+                                  Background="White" CanUserAddRows="False">
+                            <DataGrid.Columns >
+                                <DataGridTextColumn Header="Role" Binding="{Binding ROLE}" Width="*"/>
+                               
+                            </DataGrid.Columns>
 
                         </DataGrid>
 
                     </Grid>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Row="1" Grid.Column="1">
                         <StackPanel>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
-                            <Button Height="50"/>
+                            <Button x:Name="role_bt_xemquyen"   Content="Xem quyền"  Click="role_bt_xemquyen_click" Height="50"/>
+                            <Button x:Name="role_bt_capquyen"   Content="Cấp quyền"  Click="role_bt_capquyen_click" Height="50"/>
+                            <Button x:Name="role_bt_themuser"   Content="Thêm user"  Click="role_bt_themuser_click" Height="50"/>
+                            <Button x:Name="role_bt_themrole"   Content="Thêm role"  Click="role_bt_themrole_click" Height="50"/>
+                            <Button x:Name="role_bt_xoarole"   Content="Xóa role"  Click="role_bt_xoarole_click" Height="50"/>
+                 
                         </StackPanel>
                     </Grid>
-                    
+                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="39*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="264*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="role_lb_errorout"  
+                               Content="" 
+                               Margin="0,0,0,4.6"        
+                               FontWeight="Medium"
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Bottom" Grid.Column="2"/>
+                    </Grid>
                 </Grid>
 
                 <!--Kết thúc Tabitem Người dùng-->
