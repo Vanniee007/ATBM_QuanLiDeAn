@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ATBM_QuanLiDeAn"
         mc:Ignorable="d"
         Title="ATBM_QuanLiDeAn" 
-        Height="600" Width="1150">
+        Height="627" Width="1200">
     <Window.Resources>
         <Style x:Key="Login_Button"  TargetType="Button">
             <Setter Property="Background" Value="Navy"/>
@@ -86,8 +86,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Image Source="D:/GitHub/QuanLiDeAn/QuanLiDeAn/image/login_background.jpeg"  Grid.ColumnSpan="3" Grid.RowSpan="2"/>
-        <Image Source="D:/GitHub/QuanLiDeAn/QuanLiDeAn/image/logo_hcmus.png" Height="180" Margin="0,0,0,40" Grid.Column="1"/>
+        <Image Source="images/login_background.jpeg"  Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+        <Image Source="images/logo_hcmus.png" Height="180" Margin="0,0,0,40" Grid.Column="1"/>
 
         <!--Nửa bên trái-->
         <Grid Grid.Row="0"/>
@@ -109,14 +109,14 @@
                 <!--Textbox nhập username-->
                 <Grid Height="40" Width="360" Margin="0,00,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Border BorderThickness="1" Background="White"  BorderBrush="Gainsboro" CornerRadius="12"></Border>
-                    <Image Source="D:/GitHub/QuanLiDeAn/QuanLiDeAn/image/door-key.png" Height="20" Width="20" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <Image Source="images/door-key.png" Height="20" Width="20" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                     <Label x:Name="lb_username" Content="username" Margin="32,0,0,0" Style="{StaticResource LoginStyle_Texbox_Label}"/>
                     <TextBox x:Name="tb_username" TextChanged="tb_username_TextChanged" Margin="35,2,0,2" Style="{StaticResource LoginStyle_TextBox}" Width="315"/>
                 </Grid>
                 <!--Textbox nhập password-->
                 <Grid Height="40" Width="360" Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Border BorderThickness="1" Background="White"  BorderBrush="Gainsboro" CornerRadius="12"/>
-                    <Image Source="D:/GitHub/QuanLiDeAn/QuanLiDeAn/image/lock.png" Height="20" Width="20" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                    <Image Source="images/lock.png" Height="20" Width="20" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                     <Label x:Name="lb_password" Content="password" Margin="32,0,0,0" Style="{StaticResource LoginStyle_Texbox_Label}"/>
                     <PasswordBox x:Name="tb_password" Margin="35,2,0,2"
                                  PasswordChanged="tb_password_TextChanged"
