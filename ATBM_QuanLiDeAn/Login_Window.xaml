@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ATBM_QuanLiDeAn"
         mc:Ignorable="d"
         Title="ATBM_QuanLiDeAn" 
+        WindowStyle="None"
         Height="627" Width="1200">
     <Window.Resources>
         <Style x:Key="Login_Button"  TargetType="Button">
