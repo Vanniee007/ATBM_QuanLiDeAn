@@ -98,10 +98,10 @@
                         <StackPanel>
                             <Button x:Name="role_bt_xemquyen"   Content="Xem quyền"  Click="role_bt_xemquyen_click" Height="50"/>
                             <Button x:Name="role_bt_capquyen"   Content="Cấp quyền"  Click="role_bt_capquyen_click" Height="50"/>
-                            <Button x:Name="role_bt_themuser"   Content="Thêm user"  Click="role_bt_themuser_click" Height="50"/>
+                            <Button x:Name="role_bt_roleuser"   Content="ROLE-USER"  Click="role_bt_roleuser_click" Height="50"/>
                             <Button x:Name="role_bt_themrole"   Content="Thêm role"  Click="role_bt_themrole_click" Height="50"/>
                             <Button x:Name="role_bt_xoarole"   Content="Xóa role"  Click="role_bt_xoarole_click" Height="50"/>
-                 
+                            <Button x:Name="role_bt_refresh"   Content="Refresh"  Click="role_bt_refresh_click" Height="50"/>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">

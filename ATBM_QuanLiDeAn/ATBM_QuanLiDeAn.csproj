@@ -116,6 +116,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PH1\Role_User.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PH1\Role_XemQuyen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -127,6 +131,9 @@
     </Compile>
     <Compile Include="PH1\Role_TaoRole.xaml.cs">
       <DependentUpon>Role_TaoRole.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PH1\Role_User.xaml.cs">
+      <DependentUpon>Role_User.xaml</DependentUpon>
     </Compile>
     <Compile Include="PH1\Role_XemQuyen.xaml.cs">
       <DependentUpon>Role_XemQuyen.xaml</DependentUpon>
