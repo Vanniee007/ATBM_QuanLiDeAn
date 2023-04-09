@@ -45,59 +45,11 @@
                 </Style>
             </TabControl.Resources>
 
-
-
-
-            <!--Bắt đầu Tabitem Trang Chủ-->
-            <TabItem >
-                <TabItem.Header>
-                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="USER"    />
-                </TabItem.Header>
-                
-                
-                <!--Kết thúc Tabitem Trang Chủ-->
-            </TabItem>
-
-
             <!--Bắt đầu Tabitem Người dùng-->
             <TabItem x:Name="Tab_User" Loaded="Tab_User_Loaded">
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="ROLE"    />
+                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Người dùng"    />
                 </TabItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>  <ColumnDefinition Width="120"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <DataGrid x:Name="ND_Datagrid" Loaded="ND_Datagrid_Loaded" AutoGenerateColumns="False" CanUserAddRows="False" SelectionChanged="ND_Datagrid_SelectionChanged">
-                            <DataGrid.Columns >
-                                <DataGridTextColumn Header="Username" Binding="{Binding USERNAME, Mode=OneWay}" Width="*"/>
-                                <DataGridTextColumn Header="STATUS" Binding="{Binding STATUS, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="CREATED" SortDirection="Descending" Binding="{Binding CREATED, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="EXPIRY_DATE" Binding="{Binding EXPIRY_DATE, Mode=OneWay}"/>
-                                <DataGridTextColumn Header="LAST_LOGIN" Binding="{Binding LAST_LOGIN, Mode=OneWay}"/>
-                            </DataGrid.Columns>
-
-                        </DataGrid>
-
-                    </Grid>
-
-                    <Grid Grid.Row="1" Grid.Column="1">
-                        <StackPanel>   <Button x:Name="ND_Button_CreateUser" Content="Tạo User" Style="{StaticResource MyStyle_Button}" Click="ND_Button_CreateUser_Click" />
-                            <Button x:Name="ND_Button_XoaUser" Content="Xoá User" Style="{StaticResource MyStyle_Button}" Click="ND_Button_XoaUser_Click" />
-                            <Button x:Name="ND_button_EditUser" Content="Edit User" Style="{StaticResource MyStyle_Button}" Click="ND_button_EditUser_Click"/>
-                            <Button x:Name="ND_button_DoiMatKhau" Content="Đổi mật khẩu" Style="{StaticResource MyStyle_Button}" Click="ND_button_DoiMatKhau_Click" />
-                            <Button x:Name="ND_button_KhoaUser" Content="Khoá User" Style="{StaticResource MyStyle_Button}" Click="ND_button_KhoaUser_Click" />
-                        </StackPanel>
-                    </Grid>
-                    <Label x:Name="ND_Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-30,0,0" Style="{StaticResource MyStyle_Label}"/>
-
-                </Grid>
 
                 <!--Kết thúc Tabitem Người dùng-->
             </TabItem>
@@ -106,7 +58,7 @@
             <!--Bắt đầu Tabitem Roles-->
             <TabItem Loaded="Role_loaded">
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="ROLE"    />
+                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Vai trò"    />
                 </TabItem.Header>
                 <Grid>
                     <Grid.RowDefinitions>
