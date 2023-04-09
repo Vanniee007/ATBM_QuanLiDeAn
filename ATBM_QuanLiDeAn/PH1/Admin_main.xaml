@@ -45,16 +45,12 @@
                 </Style>
             </TabControl.Resources>
 
-
-
-
-
-
             <!--Bắt đầu Tabitem Người dùng-->
             <TabItem x:Name="Tab_User" Loaded="Tab_User_Loaded">
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Người dùng"    />
                 </TabItem.Header>
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
