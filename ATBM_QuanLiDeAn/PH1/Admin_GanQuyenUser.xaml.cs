@@ -259,6 +259,7 @@ namespace ATBM_QuanLiDeAn.PH1
             }
             Q_GetList_Privilige();
             Label_error.Content = "Gán " + count + " thành công, " + (list.Count - count) + " thất bại";
+
         }
 
         private void Q_Button_HuyRole_Click(object sender, RoutedEventArgs e)

@@ -53,12 +53,121 @@
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Trên table"/>
                 </TabItem.Header>
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="1" >
+                        <Label x:Name="Role_xq_tab_lb" Content=""  FontSize="20"
+                               FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="1" >
+                        <DataGrid x:Name="Role_xq_tab_Datagrid" Loaded="Role_xq_tab_Datagrid_Loaded" AutoGenerateColumns="False" 
+                                  
+                                  IsReadOnly="True"
+                                  Background="White" CanUserAddRows="False">
+                            <DataGrid.Columns >
+                                <DataGridTextColumn Header="TABLE_NAME" Binding="{Binding TABLE_NAME}" Width="2*"/>
+                                <DataGridTextColumn Header="COLUMN_NAME" Binding="{Binding COLUMN_NAME}" Width="*"/>
+                                <DataGridTextColumn Header="PRIVILEGE" Binding="{Binding PRIVILEGE}" Width="*"/>
+                                <DataGridTextColumn Header="GRANTABLE" Binding="{Binding GRANTABLE}" Width="*"/>
+                                <DataGridTextColumn Header="COMMON" Binding="{Binding COMMON}" Width="*"/>
+                                <DataGridTextColumn Header="INHERITED" Binding="{Binding INHERITED}" Width="*"/>
+                                <DataGridTextColumn Header="OWNER" Binding="{Binding OWNER}" Width="*"/>
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+
+                    </Grid>
+
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Button x:Name="role_xq_tab_bt_quaylai" Margin="50,0,0,0"   Content="Quay lại" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="role_xq_tab_bt_quaylai_click" Height="35"/>
+                        <Button x:Name="role_xq_tab_bt_xoa" Margin="0,0,0,0"   Content="Xóa" HorizontalAlignment="Center" VerticalAlignment="Center" Click="role_xq_tab_bt_xoa_click" Width="100" Height="35"/>
+                        <Button x:Name="role_xq_bt_tab_lammoi" Margin="0,0,50,0"   Content="Làm mới" HorizontalAlignment="Right" VerticalAlignment="Center" Click="role_xq_bt_tab_lammoi_click" Width="100" Height="35"/>
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="39*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="264*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="role_xq_tab_lb_errorout"  
+                               Content="" 
+                               Margin="0,0,0,4.6"        
+                               FontWeight="Medium"
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Bottom" Grid.Column="2"/>
+                    </Grid>
+                </Grid>
             </TabItem>
             <TabItem Loaded="Xemquyen_sys_loaded">
                 <TabItem.Header>
                     <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Trên hệ thống" />
                 </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="1" >
+                        <Label x:Name="Role_xq_sys_lb" Content=""  FontSize="20"
+                               FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="1" >
+                        <DataGrid x:Name="Role_xq_sys_Datagrid" Loaded="Role_xq_sys_Datagrid_Loaded" AutoGenerateColumns="False" 
+                                  
+                                  IsReadOnly="True"
+                                  Background="White" CanUserAddRows="False">
+                            <DataGrid.Columns >
+                                <DataGridTextColumn Header="PRIVILEGE" Binding="{Binding PRIVILEGE}" Width="2*"/>
+                                <DataGridTextColumn Header="ADMIN_OPTION" Binding="{Binding ADMIN_OPTION}" Width="*"/>
+                                <DataGridTextColumn Header="COMMON" Binding="{Binding COMMON}" Width="*"/>
+                                <DataGridTextColumn Header="INHERITED" Binding="{Binding INHERITED}" Width="*"/>
+
+
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+
+                    </Grid>
+
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Button x:Name="role_xq_bt_quaylai" Margin="50,0,0,0"   Content="Quay lại" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Click="role_xq_bt_quaylai_click" Height="35"/>
+                        <Button x:Name="role_xq_bt_xoa" Margin="0,0,0,0"   Content="Xóa" HorizontalAlignment="Center" VerticalAlignment="Center" Click="role_xq_bt_xoa_click" Width="100" Height="35"/>
+                        <Button x:Name="role_xq_bt_lammoi" Margin="0,0,50,0"   Content="Làm mới" HorizontalAlignment="Right" VerticalAlignment="Center" Click="role_xq_bt_lammoi_click" Width="100" Height="35"/>
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="39*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="264*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="role_xq_lb_errorout"  
+                               Content="" 
+                               Margin="0,0,0,4.6"        
+                               FontWeight="Medium"
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Bottom" Grid.Column="2"/>
+                    </Grid>
+                </Grid>
+
 
             </TabItem>
         </TabControl>

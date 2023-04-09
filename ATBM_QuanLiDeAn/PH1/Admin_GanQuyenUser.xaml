@@ -74,6 +74,7 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tên quyền"  IsReadOnly="True" Binding="{Binding PRIVILEGE, Mode=OneWay}" Width="*"/>
                                 <DataGridTextColumn Header="Quyền admin"  IsReadOnly="True" Binding="{Binding ADMIN_OPTION, Mode=OneWay}" Width="120"/>
+
                                 <DataGridTextColumn Header="Trạng thái"  IsReadOnly="True" Binding="{Binding STATUS, Mode=OneWay}" Width="80"/>
                                 <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" CanUserSort="False">
                                     <DataGridCheckBoxColumn.ElementStyle>
