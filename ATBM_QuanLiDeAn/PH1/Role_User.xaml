@@ -1,0 +1,68 @@
+﻿<Window x:Class="ATBM_QuanLiDeAn.PH1.Role_User"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ATBM_QuanLiDeAn.PH1"
+        mc:Ignorable="d"
+        Title="Role_User" Height="470" Width="700">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Label x:Name="lb_role_name"  
+                               Content="" 
+                    FontStyle="Italic"
+                               Margin="10,0,0,4.6"        
+                               FontWeight="Medium"
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Bottom" />
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <DataGrid x:Name="UserRole_Datagrid" Loaded="UserRole_Datagrid_Loaded" AutoGenerateColumns="False" 
+                                  
+                                  IsReadOnly="True"
+                                  Background="White" CanUserAddRows="False">
+                <DataGrid.Columns >
+                    <DataGridTextColumn Header="USER" Binding="{Binding GRANTEE}" Width="*"/>
+                    <DataGridTextColumn Header="ADMIN_OPTION" Binding="{Binding ADMIN_OPTION}" Width="*"/>
+                    <DataGridTextColumn Header="DELEGATE_OPTION" Binding="{Binding DELEGATE_OPTION}" Width="0.5*"/>
+                    <DataGridTextColumn Header="DEFAULT_ROLE" Binding="{Binding DEFAULT_ROLE}" Width="*"/>
+                    <DataGridTextColumn Header="COMMON" Binding="{Binding COMMON}" Width="0.5*"/>
+                    <DataGridTextColumn Header="INHERITED" Binding="{Binding INHERITED}" Width="0.5*"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <StackPanel>
+                <!--<Button x:Name="userrole_bt_sua"   Content=""  Click="role_bt_xemquyen_click" Height="50"/>-->
+                <Button x:Name="userrole_bt_xoa"   Content="Revoke"  Click="userrole_bt_xoa_click" Height="50"/>
+                <Button x:Name="userrole_bt_gan"   Content="Grant"  Click="userrole_bt_gan_click" Height="50"/>
+                <Button x:Name="userrole_bt_refresh"   Content="Refresh"  Click="userrole_bt_refresh_click" Height="50"/>
+            </StackPanel>
+            <Button x:Name="userrole_bt_return"   Content="Return" VerticalAlignment="Bottom" Click="userrole_bt_return_click" Margin="0,0,0,10" Height="30" Width="100"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="39*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="264*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="roleuser_lb_errorout"  
+                               Content="" 
+                               Margin="0,0,0,4.6"        
+                               FontWeight="Medium"
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Bottom" Grid.Column="2"/>
+        </Grid>
+    </Grid>
+</Window>
