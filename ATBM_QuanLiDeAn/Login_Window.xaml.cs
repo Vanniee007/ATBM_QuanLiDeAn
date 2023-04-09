@@ -81,8 +81,8 @@ namespace ATBM_QuanLiDeAn
         {
             //string username = tb_username.Text.ToString();
             //string password = tb_password.Password.ToString();
-            string username = "ADMINQT";
-            string password = "1";
+            string username = "ATBM";
+            string password = "123";
             bool isConnect = Class.DB_Config.Connect(username, password);
             if (isConnect)  // Kết nối thành công
             {
