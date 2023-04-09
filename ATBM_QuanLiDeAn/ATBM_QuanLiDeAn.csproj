@@ -124,6 +124,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PH1\Role_capquyen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PH1\Role_RoleGrantUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PH1\Role_TaoRole.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -142,9 +150,17 @@
     <Compile Include="PH1\Admin_GanQuyenUser.xaml.cs" />
     <Compile Include="PH1\Admin_main.xaml.cs" />
     <Compile Include="PH1\Admin_TaoUser.xaml.cs" />
+    <Compile Include="PH1\Role_capquyen.xaml.cs">
+      <DependentUpon>Role_capquyen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PH1\Role_RoleGrantUser.xaml.cs">
+      <DependentUpon>Role_RoleGrantUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PH1\Role_TaoRole.xaml.cs" />
     <Compile Include="PH1\Role_User.xaml.cs" />
-    <Compile Include="PH1\Role_XemQuyen.xaml.cs" />
+    <Compile Include="PH1\Role_XemQuyen.xaml.cs">
+      <DependentUpon>Role_XemQuyen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
