@@ -48,15 +48,6 @@
 
 
 
-            <!--Bắt đầu Tabitem Trang Chủ-->
-            <TabItem >
-                <TabItem.Header>
-                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Trang chủ"    />
-                </TabItem.Header>
-                
-                
-                <!--Kết thúc Tabitem Trang Chủ-->
-            </TabItem>
 
 
             <!--Bắt đầu Tabitem Người dùng-->
