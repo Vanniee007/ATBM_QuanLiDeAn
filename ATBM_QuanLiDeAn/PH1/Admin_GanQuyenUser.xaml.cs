@@ -215,6 +215,15 @@ namespace ATBM_QuanLiDeAn.PH1
             VT_Label_error.Content = "Huỷ "+count + " thành công, " + (list.Count - count) + " thất bại";
             VT_GetList_Role();
         }
-    
+
+        private void Q_Button_GanRole_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Q_Button_HuyRole_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
