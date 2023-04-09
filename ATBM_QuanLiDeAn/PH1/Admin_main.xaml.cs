@@ -366,7 +366,7 @@ namespace ATBM_QuanLiDeAn.PH1
             {
                 DataTable tbl = new DataTable();
                 string typeFunction = "";
-                typeFunction = DT_ComboBox.Items.ToString();
+                typeFunction = DT_ComboBox.Text;
                 string sql = "SELECT * FROM DBA_OBJECTS WHERE object_type = '" + typeFunction + "'";
                 tbl = Class.DB_Config.GetDataToTable(sql);
                 DT_Datagrid.ItemsSource = null;
