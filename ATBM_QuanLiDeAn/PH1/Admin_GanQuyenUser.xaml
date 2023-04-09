@@ -124,6 +124,7 @@
                 </Grid>
                 <!--Kết thúc Tabitem Bảng-->
             </TabItem>
+            
         </TabControl>
         <Label x:Name="Lb_username" Content="username" Style="{StaticResource MyStyle_Label}" VerticalAlignment="Top" HorizontalAlignment="Right"  FontWeight="Medium" Margin="10,0" />
     </Grid>
