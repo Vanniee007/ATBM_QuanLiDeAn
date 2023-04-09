@@ -147,7 +147,39 @@
                 <!--Kết thúc Tabitem Người dùng-->
             </TabItem>
 
-            <!--Bắt đầu Tabitem Trang Chủ-->
+            <!--Bắt đầu Tabitem Người dùng-->
+            <TabItem x:Name="Tab_Object" Loaded="Tab_Object_Loaded">
+                
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Đối tượng"    />
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="DT_Datagrid" Grid.Column="0" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Người sở hữu" Binding="{Binding OWNER, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Tên đối tượng" Binding="{Binding OBJECT_NAME, Mode=OneWay}" Width="*"/>
+                            <DataGridTextColumn Header="Loại đối tượng" Binding="{Binding OBJECT_TYPE, Mode=OneWay}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Column="1">
+                        <StackPanel>
+                            
+                        <ComboBox x:Name="DT_ComboBox" Height="50" VerticalAlignment="Top" Margin="0,40" SelectionChanged="DT_ComboBox_SelectionChanged">
+                            <ComboBoxItem Content="FUNCTION"/>
+                            <ComboBoxItem Content="TABLE" />
+                            <ComboBoxItem Content="VIEW" />
+                            <ComboBoxItem Content="PROCEDURE" />
+                        </ComboBox>
+                            <Button Content="Xem" Style="{StaticResource MyStyle_Button}" Click="Button_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
         </TabControl>
 
     </Grid>
