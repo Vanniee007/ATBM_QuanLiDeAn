@@ -1,0 +1,61 @@
+﻿<Window x:Class="ATBM_QuanLiDeAn.PH1.Role_capquyen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ATBM_QuanLiDeAn.PH1"
+        mc:Ignorable="d"
+        Title="Role_capquyen" Height="450" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+
+            <Label x:Name="role_cq_lb"  FontSize="24"
+                               FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1" >
+            <Label Content="Tên bảng:"  Margin="10,100,0,0" FontSize="18"   />
+            <Label Content="Quyền:"  Margin="10,155,0,0" FontSize="18"   />
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2" VerticalAlignment="Top">
+
+            <ComboBox x:Name="role_cq_cb_tab"  ItemsSource="{Binding}" Margin="0,40,0,0"  Width="180" Height="40" FontSize="17"
+                                  AllowDrop="True" />
+
+         
+            <ComboBox x:Name="role_cq_cb_quyen" Margin="0,155,0,0" Width="180" Height="40" FontSize="17" 
+                                  AllowDrop="True">
+                <ComboBoxItem Content="SELECT"/>
+                <ComboBoxItem Content="INSERT" />
+                <ComboBoxItem Content="UPDATE" />
+                <ComboBoxItem Content="DELETE" />
+            </ComboBox>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" >
+            <Button Content="Quay lại"  Margin="10,0,0,20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="36" Width="100"  Click="Role_cq_bt_quaylai_click"/>
+            <Button Content="Gán"  Margin="0,0,10,20"   HorizontalAlignment="Right" Height="36" Width="100" VerticalAlignment="Bottom" Click="Role_cq_bt_gan_click"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
+
+            <Label x:Name="role_cq_lb_errorout"  FontSize="17"
+                               Content="" 
+                               Margin="0,0,0,4.6"        
+                               FontWeight="Medium"
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Top" />
+        </Grid>
+
+    </Grid>
+</Window>

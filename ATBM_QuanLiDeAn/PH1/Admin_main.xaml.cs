@@ -262,7 +262,26 @@ namespace ATBM_QuanLiDeAn.PH1
 
         private void role_bt_capquyen_click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (Role_Datagrid.SelectedIndex.ToString() != null)
+                {
+                    DataRowView rowview = (DataRowView)Role_Datagrid.SelectedItem;
+                    if (rowview != null)
+                    {
+                        Role_capquyen rxq = new Role_capquyen(rowview["ROLE"].ToString());
+                        rxq.Show();
+                    }
+                    else
+                    {
+                        role_lb_errorout.Content = "Bạn chưa chọn role để cấp quyền!!!";
+                        role_lb_errorout.Background = Brushes.IndianRed;
+                    }
+                }
 
+
+            }
+            catch { }
         }
 
         private void role_bt_roleuser_click(object sender, RoutedEventArgs e)

@@ -218,7 +218,15 @@ namespace ATBM_QuanLiDeAn.PH1
 
         private void Q_Button_GanRole_Click(object sender, RoutedEventArgs e)
         {
-
+            var list = GetSelectedIndexes(Q_Datagrid, 3);
+            int count = 0;
+            foreach (var role_name in list)
+            {
+                if (ND_GanQuyen(username, role_name))
+                    count++;
+            }
+            Q_Label_error.Content = "Gán " + count + " thành công, " + (list.Count - count) + " thất bại";
+            VT_GetList_Role();
         }
 
         private void Q_Button_HuyRole_Click(object sender, RoutedEventArgs e)

@@ -79,7 +79,15 @@ namespace ATBM_QuanLiDeAn.PH1
 
         private void userrole_bt_gan_click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Role_RoleGrantUser r = new Role_RoleGrantUser(nameRole);
+                r.Show();
+            }
+            catch
+            {
 
+            }
         }
 
         private void userrole_bt_refresh_click(object sender, RoutedEventArgs e)

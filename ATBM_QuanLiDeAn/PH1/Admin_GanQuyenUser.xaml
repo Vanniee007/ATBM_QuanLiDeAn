@@ -67,9 +67,21 @@
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <DataGrid x:Name="Q_Datagrid" Loaded="Q_Datagrid_Loaded" Style="{StaticResource MyStyle_DataGrid}">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow">
+                                    <EventSetter Event="PreviewMouseDown" Handler="VT_Datagrid_DataGridRow_PreviewMouseDown" />
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tên quyền"  IsReadOnly="True" Binding="{Binding PRIVILEGE, Mode=OneWay}" Width="*"/>
-                                <DataGridCheckBoxColumn CanUserSort="False"/>
+                                <DataGridTextColumn Header="Trạng thái"  IsReadOnly="True" Binding="{Binding STATUS, Mode=OneWay}" Width="80"/>
+                                <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" CanUserSort="False">
+                                    <DataGridCheckBoxColumn.ElementStyle>
+                                        <Style TargetType="CheckBox">
+                                            <Setter Property="IsHitTestVisible" Value="False" />
+                                        </Style>
+                                    </DataGridCheckBoxColumn.ElementStyle>
+                                </DataGridCheckBoxColumn>
 
                             </DataGrid.Columns>
                         </DataGrid>
