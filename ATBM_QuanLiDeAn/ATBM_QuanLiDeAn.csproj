@@ -116,15 +116,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PH1\Role_TaoRole.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PH1\Role_User.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PH1\Role_XemQuyen.xaml">
     <Page Include="PH1\Admin_DoiMatKhau.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -141,14 +132,6 @@
     <Compile Include="PH1\Admin_main.xaml.cs">
       <DependentUpon>Admin_main.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PH1\Role_TaoRole.xaml.cs">
-      <DependentUpon>Role_TaoRole.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PH1\Role_User.xaml.cs">
-      <DependentUpon>Role_User.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PH1\Role_XemQuyen.xaml.cs">
-      <DependentUpon>Role_XemQuyen.xaml</DependentUpon>
     <Compile Include="PH1\Admin_DoiMatKhau.xaml.cs">
       <DependentUpon>Admin_DoiMatKhau.xaml</DependentUpon>
     </Compile>
