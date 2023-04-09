@@ -357,12 +357,17 @@ namespace ATBM_QuanLiDeAn.PH1
 
         private void DT_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
             try
             {
                 DataTable tbl = new DataTable();
                 string typeFunction = "";
-                typeFunction = DT_ComboBox.Text;
-                string sql = "SELECT owner, object_name OBJ, object_type TYPE_  FROM all_objects where object_type = '" + typeFunction + "' and owner in (SELECT username FROM dba_users where default_tablespace = 'USERS' and EXpiry_date is not null) ORDER BY owner, object_type, object_name";
+                typeFunction = DT_ComboBox.Items.ToString();
+                string sql = "SELECT * FROM DBA_OBJECTS WHERE object_type = '" + typeFunction + "'";
                 tbl = Class.DB_Config.GetDataToTable(sql);
                 DT_Datagrid.ItemsSource = null;
                 DT_Datagrid.ItemsSource = tbl.DefaultView;
