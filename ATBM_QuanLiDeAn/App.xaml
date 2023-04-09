@@ -29,6 +29,11 @@
             <Setter Property="Height" Value="30"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
         </Style>
+        <Style x:Key="MyStyle_CheckBox"  TargetType="CheckBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
         <Style x:Key="MyStyle_Button"  TargetType="Button">
             <Setter Property="Height" Value="50"/>
             <Setter Property="Margin" Value="0,0,0,5"/>

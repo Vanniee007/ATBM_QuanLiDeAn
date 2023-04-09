@@ -17,15 +17,37 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <DataGrid x:Name="VT_Datagrid" Loaded="VT_Datagrid_Loaded"  Style="{StaticResource MyStyle_DataGrid}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Tên vai trò"  IsReadOnly="True" Binding="{Binding ROLE, Mode=OneWay}" Width="*"/>
-                                <DataGridCheckBoxColumn CanUserSort="False" />
-                            </DataGrid.Columns>
-                        </DataGrid>
+
+                    <DataGrid x:Name="VT_Datagrid" Loaded="VT_Datagrid_Loaded"  Style="{StaticResource MyStyle_DataGrid}" Grid.Column="0">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <EventSetter Event="PreviewMouseDown" Handler="VT_Datagrid_DataGridRow_PreviewMouseDown" />
+                            </Style>
+                        </DataGrid.Resources>
+                        
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tên vai trò"  IsReadOnly="True" Binding="{Binding ROLE, Mode=OneWay}" Width="*"/>
+                            <DataGridTextColumn Header="Quyền admin"  IsReadOnly="True" Binding="{Binding ADMIN_OPTION, Mode=OneWay}" Width="80"/>
+                            <DataGridTextColumn Header="Trạng thái"  IsReadOnly="True" Binding="{Binding STATUS, Mode=OneWay}" Width="80"/>
+                            <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" CanUserSort="False">
+                                <DataGridCheckBoxColumn.ElementStyle>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsHitTestVisible" Value="False" />
+                                    </Style>
+                                </DataGridCheckBoxColumn.ElementStyle>
+                            </DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Column="1">
+                        <Label x:Name="VT_Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MyStyle_Label}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <Button x:Name="VT_Button_GanRole" Content="Gán role" Style="{StaticResource MyStyle_Button}" Click="VT_Button_GanRole_Click" />
+                            <Button x:Name="VT_Button_HuyRole" Content="Huỷ role" Style="{StaticResource MyStyle_Button}" Click="VT_Button_HuyRole_Click" />
+                            <CheckBox x:Name="VT_CheckBox_GrantOption" Content="With admin option" HorizontalAlignment="Center" Style="{StaticResource MyStyle_CheckBox}"/>
+                        </StackPanel>
                     </Grid>
 
 
