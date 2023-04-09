@@ -144,7 +144,9 @@
     <Compile Include="PH1\Admin_TaoUser.xaml.cs" />
     <Compile Include="PH1\Role_TaoRole.xaml.cs" />
     <Compile Include="PH1\Role_User.xaml.cs" />
-    <Compile Include="PH1\Role_XemQuyen.xaml.cs" />
+    <Compile Include="PH1\Role_XemQuyen.xaml.cs">
+      <DependentUpon>Role_XemQuyen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -21,6 +21,7 @@ namespace ATBM_QuanLiDeAn.PH1
     public partial class Admin_GanQuyenUser : Window
     {
         string username;
+        string C_table_name;
         public Admin_GanQuyenUser(string username_)
         {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace ATBM_QuanLiDeAn.PH1
         }
         private void VT_Datagrid_Loaded(object sender, RoutedEventArgs e)
         {
+            Label_error.Content = "";
             VT_GetList_Role();
         }
         private List<string> GetSelectedIndexes(DataGrid dataGrid, int checkboxColumnIndex)
@@ -104,28 +106,29 @@ namespace ATBM_QuanLiDeAn.PH1
         private void Q_GetList_Privilige()
         {
             DataTable table_User;
-            string sql = "SELECT * FROM session_privs";
-            //if (cbOnly.IsChecked == false)
-            //{
-            //    sql = sql + " AND USERNAME LIKE 'U%'";
-            //}
+            string sql = "SELECT PRIVILEGE,(select distinct ADMIN_OPTION from dba_sys_privs d where grantee = '"+username+ "' and s.PRIVILEGE = d.PRIVILEGE) as ADMIN_OPTION, (select DISTINCT 'Granted' from dba_sys_privs d where grantee = '"+username+ "' and s.PRIVILEGE = d.PRIVILEGE) as STATUS  FROM session_privs s";
+
             table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
             Q_Datagrid.ItemsSource = null;
             Q_Datagrid.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
         }
         private void Q_Datagrid_Loaded(object sender, RoutedEventArgs e)
         {
+            Label_error.Content = "";
             Q_GetList_Privilige();
         }
 
         private void B_GetList_Table()
         {
             DataTable table_User;
-            string sql = "Select * From User_Objects where Object_type = 'TABLE'";
-            //if (cbOnly.IsChecked == false)
-            //{
-            //    sql = sql + " AND USERNAME LIKE 'U%'";
-            //}
+            string sql = "select distinct table_name TBNAME, (select 'YES' from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name  and PRIVILEGE = 'SELECT')as PRI_SELECT," +
+        "(select grantable from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name and PRIVILEGE = 'SELECT') as GA_SELECT," +
+        "(select 'YES' from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name  and PRIVILEGE = 'INSERT')as PRI_INSERT, " +
+        "(select grantable from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name and PRIVILEGE = 'INSERT') as GA_INSERT," +
+        "(select 'YES' from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name  and PRIVILEGE = 'UPDATE')as PRI_UPDATE," +
+        "(select grantable from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name and PRIVILEGE = 'UPDATE') as GA_UPDATE," +
+        "(select 'YES' from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name  and PRIVILEGE = 'DELETE')as PRI_DELETE, " +
+        "(select grantable from dba_tab_privs con where grantee = '" + username + "' and GLO.table_name = con.table_name and PRIVILEGE = 'DELETE') as GA_DELETE FROM ALL_TABLES GLO WHERE TABLESPACE_NAME = 'DA_ATBM'";
             table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
             B_Datagrid.ItemsSource = null;
             B_Datagrid.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
@@ -133,42 +136,69 @@ namespace ATBM_QuanLiDeAn.PH1
         private void B_Datagrid_Loaded(object sender, RoutedEventArgs e)
         {
             B_GetList_Table();
+            Label_error.Content = "";
         }
 
-
-        private void B_GetList_Column()
+        private void CB_GetList_Table()
         {
-            if (B_Datagrid.SelectedIndex >= 0)
+            DataTable table_User;
+            string sql = "SELECT distinct table_name TBNAME FROM ALL_TABLES WHERE TABLESPACE_NAME = 'DA_ATBM'";
+            table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
+            CB_Datagrid.ItemsSource = null;
+            CB_Datagrid.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
+        }
+
+        private void CB_GetList_Column()
+        {
+            if (CB_Datagrid.SelectedIndex >= 0)
             {
-                DataRowView curRow = B_Datagrid.SelectedItem as DataRowView;
-                string Table_ = curRow.Row.ItemArray[0].ToString();
+                DataRowView curRow = CB_Datagrid.SelectedItem as DataRowView;
+                C_table_name = curRow.Row.ItemArray[0].ToString();
                 DataTable table_User;
-                string sql = "SELECT column_name FROM user_tab_cols WHERE table_name = '"+ Table_+"'";
+                string sql = "SELECT column_name CLMN, (select PRIVILEGE from dba_col_privs d where u.column_name = d.column_name and grantee = '"+username+"') as PR_UPDATE, (select GRantable from dba_col_privs d where u.column_name = d.column_name and grantee = '" + username + "') as GR_UPDATE FROM user_tab_cols u WHERE table_name = '" +C_table_name+"'";
                 table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
                 C_Datagrid.ItemsSource = null;
                 C_Datagrid.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
             }
         }
 
-        private void B_Datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private bool B_CheckIfTableSelected(DataGrid dataGrid, int checkboxColumnIndex)
         {
-            B_GetList_Column();
-            C_Datagrid.IsEnabled = false;
+            int count = 0;
+
+            foreach (var item in dataGrid.Items)
+            {
+                DataGridRow row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromItem(item);
+                if (row != null)
+                {
+                    // Get the CheckBox control in the specified column of the row
+                    var cellContent = dataGrid.Columns[checkboxColumnIndex].GetCellContent(row);
+                    var checkBox = cellContent as CheckBox;
+
+                    // If the CheckBox is checked, add the value of the first column to the list
+                    if (checkBox != null && checkBox.IsChecked == true)
+                    {
+                        count++;
+                    }
+                }
+            }
+            if (count > 0) return true;
+            return false;
         }
-        private bool ND_GanQuyen(string username, string role_name)
+        private bool ND_GanQuyen(string username, string role_name, CheckBox checkbox )
         {
             string sql;
             if (((username[0] >= 'a') && (username[0] <= 'z')) || ((username[0] >= 'A') && (username[0] <= 'Z')))
             {
-                sql = "grant " + role_name + " to " + username;
+                sql = "grant " + role_name + " to " + username+" ";
             }
             else
             {
-                sql = "grant "+role_name+" to  USER " + "\"" + username + "\"";
+                sql = "grant "+role_name+" to  USER " + "\"" + username + "\" ";
             }
-            if (VT_CheckBox_GrantOption.IsChecked == true)
+            if (checkbox.IsChecked == true)
             {
-                sql += " With ADMIN option";
+                sql += checkbox.Content.ToString();
             }
             Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
             return Class.DB_Config.RunSQL(sql);
@@ -196,10 +226,11 @@ namespace ATBM_QuanLiDeAn.PH1
             int count = 0;
             foreach (var role_name in list)
             {
-                if (ND_GanQuyen(username, role_name))
+                ND_HuyQuyen(username, role_name);
+                if (ND_GanQuyen(username, role_name, VT_CheckBox_GrantOption))
                     count++;
             }
-            VT_Label_error.Content = "Gán "+ count + " thành công, "+ (list.Count - count) + " thất bại";
+            Label_error.Content = "Gán "+ count + " thành công, "+ (list.Count - count) + " thất bại";
             VT_GetList_Role();
         }
 
@@ -212,18 +243,159 @@ namespace ATBM_QuanLiDeAn.PH1
                 if (ND_HuyQuyen(username, role_name))
                     count++;
             }
-            VT_Label_error.Content = "Huỷ "+count + " thành công, " + (list.Count - count) + " thất bại";
+            Label_error.Content = "Huỷ "+count + " thành công, " + (list.Count - count) + " thất bại";
             VT_GetList_Role();
         }
 
         private void Q_Button_GanRole_Click(object sender, RoutedEventArgs e)
         {
-
+            var list = GetSelectedIndexes(Q_Datagrid, 3);
+            int count = 0;
+            foreach (var role_name in list)
+            {
+                ND_HuyQuyen(username, role_name);
+                if (ND_GanQuyen(username, role_name, Q_CheckBox_GrantOption))
+                    count++;
+            }
+            Q_GetList_Privilige();
+            Label_error.Content = "Gán " + count + " thành công, " + (list.Count - count) + " thất bại";
         }
 
         private void Q_Button_HuyRole_Click(object sender, RoutedEventArgs e)
         {
+            var list = GetSelectedIndexes(Q_Datagrid, 3);
+            int count = 0;
+            foreach (var role_name in list)
+            {
+                if (ND_HuyQuyen(username, role_name))
+                    count++;
+            }
+            Q_GetList_Privilige();
+            Label_error.Content = "Huỷ " + count + " thành công, " + (list.Count - count) + " thất bại";
+        }
 
+        private void B_Button_GanRole_Click(object sender, RoutedEventArgs e)
+        {
+            int count = 0;
+            int ListCount = 0;
+            var list = GetSelectedIndexes(B_Datagrid, 9);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_GanQuyen(username, "select on " + role_name, B_CheckBox_GrantOption))
+                    count++;
+            }
+
+            list = GetSelectedIndexes(B_Datagrid, 10);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_GanQuyen(username, "insert on " + role_name, B_CheckBox_GrantOption))
+                    count++;
+            }
+
+            list = GetSelectedIndexes(B_Datagrid, 11);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_GanQuyen(username, "update on " + role_name, B_CheckBox_GrantOption))
+                    count++;
+            }
+
+            list = GetSelectedIndexes(B_Datagrid, 12);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_GanQuyen(username, "delete on " + role_name, B_CheckBox_GrantOption))
+                    count++;
+            }
+            ListCount += list.Count;
+
+            Label_error.Content = "Gán " + count + " thành công, " + (ListCount - count) + " thất bại";
+            B_GetList_Table();
+        }
+
+        private void B_Button_HuyRole_Click(object sender, RoutedEventArgs e)
+        {
+
+            int count = 0;
+            int ListCount = 0;
+            var list = GetSelectedIndexes(B_Datagrid, 9);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_HuyQuyen(username, "select on " + role_name))
+                    count++;
+            }
+
+            list = GetSelectedIndexes(B_Datagrid, 10);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_HuyQuyen(username, "insert on " + role_name))
+                    count++;
+            }
+
+            list = GetSelectedIndexes(B_Datagrid, 11);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_HuyQuyen(username, "update on " + role_name))
+                    count++;
+            }
+
+            list = GetSelectedIndexes(B_Datagrid, 12);
+            ListCount += list.Count;
+            foreach (var role_name in list)
+            {
+                if (ND_HuyQuyen(username, "delete on " + role_name))
+                    count++;
+            }
+            ListCount += list.Count;
+
+            Label_error.Content = "Huỷ " + count + " thành công, " + (ListCount - count) + " thất bại";
+            B_GetList_Table();
+        }
+
+        private void CB_Datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CB_GetList_Column();
+        }
+
+
+        private void CB_Datagrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            CB_GetList_Table();
+            Label_error.Content = "";
+        }
+
+        private void C_Button_GanRole_Click(object sender, RoutedEventArgs e)
+        {
+            var list = GetSelectedIndexes(C_Datagrid, 3);
+            int count = 0;
+            foreach (var clmn in list)
+            {
+                //grant update(CLMN) on tabne_name to user
+                ND_HuyQuyen(username, "update(" + clmn + ") on " + C_table_name);
+                if (ND_GanQuyen(username, "update("+ clmn + ") on "+ C_table_name, C_CheckBox_GrantOption))
+                    count++;
+            }
+            Label_error.Content = "Gán " + count + " thành công, " + (list.Count - count) + " thất bại";
+            CB_GetList_Column();
+        }
+
+        private void C_Button_HuyRole_Click(object sender, RoutedEventArgs e)
+        {
+            int count = 0;
+            ND_HuyQuyen(username, "update on " + C_table_name);
+            count++;
+            Label_error.Content = "Huỷ " + count + " thành công, " + (1 - count) + " thất bại";
+            CB_GetList_Column();
+        }
+
+        private void C_Datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CB_GetList_Table();
         }
     }
 }

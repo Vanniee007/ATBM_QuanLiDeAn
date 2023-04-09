@@ -29,7 +29,7 @@
                         
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Tên vai trò"  IsReadOnly="True" Binding="{Binding ROLE, Mode=OneWay}" Width="*"/>
-                            <DataGridTextColumn Header="Quyền admin"  IsReadOnly="True" Binding="{Binding ADMIN_OPTION, Mode=OneWay}" Width="80"/>
+                            <DataGridTextColumn Header="Quyền admin"  IsReadOnly="True" Binding="{Binding ADMIN_OPTION, Mode=OneWay}" Width="120"/>
                             <DataGridTextColumn Header="Trạng thái"  IsReadOnly="True" Binding="{Binding STATUS, Mode=OneWay}" Width="80"/>
                             <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" CanUserSort="False">
                                 <DataGridCheckBoxColumn.ElementStyle>
@@ -42,7 +42,6 @@
                     </DataGrid>
 
                     <Grid Grid.Column="1">
-                        <Label x:Name="VT_Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MyStyle_Label}"/>
                         <StackPanel VerticalAlignment="Center">
                             <Button x:Name="VT_Button_GanRole" Content="Gán role" Style="{StaticResource MyStyle_Button}" Click="VT_Button_GanRole_Click" />
                             <Button x:Name="VT_Button_HuyRole" Content="Huỷ role" Style="{StaticResource MyStyle_Button}" Click="VT_Button_HuyRole_Click" />
@@ -67,15 +66,27 @@
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <DataGrid x:Name="Q_Datagrid" Loaded="Q_Datagrid_Loaded" Style="{StaticResource MyStyle_DataGrid}">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow">
+                                    <EventSetter Event="PreviewMouseDown" Handler="VT_Datagrid_DataGridRow_PreviewMouseDown" />
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Tên quyền"  IsReadOnly="True" Binding="{Binding PRIVILEGE, Mode=OneWay}" Width="*"/>
-                                <DataGridCheckBoxColumn CanUserSort="False"/>
+                                <DataGridTextColumn Header="Quyền admin"  IsReadOnly="True" Binding="{Binding ADMIN_OPTION, Mode=OneWay}" Width="120"/>
+                                <DataGridTextColumn Header="Trạng thái"  IsReadOnly="True" Binding="{Binding STATUS, Mode=OneWay}" Width="80"/>
+                                <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" CanUserSort="False">
+                                    <DataGridCheckBoxColumn.ElementStyle>
+                                        <Style TargetType="CheckBox">
+                                            <Setter Property="IsHitTestVisible" Value="False" />
+                                        </Style>
+                                    </DataGridCheckBoxColumn.ElementStyle>
+                                </DataGridCheckBoxColumn>
 
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <Label x:Name="Q_Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MyStyle_Label}"/>
                         <StackPanel VerticalAlignment="Center">
                             <Button x:Name="Q_Button_GanRole" Content="Gán role" Style="{StaticResource MyStyle_Button}" Click="Q_Button_GanRole_Click" />
                             <Button x:Name="Q_Button_HuyRole" Content="Huỷ role" Style="{StaticResource MyStyle_Button}" Click="Q_Button_HuyRole_Click" />
@@ -85,7 +96,6 @@
                 </Grid>
                 <!--Kết thúc Tabitem Quyền-->
             </TabItem>
-
             <!--Bắt đầu Tabitem Bảng-->
             <TabItem >
                 <TabItem.Header>
@@ -94,38 +104,109 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <DataGrid x:Name="B_Datagrid" Loaded="B_Datagrid_Loaded" SelectionChanged="B_Datagrid_SelectionChanged" Style="{StaticResource MyStyle_DataGrid}">
+                        <DataGrid x:Name="B_Datagrid" Loaded="B_Datagrid_Loaded" Style="{StaticResource MyStyle_DataGrid}">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow">
+                                    <!--<EventSetter Event="PreviewMouseDown" Handler="VT_Datagrid_DataGridRow_PreviewMouseDown" />-->
+                                </Style>
+                            </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Tên bảng"  IsReadOnly="True" Binding="{Binding OBJECT_NAME, Mode=OneWay}" Width="*"/>
-                                <DataGridCheckBoxColumn Header="S" CanUserSort="False"/>
-                                <DataGridCheckBoxColumn Header="I" CanUserSort="False"/>
-                                <DataGridCheckBoxColumn Header="U" CanUserSort="False"/>
-                                <DataGridCheckBoxColumn Header="D" CanUserSort="False"/>
+                                <DataGridTextColumn Header="Tên bảng"  IsReadOnly="True" Binding="{Binding TBNAME, Mode=OneWay}" Width="*"/>
+                                <DataGridTextColumn Header="Select" IsReadOnly="True" Binding="{Binding PRI_SELECT, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding GA_SELECT, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Insert" IsReadOnly="True" Binding="{Binding PRI_INSERT, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding GA_INSERT, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Update" IsReadOnly="True" Binding="{Binding PRI_UPDATE, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding GA_UPDATE, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Delete" IsReadOnly="True" Binding="{Binding PRI_DELETE, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="" IsReadOnly="True" Binding="{Binding GA_DELETE, Mode=OneWay}"/>
+                                <DataGridCheckBoxColumn Header="S" />
+                                <DataGridCheckBoxColumn Header="I"/>
+                                <DataGridCheckBoxColumn Header="U"/>
+                                <DataGridCheckBoxColumn Header="D" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <DataGrid x:Name="C_Datagrid" Style="{StaticResource MyStyle_DataGrid}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Tên cột"  IsReadOnly="True" Binding="{Binding COLUMN_NAME, Mode=OneWay}" Width="*"/>
-                                <DataGridCheckBoxColumn Header="S" CanUserSort="False"/>
-                                <DataGridCheckBoxColumn Header="I" CanUserSort="False"/>
-                                <DataGridCheckBoxColumn Header="U" CanUserSort="False"/>
-                                <DataGridCheckBoxColumn Header="D" CanUserSort="False"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <StackPanel VerticalAlignment="Center">
+                            <Button x:Name="B_Button_GanRole" Content="Gán bảng" Style="{StaticResource MyStyle_Button}" Click="B_Button_GanRole_Click" />
+                            <Button x:Name="B_Button_HuyRole" Content="Huỷ bảng" Style="{StaticResource MyStyle_Button}" Click="B_Button_HuyRole_Click" />
+                            <CheckBox x:Name="B_CheckBox_GrantOption" Content="With grant option" HorizontalAlignment="Center" Style="{StaticResource MyStyle_CheckBox}"/>
+                        </StackPanel>
                     </Grid>
                 </Grid>
                 <!--Kết thúc Tabitem Bảng-->
             </TabItem>
-            
+
+
+            <!--Bắt đầu Tabitem Cột-->
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock Text="Cột"/>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    
+                    <Grid Grid.Column="0">
+                        <DataGrid x:Name="CB_Datagrid" Loaded="CB_Datagrid_Loaded"  SelectionChanged="CB_Datagrid_SelectionChanged" Style="{StaticResource MyStyle_DataGrid}" >
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow">
+                                    <!--<EventSetter Event="PreviewMouseDown" Handler="VT_Datagrid_DataGridRow_PreviewMouseDown" />-->
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Tên bảng"  IsReadOnly="True" Binding="{Binding TBNAME, Mode=OneWay}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+
+
+                    <Grid Grid.Column="1">
+                        <DataGrid x:Name="C_Datagrid" Style="{StaticResource MyStyle_DataGrid}" Margin="10,0,0,0">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridRow">
+                                    <EventSetter Event="PreviewMouseDown" Handler="VT_Datagrid_DataGridRow_PreviewMouseDown" />
+                                </Style>
+                            </DataGrid.Resources>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Tên cột"  IsReadOnly="True" Binding="{Binding CLMN, Mode=OneWay}" Width="*"/>
+                                <DataGridTextColumn Header="UPDATE"  IsReadOnly="True" Binding="{Binding PR_UPDATE, Mode=OneWay}" />
+                                <DataGridTextColumn Header="GR"  IsReadOnly="True" Binding="{Binding GR_UPDATE, Mode=OneWay}" />
+                                <DataGridCheckBoxColumn Binding="{Binding IsSelected}" CanUserSort="False">
+                                    <DataGridCheckBoxColumn.ElementStyle>
+                                        <Style TargetType="CheckBox">
+                                            <Setter Property="IsHitTestVisible" Value="False" />
+                                        </Style>
+                                    </DataGridCheckBoxColumn.ElementStyle>
+                                </DataGridCheckBoxColumn>
+                            </DataGrid.Columns>
+                                
+                        </DataGrid>
+                    </Grid>
+                    
+                    
+                    <Grid Grid.Column="2">
+                        <StackPanel VerticalAlignment="Center">
+                            <Button x:Name="C_Button_GanRole" Content="Gán bảng" Style="{StaticResource MyStyle_Button}" Click="C_Button_GanRole_Click" />
+                            <Button x:Name="C_Button_HuyRole" Content="Huỷ bảng" Style="{StaticResource MyStyle_Button}" Click="C_Button_HuyRole_Click" />
+                            <CheckBox x:Name="C_CheckBox_GrantOption" Content="With grant option" HorizontalAlignment="Center" Style="{StaticResource MyStyle_CheckBox}"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <!--Kết thúc Tabitem cột-->
+            </TabItem>
+
         </TabControl>
+        <Label x:Name="Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MyStyle_Label}" Margin="10,30"/>
         <Label x:Name="Lb_username" Content="username" Style="{StaticResource MyStyle_Label}" VerticalAlignment="Top" HorizontalAlignment="Right"  FontWeight="Medium" Margin="10,0" />
     </Grid>
 </Window>

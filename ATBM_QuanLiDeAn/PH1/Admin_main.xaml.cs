@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -63,7 +64,7 @@ namespace ATBM_QuanLiDeAn.PH1
             DataTable table_User;
             string sql;
             sql = "SELECT USERNAME, ACCOUNT_STATUS AS STATUS, CREATED, EXPIRY_DATE, LAST_LOGIN " +
-                "FROM DBA_USERS WHERE DEFAULT_TABLESPACE = 'USERS' and EXpirY_date is not NULL";
+                "FROM DBA_USERS WHERE  default_tablespace = 'DA_ATBM' and  EXpirY_date is not NULL";
             //if (cbOnly.IsChecked == false)
             //{
             //    sql = sql + " AND USERNAME LIKE 'U%'";
@@ -349,9 +350,25 @@ namespace ATBM_QuanLiDeAn.PH1
             catch { }
         }
 
+        private void Tab_Object_Loaded(object sender, RoutedEventArgs e)
+        {
 
+        }
 
+        private void DT_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                DataTable tbl = new DataTable();
+                string typeFunction = "";
+                typeFunction = DT_ComboBox.Text;
+                string sql = "SELECT owner, object_name OBJ, object_type TYPE_  FROM all_objects where object_type = '" + typeFunction + "' and owner in (SELECT username FROM dba_users where default_tablespace = 'USERS' and EXpiry_date is not null) ORDER BY owner, object_type, object_name";
+                tbl = Class.DB_Config.GetDataToTable(sql);
+                DT_Datagrid.ItemsSource = null;
+                DT_Datagrid.ItemsSource = tbl.DefaultView;
 
-
+            }
+            catch { }
+        }
     }
 }

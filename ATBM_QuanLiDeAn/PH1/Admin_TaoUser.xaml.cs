@@ -36,8 +36,6 @@ namespace ATBM_QuanLiDeAn.PH1
             {
                 TB_Role.Items.Add(dt.Rows[i]["ROLE"]);
             }
-            //cbRole.ItemsSource = null;
-            //cbRole.ItemsSource = dt.DefaultView;
         }
 
         private void Button_TaoUser_Click(object sender, RoutedEventArgs e)
@@ -55,6 +53,7 @@ namespace ATBM_QuanLiDeAn.PH1
                 {
                     sql = "CREATE USER " + "\"" + username + "\"" + " IDENTIFIED BY " + password;
                 }
+                sql += " DEFAULT TABLESPACE DA_ATBM";
                 Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
                 bool kq = Class.DB_Config.RunSQL(sql);
                 if (kq)

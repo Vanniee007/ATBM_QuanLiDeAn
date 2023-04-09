@@ -57,7 +57,8 @@ namespace ATBM_QuanLiDeAn.PH1
             catch { }
         }
 
-        private void TB_NewPassword_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+
+        private void TB_Password_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (TB_Password.Password.ToString() != TB_NewPassword.Password.ToString())
             {
@@ -69,10 +70,9 @@ namespace ATBM_QuanLiDeAn.PH1
                 Label_error.Content = "";
                 Button_DoiMatKhau.IsEnabled = true;
             }
-
         }
 
-        private void TB_Password_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void TB_NewPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (TB_Password.Password.ToString() != TB_NewPassword.Password.ToString())
             {
