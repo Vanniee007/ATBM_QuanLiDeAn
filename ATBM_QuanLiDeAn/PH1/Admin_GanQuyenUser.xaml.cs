@@ -32,11 +32,7 @@ namespace ATBM_QuanLiDeAn.PH1
         private void VT_GetList_Role()
         {
             DataTable table_User;
-            string sql = "SELECT GRANTED_ROLE as ROLE FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE != 'RESOURCE'";
-            //if (cbOnly.IsChecked == false)
-            //{
-            //    sql = sql + " AND USERNAME LIKE 'U%'";
-            ////}
+            string sql = "SELECT DISTINCT GRANTED_ROLE as ROLE, (SELECT ADMIN_OPTION FROM DBA_ROLE_PRIVS WHERE GRANTEE = '"+username+ "' and USER_ROLE_PRIVS.GRANTED_ROLE = DBA_ROLE_PRIVS.GRANTED_ROLE)as ADMIN_OPTION, (SELECT 'Granted' FROM DBA_ROLE_PRIVS WHERE GRANTEE = '" + username + "' and USER_ROLE_PRIVS.GRANTED_ROLE = DBA_ROLE_PRIVS.GRANTED_ROLE)as STATUS FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE != 'RESOURCE'";
             table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
             VT_Datagrid.ItemsSource = null;
             VT_Datagrid.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu       
@@ -46,6 +42,64 @@ namespace ATBM_QuanLiDeAn.PH1
         {
             VT_GetList_Role();
         }
+        private List<string> GetSelectedIndexes(DataGrid dataGrid, int checkboxColumnIndex)
+        {
+            List<string> selectedValues = new List<string>();
+
+            foreach (var item in dataGrid.Items)
+            {
+                DataGridRow row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromItem(item);
+                if (row != null)
+                {
+                    // Get the CheckBox control in the specified column of the row
+                    var cellContent = dataGrid.Columns[checkboxColumnIndex].GetCellContent(row);
+                    var checkBox = cellContent as CheckBox;
+
+                    // If the CheckBox is checked, add the value of the first column to the list
+                    if (checkBox != null && checkBox.IsChecked == true)
+                    {
+                        var firstColumn = dataGrid.Columns[0].GetCellContent(row);
+                        selectedValues.Add(((TextBlock)firstColumn).Text);
+                    }
+                }
+            }
+
+            return selectedValues;
+        }
+
+        private void VT_Datagrid_DataGridRow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var dataGridRow = sender as DataGridRow;
+            var checkBox = FindVisualChild<CheckBox>(dataGridRow);
+
+            if (checkBox != null)
+            {
+                checkBox.IsChecked = !checkBox.IsChecked;
+                e.Handled = true;
+            }
+        }
+
+        public static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child != null && child is T)
+                {
+                    return (T)child;
+                }
+                else
+                {
+                    var result = FindVisualChild<T>(child);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+            return null;
+        }
+
 
         private void Q_GetList_Privilige()
         {
@@ -101,5 +155,66 @@ namespace ATBM_QuanLiDeAn.PH1
             B_GetList_Column();
             C_Datagrid.IsEnabled = false;
         }
+        private bool ND_GanQuyen(string username, string role_name)
+        {
+            string sql;
+            if (((username[0] >= 'a') && (username[0] <= 'z')) || ((username[0] >= 'A') && (username[0] <= 'Z')))
+            {
+                sql = "grant " + role_name + " to " + username;
+            }
+            else
+            {
+                sql = "grant "+role_name+" to  USER " + "\"" + username + "\"";
+            }
+            if (VT_CheckBox_GrantOption.IsChecked == true)
+            {
+                sql += " With ADMIN option";
+            }
+            Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+            return Class.DB_Config.RunSQL(sql);
+        }
+
+        private bool ND_HuyQuyen(string username, string role_name)
+        {
+            string sql;
+            if (((username[0] >= 'a') && (username[0] <= 'z')) || ((username[0] >= 'A') && (username[0] <= 'Z')))
+            {
+                sql = "revoke " + role_name + " from " + username;
+            }
+            else
+            {
+                sql = "revoke " + role_name + " from  USER " + "\"" + username + "\"";
+            }
+            Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+            return Class.DB_Config.RunSQL(sql);
+        }
+
+
+        private void VT_Button_GanRole_Click(object sender, RoutedEventArgs e)
+        {
+            var list = GetSelectedIndexes(VT_Datagrid,3);
+            int count = 0;
+            foreach (var role_name in list)
+            {
+                if (ND_GanQuyen(username, role_name))
+                    count++;
+            }
+            VT_Label_error.Content = "Gán "+ count + " thành công, "+ (list.Count - count) + " thất bại";
+            VT_GetList_Role();
+        }
+
+        private void VT_Button_HuyRole_Click(object sender, RoutedEventArgs e)
+        {
+            var list = GetSelectedIndexes(VT_Datagrid, 3);
+            int count = 0;
+            foreach (var role_name in list)
+            {
+                if (ND_HuyQuyen(username, role_name))
+                    count++;
+            }
+            VT_Label_error.Content = "Huỷ "+count + " thành công, " + (list.Count - count) + " thất bại";
+            VT_GetList_Role();
+        }
+    
     }
 }
