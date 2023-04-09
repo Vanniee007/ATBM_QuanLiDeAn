@@ -69,27 +69,27 @@ namespace ATBM_QuanLiDeAn.PH1
             {
                 if (Role_xq_sys_Datagrid.SelectedIndex.ToString() != null)
                 {
-                    //DataRowView rowview = (DataRowView)Role_xq_sys_Datagrid.SelectedItem;
-                    //if (rowview != null)
-                    //{
-                    //    if (MessageBox.Show("Xác nhận xoá user " + rowview["ROLE"].ToString(), "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                    //    {
-                    //        string rolename = rowview["ROLE"].ToString();
-                    //        string sql = "ALTER SESSION SET \"_ORACLE_SCRIPT\" = true";
-                    //        Class.DB_Config.RunSqlDel(sql);
-                    //        sql = "DROP ROLE " + rolename;
-                    //        Class.DB_Config.RunSqlDel(sql);
-                    //        role_lb_errorout.Content = "Xóa thành công!!!";
-                    //        role_lb_errorout.Background = Brushes.LightGreen;
-                    //        Role_HienThi();
-                    //    }
+                    DataRowView rowview = (DataRowView)Role_xq_sys_Datagrid.SelectedItem;
+                    if (rowview != null)
+                    {
+                        if (MessageBox.Show("Xác nhận xoá user " + rowview["ROLE"].ToString(), "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            
+                            string sql = "ALTER SESSION SET \"_ORACLE_SCRIPT\" = true";
+                            Class.DB_Config.RunSqlDel(sql);
+                            sql = "ROVOKE  " + rowview["PRIVILEGE"].ToString() + " FROM " + role;
+                            Class.DB_Config.RunSqlDel(sql);
+                            role_xq_lb_errorout.Content = "Xóa thành công!!!";
+                            role_xq_lb_errorout.Background = Brushes.LightGreen;
+                           
+                        }
 
-                    //}
-                    //else
-                    //{
-                    //    role_lb_errorout.Content = "Bạn chưa chọn role để xóa!!!";
-                    //    role_lb_errorout.Background = Brushes.IndianRed;
-                    //}
+                    }
+                    else
+                    {
+                        role_xq_lb_errorout.Content = "Bạn chưa chọn quyền để xóa!!!";
+                        role_xq_lb_errorout.Background = Brushes.IndianRed;
+                    }
                 }
             }
             catch
@@ -132,7 +132,7 @@ namespace ATBM_QuanLiDeAn.PH1
             {
                 if (Role_xq_tab_Datagrid.SelectedIndex.ToString() != null)
                 {
-                    DataRowView rowview = (DataRowView)Role_xq_sys_Datagrid.SelectedItem;
+                    DataRowView rowview = (DataRowView)Role_xq_tab_Datagrid.SelectedItem;
                     if (rowview != null)
                     {
                         if (MessageBox.Show("Xác nhận xoá quyền " + rowview["PRIVILEGE"].ToString()+ " trên "+ rowview["TABLE_NAME"].ToString()+" của "+role, "Thông báo", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
