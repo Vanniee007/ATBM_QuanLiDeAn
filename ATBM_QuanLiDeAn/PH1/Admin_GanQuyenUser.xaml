@@ -63,7 +63,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <DataGrid x:Name="Q_Datagrid" Loaded="Q_Datagrid_Loaded" Style="{StaticResource MyStyle_DataGrid}">
@@ -73,6 +73,14 @@
 
                             </DataGrid.Columns>
                         </DataGrid>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Label x:Name="Q_Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MyStyle_Label}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <Button x:Name="Q_Button_GanRole" Content="Gán role" Style="{StaticResource MyStyle_Button}" Click="Q_Button_GanRole_Click" />
+                            <Button x:Name="Q_Button_HuyRole" Content="Huỷ role" Style="{StaticResource MyStyle_Button}" Click="Q_Button_HuyRole_Click" />
+                            <CheckBox x:Name="Q_CheckBox_GrantOption" Content="With admin option" HorizontalAlignment="Center" Style="{StaticResource MyStyle_CheckBox}"/>
+                        </StackPanel>
                     </Grid>
                 </Grid>
                 <!--Kết thúc Tabitem Quyền-->

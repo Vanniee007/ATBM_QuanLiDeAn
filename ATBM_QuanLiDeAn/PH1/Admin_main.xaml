@@ -87,7 +87,7 @@
                         <StackPanel>
                             <Button x:Name="ND_Button_CreateUser" Content="Tạo User" Style="{StaticResource MyStyle_Button}" Click="ND_Button_CreateUser_Click" />
                             <Button x:Name="ND_Button_XoaUser" Content="Xoá User" Style="{StaticResource MyStyle_Button}" Click="ND_Button_XoaUser_Click" />
-                            <Button x:Name="ND_button_EditUser" Content="Edit User" Style="{StaticResource MyStyle_Button}" Click="ND_button_EditUser_Click"/>
+                            <Button x:Name="ND_button_EditUser" Content="Gán quyền" Style="{StaticResource MyStyle_Button}" Click="ND_button_EditUser_Click"/>
                             <Button x:Name="ND_button_DoiMatKhau" Content="Đổi mật khẩu" Style="{StaticResource MyStyle_Button}" Click="ND_button_DoiMatKhau_Click" />
                             <Button x:Name="ND_button_KhoaUser" Content="Khoá User" Style="{StaticResource MyStyle_Button}" Click="ND_button_KhoaUser_Click" />
                         </StackPanel>
