@@ -169,7 +169,7 @@
                     <Grid Grid.Column="1">
                         <StackPanel>
                             
-                        <ComboBox x:Name="DT_ComboBox" Height="50" VerticalAlignment="Top" Margin="0,40" SelectionChanged="DT_ComboBox_SelectionChanged">
+                        <ComboBox x:Name="DT_ComboBox" Height="50" VerticalAlignment="Top" Margin="0,40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="DT_ComboBox_SelectionChanged">
                             <ComboBoxItem Content="FUNCTION"/>
                             <ComboBoxItem Content="TABLE" />
                             <ComboBoxItem Content="VIEW" />
