@@ -1,4 +1,5 @@
 ﻿using ATBM_QuanLiDeAn.PH1;
+using ATBM_QuanLiDeAn.PH2;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -90,17 +91,34 @@ namespace ATBM_QuanLiDeAn
                 try
                 {
                     DataTable dt = new DataTable();
-                    string sql = "SELECT * FROM DBA_ROLE_PRIVS WHERE GRANTED_ROLE = 'DBA'AND GRANTEE = '"+ username + "'"; // lấy tạm để biết lấy được
-                    dt = Class.DB_Config.GetDataToTable(sql); //Đọc danh sách role của user hiện tại
-
-                    if (dt.Rows.Count >= 1)
+                    string sql = "SELECT * FROM DBA_ROLE_PRIVS WHERE GRANTEE = '" + username + "' and granted_role != 'CONNECT'";
+                    try
                     {
-                        // Có nhiều hơn 1 role -> admin 
-                        Admin_main ad = new Admin_main();
-                        ad.Show();
-                        this.Close();
-                        return;
+                        // lấy tạm để biết lấy được
+                        dt = Class.DB_Config.GetDataToTable(sql); //Đọc danh sách role của user hiện tại
+
+                        if (dt.Rows.Count >= 1)
+                        {
+                            // Có nhiều hơn 1 role -> admin 
+                            Admin_main ad = new Admin_main();
+                            ad.Show();
+                            this.Close();
+                            return;
+                        }
                     }
+                    catch { }
+                    sql = "select VAITRO from ATBMM.LAYVAITRO"; 
+                    dt = Class.DB_Config.GetDataToTable(sql);
+                    string VaiTro = dt.Rows[0][0].ToString();
+                    switch (VaiTro)
+                    {
+                        case "Nhân viên":
+                            NhanVien_Main nv = new NhanVien_Main();
+                            nv.Show();
+                            this.Close();
+                            return;
+                    }
+
 
                 }
 

@@ -196,6 +196,7 @@ namespace ATBM_QuanLiDeAn.PH1
             {
                 sql = "grant "+role_name+" to  USER " + "\"" + username + "\" ";
             }
+
             if (checkbox.IsChecked == true)
             {
                 sql += checkbox.Content.ToString();
