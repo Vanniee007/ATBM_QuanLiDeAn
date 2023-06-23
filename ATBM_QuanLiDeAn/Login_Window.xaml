@@ -101,7 +101,7 @@
                 <!--<Button Style="{StaticResource MyStyle_Button_Sua}" Margin="5,0"  HorizontalAlignment="Left" Height="15" Width="15" Click="bt_mini_click"/>-->
                 <!--<Button Style="{StaticResource MyStyle_Button_Xoa}" HorizontalAlignment="Left" Height="15" Width="15" Click="bt_close_click"/>-->
             </StackPanel>
-            <Label Content="Eleven Study" Margin="0,0,0,10" Foreground="Navy" Style="{StaticResource LoginStyle_TitleLabel}" VerticalAlignment="Bottom" FontSize="55"/>
+            <Label Content="Four fun" Margin="0,0,0,10" Foreground="Navy" Style="{StaticResource LoginStyle_TitleLabel}" VerticalAlignment="Bottom" FontSize="55"/>
         </Grid>
 
         <!--Khu vực login-->
@@ -126,7 +126,8 @@
                 </Grid>
                 <!--Nút đăng nhập-->
                 <Grid Height="80" Width="150" Background="Transparent" Margin="0,10,0,0">
-                    <Button Style="{StaticResource Login_Button}" Content="Đăng nhập" Foreground="White" FontWeight="SemiBold"  
+                    <Button Style="{StaticResource Login_Button}" Content="Đăng nhập" 
+                            Foreground="White" FontWeight="SemiBold"  
                                 FontSize="17"         Height="40"
                                 Click="DangNhap_Click"
                                 FocusVisualStyle="{x:Null}"
@@ -148,8 +149,15 @@
         <!--Copy right-->
         <Label Content="Copyright 2023 by Group 11 - ATBMHTTT" FontSize="12" Margin="0,0,10,10" Foreground="Navy"  Style="{StaticResource LoginStyle_TitleLabel}" 
                            HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="2" Grid.Row="1"/>
+        <Grid Grid.Column="2" Grid.Row="0">
 
-
+            <StackPanel Margin="20,20" Background="Transparent" Height="20"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
+                <Button Style="{StaticResource MyStyle_Button_Vang}" HorizontalAlignment="Left" Height="20" Width="20" Click="bt_mini_click"/>
+                <Button Style="{StaticResource MyStyle_Button_Do}" Margin="5,0" HorizontalAlignment="Left" Height="20" Width="20" Click="bt_close_click"/>
+            </StackPanel>
+        </Grid>
+            
     </Grid>
 
 </Window>

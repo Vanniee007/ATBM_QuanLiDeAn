@@ -144,6 +144,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PH2\NhanVien_Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PH1\Admin_DoiMatKhau.xaml.cs" />
@@ -160,6 +164,9 @@
     <Compile Include="PH1\Role_User.xaml.cs" />
     <Compile Include="PH1\Role_XemQuyen.xaml.cs">
       <DependentUpon>Role_XemQuyen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PH2\NhanVien_Main.xaml.cs">
+      <DependentUpon>NhanVien_Main.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -198,6 +205,9 @@
     <Resource Include="images\lock.png" />
     <Resource Include="images\login_background.jpeg" />
     <Resource Include="images\Logo_HCMUS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PH1.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" />

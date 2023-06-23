@@ -105,19 +105,16 @@
                                FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
 
-                    <Grid Grid.Row="1" Grid.Column="0">
-                        <DataGrid x:Name="Role_Datagrid" Loaded="Role_Datagrid_Loaded" AutoGenerateColumns="False" 
-                                  
+                    <DataGrid x:Name="Role_Datagrid" Grid.Row="1" Grid.Column="0" Loaded="Role_Datagrid_Loaded" AutoGenerateColumns="False" 
                                   IsReadOnly="True"
                                   Background="White" CanUserAddRows="False">
-                            <DataGrid.Columns >
-                                <DataGridTextColumn Header="Role" Binding="{Binding ROLE}" Width="*"/>
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="Role" Binding="{Binding ROLE}" Width="*"/>
 
-                            </DataGrid.Columns>
+                        </DataGrid.Columns>
 
-                        </DataGrid>
+                    </DataGrid>
 
-                    </Grid>
 
                     <Grid Grid.Row="1" Grid.Column="1">
                         <StackPanel>
@@ -181,6 +178,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Button x:Name="Button_Logout" Content="Đăng xuất" Style="{StaticResource MyStyle_Button}" Click="Button_Logout_Click" VerticalAlignment="Top"  Width="100" HorizontalAlignment="Right"/>
 
     </Grid>
 </Window>

@@ -1,0 +1,12 @@
+﻿<Window x:Class="ATBM_QuanLiDeAn.PH2.NhanVien_Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ATBM_QuanLiDeAn.PH2"
+        mc:Ignorable="d"
+        Title="NhanVien_Main" Height="450" Width="800">
+    <Grid>
+        <Label Content="Chào mừng đến với bình nguyên vô tận" FontSize="30"/>
+    </Grid>
+</Window>

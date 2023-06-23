@@ -394,5 +394,14 @@ namespace ATBM_QuanLiDeAn.PH1
             }
             catch { }
         }
+
+        private void Button_Logout_Click(object sender, RoutedEventArgs e)
+        {
+            Login_Window lg = new Login_Window("");
+            lg.Show();
+            this.Close();
+            return;
+
+        }
     }
 }
