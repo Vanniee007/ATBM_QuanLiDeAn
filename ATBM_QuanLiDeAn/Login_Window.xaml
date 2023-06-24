@@ -18,13 +18,13 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Height" Value="50"/>
-            <Setter Property="Width" Value="150"/>
+            <Setter Property="Width" Value="200"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="18">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
@@ -126,13 +126,16 @@
 
                 </Grid>
                 <!--Nút đăng nhập-->
-                <Grid Height="80" Width="150" Background="Transparent" Margin="0,10,0,0">
+                <Grid Height="100"  Background="Transparent" Margin="0,10,0,0">
+                    <Label x:Name="lb_error" Content="" Style="{StaticResource MyStyle_Label_TT}"  FontWeight="Medium" HorizontalAlignment="Center" />
                     <Button Style="{StaticResource Login_Button}" Content="Đăng nhập" 
                             Foreground="White" FontWeight="SemiBold"  
-                                FontSize="17"         Height="40"
+                                FontSize="20"         
+                            Height="50"
+                            
                                 Click="DangNhap_Click"
                                 FocusVisualStyle="{x:Null}"
-                                BorderBrush="Transparent" Margin="0,30,0,0" VerticalAlignment="Top"/>
+                                BorderBrush="Transparent" Margin="0,35,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
 
