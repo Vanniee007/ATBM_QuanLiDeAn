@@ -68,6 +68,17 @@ namespace ATBM_QuanLiDeAn.PH1
 
             return selectedValues;
         }
+        private List<string> CountNotNullIndex(DataGrid dataGrid, int ColumnIndex)
+        {
+            List<string> selectedValues = new List<string>();
+            foreach (DataRowView row in dataGrid.Items)
+            {
+                string temp = row.Row.ItemArray[ColumnIndex].ToString();
+                if  (temp != "")
+                    selectedValues.Add(row.Row.ItemArray[0].ToString());
+            }
+            return selectedValues;
+        }
 
         private void VT_Datagrid_DataGridRow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -204,6 +215,13 @@ namespace ATBM_QuanLiDeAn.PH1
             Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
             return Class.DB_Config.RunSQL(sql);
         }
+        private bool ND_SuaVaiTro(string username, string role_name)
+        {
+            string sql = "update NHANVIEN set VAITRO = '" + role_name +"' where MANV = '"+username+ "'";
+            
+            Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+            return Class.DB_Config.RunSQL(sql);
+        }
 
         private bool ND_HuyQuyen(string username, string role_name)
         {
@@ -223,18 +241,68 @@ namespace ATBM_QuanLiDeAn.PH1
 
         private void VT_Button_GanRole_Click(object sender, RoutedEventArgs e)
         {
+            
             var list = GetSelectedIndexes(VT_Datagrid,3);
+            int CountNewRole = 0;
             int count = 0;
+            var OldRole = CountNotNullIndex(VT_Datagrid, 2);
+            foreach (string role in list)
+            {
+                if (role != "NHANVIEN" || role != "DBA")
+                    CountNewRole++;
+
+            }    
+            if (list.Count + OldRole.Count > 2 || CountNewRole > 1)
+            {
+                Label_error.Content = "Mỗi user chỉ có thể có tối đa 2 role";
+                return;
+            }
+            foreach (string role in OldRole)
+            {
+                if (role == "DBA")
+                {
+                    Label_error.Content = "DBA không thể là nhân viên";
+                    return;
+                }    
+
+
+            }
+
             foreach (var role_name in list)
             {
                 ND_HuyQuyen(username, role_name);
                 if (ND_GanQuyen(username, role_name, VT_CheckBox_GrantOption))
                     count++;
+                if (role_name != "DBA")
+                    ND_SuaVaiTro(username, VT_VietSub(role_name));
+
+                if (role_name != "NHANVIEN" || role_name != "DBA")
+                    ND_GanQuyen(username, "NHANVIEN", VT_CheckBox_GrantOption);
             }
             Label_error.Content = "Gán "+ count + " thành công, "+ (list.Count - count) + " thất bại";
             VT_GetList_Role();
         }
 
+        private string VT_VietSub(string role)
+        {
+            switch (role)
+            {
+                case "NHANVIEN":
+                    return "Nhân viên";
+                case "TRUONGPHONG":
+                    return "Trưởng phòng";
+                case "BANGIAMDOC":
+                    return "Ban giám đốc";
+                case "QLTRUCTIEP":
+                    return "QL trực tiếp";
+                case "TAICHINH":
+                    return "Tài chính";
+                case "TRUONGDEAN":
+                    return "Trưởng đề án";
+                default:
+                    return null;
+            }
+        }
         private void VT_Button_HuyRole_Click(object sender, RoutedEventArgs e)
         {
             var list = GetSelectedIndexes(VT_Datagrid, 3);
@@ -243,6 +311,8 @@ namespace ATBM_QuanLiDeAn.PH1
             {
                 if (ND_HuyQuyen(username, role_name))
                     count++;
+                if (role_name != "DBA" || role_name != "NHANVIEN")
+                    ND_SuaVaiTro(username, "Nhân viên");
             }
             Label_error.Content = "Huỷ "+count + " thành công, " + (list.Count - count) + " thất bại";
             VT_GetList_Role();
