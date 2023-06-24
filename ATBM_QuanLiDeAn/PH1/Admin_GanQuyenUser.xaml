@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ATBM_QuanLiDeAn.PH1"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         Title="Admin_GanQuyenUser" Height="450" Width="700">
     <Grid>
         <TabControl FontSize="16">
@@ -207,7 +207,11 @@
             </TabItem>
 
         </TabControl>
-        <Label x:Name="Label_error" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MyStyle_Label}" Margin="10,30"/>
-        <Label x:Name="Lb_username" Content="username" Style="{StaticResource MyStyle_Label}" VerticalAlignment="Top" HorizontalAlignment="Right"  FontWeight="Medium" Margin="10,0" />
+
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
+            <!--<Label Style="{StaticResource MyStyle_Label}" Content="Username:"/>-->
+            <Label x:Name="Label_error" Style="{StaticResource MyStyle_Label}" />
+            <Label x:Name="Lb_username" Content="username" Style="{StaticResource MyStyle_Label}"  FontWeight="Medium"  />
+        </StackPanel>
     </Grid>
 </Window>

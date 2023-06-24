@@ -315,7 +315,8 @@ namespace ATBM_QuanLiDeAn.PH1
             try
             {
                 Role_TaoRole rtr = new Role_TaoRole();
-                rtr.Show();
+                rtr.ShowDialog();
+                Role_HienThi();
             }
             catch { }
         }

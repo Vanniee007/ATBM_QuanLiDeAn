@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="ATBM_QuanLiDeAn" 
         WindowStyle="None"
-        Height="627" Width="1200">
+        
+        Height="633" Width="1200">
     <Window.Resources>
         <Style x:Key="Login_Button"  TargetType="Button">
             <Setter Property="Background" Value="Navy"/>

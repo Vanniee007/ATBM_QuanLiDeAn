@@ -148,6 +148,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PH2\TruongPhong_Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PH1\Admin_DoiMatKhau.xaml.cs" />
@@ -167,6 +171,9 @@
     </Compile>
     <Compile Include="PH2\NhanVien_Main.xaml.cs">
       <DependentUpon>NhanVien_Main.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PH2\TruongPhong_Main.xaml.cs">
+      <DependentUpon>TruongPhong_Main.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
