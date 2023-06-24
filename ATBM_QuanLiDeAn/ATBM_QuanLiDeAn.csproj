@@ -101,6 +101,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DB_Config.cs" />
+    <Compile Include="InputValidation.cs" />
     <Compile Include="Login_Window.xaml.cs">
       <DependentUpon>Login_Window.xaml</DependentUpon>
     </Compile>
@@ -214,6 +215,7 @@
     <Resource Include="images\Logo_HCMUS.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\logout.png" />
     <Content Include="PH1.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -21,14 +21,14 @@ namespace ATBM_QuanLiDeAn
     /// </summary>       
     public partial class Login_Window : Window
     {
-        //DBConnect db = new DBConnect();
+        InputValidation validation = new InputValidation();
         public Login_Window(string username)
         {
             InitializeComponent();
             tb_username.Text = username;
             tb_username.Focus();
-            tb_username.Text = "ATBM_ADMIN";
-            tb_password.Password = "123";
+            tb_username.Text = "TP01";
+            tb_password.Password = "1";
         }
 
         //animation cửa số đăng nhập
@@ -82,10 +82,22 @@ namespace ATBM_QuanLiDeAn
         }
         private void Login()
         {
+            if (!validation.ValidUsername(tb_username.Text))
+            {
+                lb_error.Content = "Tên đăng nhập không hợp lệ";
+                lb_error.Foreground = Brushes.IndianRed;
+                return;
+            }
+            if (!validation.ValidPassword(tb_password.Password) )
+            {
+                lb_error.Content = "Mật khẩu không hợp lệ";
+                lb_error.Foreground = Brushes.IndianRed;
+                return;
+            }
+
+
             string username = tb_username.Text.ToString();
             string password = tb_password.Password.ToString();
-            //string username = "ATBMM";
-            //string password = "123";
 
             bool isConnect = Class.DB_Config.Connect(username, password);
             if (isConnect)  // Kết nối thành công
@@ -109,7 +121,7 @@ namespace ATBM_QuanLiDeAn
                         }
                     }
                     catch { }
-                    sql = "select VAITRO from ATBMM.LAYVAITRO"; 
+                    sql = "select VAITRO from ATBM_ADMIN.LAYVAITRO"; 
                     dt = Class.DB_Config.GetDataToTable(sql);
                     string VaiTro = dt.Rows[0][0].ToString();
                     switch (VaiTro)
@@ -118,7 +130,14 @@ namespace ATBM_QuanLiDeAn
                             NhanVien_Main nv = new NhanVien_Main();
                             nv.Show();
                             this.Close();
-                            return;
+                            break;
+
+                        case "Trưởng phòng":
+                            TruongPhong_Main tp = new TruongPhong_Main();
+                            tp.Show();
+                            this.Close();
+                            break;
+
                     }
 
 
