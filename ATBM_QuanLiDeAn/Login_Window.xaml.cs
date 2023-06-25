@@ -127,13 +127,13 @@ namespace ATBM_QuanLiDeAn
                     switch (VaiTro)
                     {
                         case "Nhân viên":
-                            NhanVien_Main nv = new NhanVien_Main();
+                            NhanVien_Main nv = new NhanVien_Main(username);
                             nv.Show();
                             this.Close();
                             break;
 
                         case "Trưởng phòng":
-                            TruongPhong_Main tp = new TruongPhong_Main();
+                            TruongPhong_Main tp = new TruongPhong_Main(username);
                             tp.Show();
                             this.Close();
                             break;

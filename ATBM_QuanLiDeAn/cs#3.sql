@@ -19,4 +19,45 @@ SELECT *
 FROM PHANCONG 
 WHERE MANV in (select MANV from NHANVIEN where PHG = (select PHG from NHANVIEN where MANV =  SYS_CONTEXT('USERENV', 'SESSION_USER')));
 
-grant select, update, DELETE on TP_PHANCONG to TRUONGPHONG
+grant select, update, DELETE on TP_PHANCONG to TRUONGPHONG;
+/
+-- Procedure to add a task assignment
+CREATE OR REPLACE PROCEDURE TP_ThemPhanCong(
+    MaNV_ IN VARCHAR2,
+    MaDA_ IN NUMBER,
+    ThoiGian_ IN DATE
+)
+IS
+BEGIN
+    INSERT INTO ATBM_ADMIN.TP_PHANCONG (MANV, MADA, THOIGIAN)
+    VALUES (MaNV_, MaDA_, ThoiGian_);
+    COMMIT;
+END;
+/
+
+-- Procedure to update a task assignment
+CREATE OR REPLACE PROCEDURE TP_SuaPhanCong(
+    MaNV_ IN VARCHAR2,
+    MaDA_ IN NUMBER,
+    ThoiGian_ IN DATE
+)
+IS
+BEGIN
+    UPDATE ATBM_ADMIN.TP_PHANCONG
+    SET THOIGIAN = ThoiGian_
+    WHERE MANV = MaNV_ AND MADA = MaDA_;
+    COMMIT;
+END;
+/
+create or replace PROCEDURE TP_XoaPhanCong(
+    MaNV_ in varchar2,
+    MaDA_ in number
+)
+IS
+BEGIN
+    delete from ATBM_ADMIN.TP_PHANCONG
+    where MANV = MaNV_ and MADA = MaDA_;
+END;
+/
+grant EXECUTE ON TP_XoaPhanCong to TRUONGPHONG;
+/
