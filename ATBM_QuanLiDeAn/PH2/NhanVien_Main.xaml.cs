@@ -17,11 +17,11 @@ namespace ATBM_QuanLiDeAn.PH2
 {
     /// <summary>
     /// </summary>
-    public partial class TruongPhong_Main : Window
+    public partial class NhanVien_Main : Window
     {
         InputValidation validation = new InputValidation();
         string username;
-        public TruongPhong_Main(string username_)
+        public NhanVien_Main(string username_)
         {
             InitializeComponent();
             username = username_;
