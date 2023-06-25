@@ -100,199 +100,8 @@ namespace ATBM_QuanLiDeAn.PH2
         }
 
 
-        private void PB_Get_DSUser()
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                sql = "select * from ATBM_ADMIN.TP_NHANVIEN";
-                //if (cbOnly.IsChecked == false)
-                //{
-                //    sql = sql + " AND USERNAME LIKE 'U%'";
-                //}
-                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
-                PB_datagird.ItemsSource = null;
-                PB_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
-
-            }
-            catch { }
-
-        }
-        private void PB_loaded(object sender, RoutedEventArgs e)
-        {
-            PB_Get_DSUser();
-        }
-
-        private void PB_Get_Data()
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                sql = "select * from ATBM_ADMIN.TP_PHANCONG";
-                //if (cbOnly.IsChecked == false)
-                //{
-                //    sql = sql + " AND USERNAME LIKE 'U%'";
-                //}
-                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
-                PC_datagird.ItemsSource = null;
-                PC_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
-                PC_LayDanhSach_DoAn();
-                PC_LayDanhSach_NhanVien();
-            }
-            catch { }
-
-        }
-
-        private void PC_loaded(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void PC_datagird_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (PC_datagird.SelectedIndex.ToString() != null)
-                {
-                    DataRowView rowview = (DataRowView)PC_datagird.SelectedItem;
-                    if (rowview != null)
-                    {
-                        PC_Combobox_MaNV.Text= rowview["MANV"].ToString();
-                        //PC_tb_TenNV.Text = rowview["MANV"].ToString();
-                        PC_Combobox_MaDA.Text= rowview["MADA"].ToString();
-                        //PC_tb_TenDA.Text = rowview["MADA"].ToString();
-                        PC_tb_NgayBD.Text = rowview["NGAYBD"].ToString();
-                        PC_tb_ThoiGian.Text = rowview["THOIGIAN"].ToString();
-                    }
-                }
-            }
-            catch
-            { }
-        }
-
-        private void PC_LayDanhSach_NhanVien()
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                sql = "select MANV from ATBM_ADMIN.TP_NHANVIEN";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                var ds = new List<string>();
-                DataRow r;
-                for (int i = 0; i < table_User.Rows.Count; i++)
-                {
-                    r = table_User.Rows[i];
-                    ds.Add(r[0].ToString());
-                }
-                PC_Combobox_MaNV.DataContext = ds;
-            }
-            catch { }
-        }
-        private void PC_LayDanhSach_DoAn()
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select distinct MADA from ATBM_ADMIN.DEAN";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                var ds = new List<string>();
-                DataRow r;
-                for (int i = 0; i < table_User.Rows.Count; i++)
-                {
-                    r = table_User.Rows[i];
-                    ds.Add(r[0].ToString());
-                }
-                PC_Combobox_MaDA.DataContext = ds;
-            }
-            catch { }
-        }
-
-        private void PC_datagird_Loaded(object sender, RoutedEventArgs e)
-        {
-            PB_Get_Data();
-        }
-
-        private void PC_Combobox_MaNV_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select TENNV from ATBM_ADMIN.TP_NHANVIEN where MANV = '"+PC_Combobox_MaNV.Text+"'";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                PC_tb_TenNV.Text = table_User.Rows[0][0].ToString();   
-            }
-            catch { }
-        }
-
-        private void PC_Combobox_MaDA_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select TENDA, NGAYBD from ATBM_ADMIN.DEAN where MADA = '" + PC_Combobox_MaDA.Text + "'";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                PC_tb_TenDA.Text = table_User.Rows[0][0].ToString();
-                PC_tb_NgayBD.Text = table_User.Rows[0][1].ToString();
-            }
-            catch { }
-        }
-
-        private void PC_tb_Xoa_Click(object sender, RoutedEventArgs e)
-        {
-            DataTable table_User;
-            string sql;
-            //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-            sql = "select * from ATBM_ADMIN.TP_PHANCONG where MADA = '" + PC_Combobox_MaDA.Text + "' and MANV = '" + PC_Combobox_MaNV.Text + "'";
-            table_User = Class.DB_Config.GetDataToTable(sql);
-            if (table_User.Rows.Count > 0)
-            {
-                MessageBox.Show("xoá" + PC_Combobox_MaDA.Text + "/" + PC_Combobox_MaNV.Text);
-            }
-            else
-            {
-                MessageBox.Show("vui lòng chọn đúng dòng cần xoá");
-
-            }
-
-
-        }
-
-        private void PC_tb_Luu_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select * from ATBM_ADMIN.TP_PHANCONG where MADA = '" + PC_Combobox_MaDA.Text + "' and MANV = '"+PC_Combobox_MaNV.Text+"'";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                if (table_User.Rows.Count > 0)
-                {
-                    //sửa
-                    MessageBox.Show("sửa"+ PC_Combobox_MaDA.Text + "/" + PC_Combobox_MaNV.Text);
-                }
-                else
-                {
-                    //thêm
-                    MessageBox.Show("thêm"+ PC_Combobox_MaDA.Text + "/" + PC_Combobox_MaNV.Text);
-                }
-
-            }
-            catch { }
-        }
-
-        private void PC_tb_ThoiGian_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        
+      
         private void TT_Load()
         {
 
@@ -301,7 +110,7 @@ namespace ATBM_QuanLiDeAn.PH2
                 DataTable table_User;
                 string sql;
                 //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select * from ATBM_ADMIN.TP_NHANVIEN  where MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')";
+                sql = "select * from ATBM_ADMIN.NV_XemThongTinChinhMinh";
                 table_User = Class.DB_Config.GetDataToTable(sql);
                 TT_tb_magv.Text = table_User.Rows[0]["MANV"].ToString();
                 TT_tb_hoten.Text = table_User.Rows[0]["TENNV"].ToString();
@@ -321,5 +130,52 @@ namespace ATBM_QuanLiDeAn.PH2
             TT_Load();
         }
 
+        private void CV_loaded(object sender, RoutedEventArgs e)
+        {
+            CV_get_DeAn();
+        }
+        private void CV_get_DeAn()
+        {
+            try
+            {
+                DataTable table_User;
+                string sql;
+                sql = "select * from ATBM_ADMIN.NV_XemThongTinPhanCong";
+                //if (cbOnly.IsChecked == false)
+                //{
+                //    sql = sql + " AND USERNAME LIKE 'U%'";
+                //}
+                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
+                CV_datagird.ItemsSource = null;
+                CV_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
+
+            }
+            catch { }
+
+        }
+        private void CV_datagird_Loaded(object sender, RoutedEventArgs e)
+        {
+            CV_get_DeAn();
+        }
+
+        private void PB_loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PB_datagird_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DA_loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DA_datagird_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

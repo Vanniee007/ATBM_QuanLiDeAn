@@ -149,10 +149,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PH2\TruongPhong_Main.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PH1\Admin_DoiMatKhau.xaml.cs" />
@@ -172,9 +168,6 @@
     </Compile>
     <Compile Include="PH2\NhanVien_Main.xaml.cs">
       <DependentUpon>NhanVien_Main.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PH2\TruongPhong_Main.xaml.cs">
-      <DependentUpon>TruongPhong_Main.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -216,7 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\logout.png" />
-    <Content Include="ATBM_ADMIN.sql" />
     <Content Include="PH1 %28bỏ%29.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
