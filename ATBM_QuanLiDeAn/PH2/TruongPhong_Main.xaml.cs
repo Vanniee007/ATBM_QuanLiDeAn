@@ -277,6 +277,7 @@ namespace ATBM_QuanLiDeAn.PH2
                 if (table_User.Rows.Count > 0)
                 {
                     //sửa
+
                     MessageBox.Show("sửa"+ PC_Combobox_MaDA.Text + "/" + PC_Combobox_MaNV.Text);
                 }
                 else

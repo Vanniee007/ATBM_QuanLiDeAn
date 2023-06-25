@@ -244,7 +244,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\logout.png" />
-    <Content Include="PH1.sql" />
+    <Content Include="ATBM_ADMIN.sql" />
+    <Content Include="PH1 %28bỏ%29.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.0\build\System.Text.Json.targets')" />
