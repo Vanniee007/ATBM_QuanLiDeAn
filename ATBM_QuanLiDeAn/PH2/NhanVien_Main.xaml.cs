@@ -19,9 +19,11 @@ namespace ATBM_QuanLiDeAn.PH2
     /// </summary>
     public partial class NhanVien_Main : Window
     {
-        public NhanVien_Main()
+        string username;
+        public NhanVien_Main(string username_)
         {
             InitializeComponent();
+            username= username_;
         }
     }
 }

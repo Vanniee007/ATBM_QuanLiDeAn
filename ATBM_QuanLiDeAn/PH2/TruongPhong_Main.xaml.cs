@@ -16,15 +16,15 @@ using System.Windows.Shapes;
 namespace ATBM_QuanLiDeAn.PH2
 {
     /// <summary>
-    /// Interaction logic for TruongPhong_Main.xaml
     /// </summary>
     public partial class TruongPhong_Main : Window
     {
         InputValidation validation = new InputValidation();
         string username;
-        public TruongPhong_Main()
+        public TruongPhong_Main(string username_)
         {
             InitializeComponent();
+            username = username_;
         }
         private void Btn_dangxuat_Click(object sender, RoutedEventArgs e)
         {
