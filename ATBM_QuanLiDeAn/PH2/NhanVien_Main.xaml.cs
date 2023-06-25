@@ -115,7 +115,7 @@ namespace ATBM_QuanLiDeAn.PH2
                 TT_tb_magv.Text = table_User.Rows[0]["MANV"].ToString();
                 TT_tb_hoten.Text = table_User.Rows[0]["TENNV"].ToString();
                 TT_tb_ngaysinh.Text = table_User.Rows[0]["NGAYSINH"].ToString();
-                TT_cb_gioitinh.Text = table_User.Rows[0]["PHAI"].ToString();
+                TT_tb_gioitinh.Text = table_User.Rows[0]["PHAI"].ToString();
                 TT_tb_diachi.Text = table_User.Rows[0]["DIACHI"].ToString();
                 TT_tb_sodienthoai.Text = "0" + table_User.Rows[0]["SODT"].ToString();
                 TT_tb_luong.Text = table_User.Rows[0]["LUONG"].ToString();
@@ -129,22 +129,19 @@ namespace ATBM_QuanLiDeAn.PH2
         {
             TT_Load();
         }
-
+        /*=============================================TABITEM: CONGVIEC============================================
+         * =========================================================================================================*/
         private void CV_loaded(object sender, RoutedEventArgs e)
         {
-            CV_get_DeAn();
+            CV_get_DSCongViec();
         }
-        private void CV_get_DeAn()
+        private void CV_get_DSCongViec()
         {
             try
             {
                 DataTable table_User;
                 string sql;
                 sql = "select * from ATBM_ADMIN.NV_XemThongTinPhanCong";
-                //if (cbOnly.IsChecked == false)
-                //{
-                //    sql = sql + " AND USERNAME LIKE 'U%'";
-                //}
                 table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
                 CV_datagird.ItemsSource = null;
                 CV_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
@@ -155,27 +152,59 @@ namespace ATBM_QuanLiDeAn.PH2
         }
         private void CV_datagird_Loaded(object sender, RoutedEventArgs e)
         {
-            CV_get_DeAn();
+            CV_get_DSCongViec();
         }
+        /*=============================================TABITEM: PHONGBAN============================================
+        * =========================================================================================================*/
+        private void PB_get_DSPhongBan()
+        {
+            try
+            {
+                DataTable table_User;
+                string sql;
+                sql = "select * from ATBM_ADMIN.NV_XemThongTinPhongBan";
+                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
+                PB_datagird.ItemsSource = null;
+                PB_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
 
+            }
+            catch { }
+
+        }
         private void PB_loaded(object sender, RoutedEventArgs e)
         {
-
+            PB_get_DSPhongBan();
         }
 
         private void PB_datagird_Loaded(object sender, RoutedEventArgs e)
         {
+            PB_get_DSPhongBan();
+        }
+        /*=============================================TABITEM: ============================================
+      * =========================================================================================================*/
+        private void DA_get_DSDeAn()
+        {
+            try
+            {
+                DataTable table_User;
+                string sql;
+                sql = "select * from ATBM_ADMIN.NV_XemThongTinDeAn";
+                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
+                DA_datagird.ItemsSource = null;
+                DA_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
+
+            }
+            catch { }
 
         }
-
         private void DA_loaded(object sender, RoutedEventArgs e)
         {
-
+            DA_get_DSDeAn();
         }
 
         private void DA_datagird_Loaded(object sender, RoutedEventArgs e)
         {
-
+            DA_get_DSDeAn();
         }
     }
 }

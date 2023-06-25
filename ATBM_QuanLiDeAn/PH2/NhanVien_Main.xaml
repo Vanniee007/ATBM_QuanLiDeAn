@@ -92,40 +92,37 @@
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="2" Grid.Column="1">
 
-                                <Label Content="MaGV"  Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Họ tên"  Margin="0,90,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                                <Label Content="MaGV *"  Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                                <Label Content="Họ tên *"  Margin="0,90,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
                                 <Label Content="Ngày sinh" Margin="0,150,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Giới tính" Margin="0,210,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                                <Label Content="Giới tính *" Margin="0,210,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
                                 <Label Content="Địa chỉ"  FontSize="18"   Margin="0,270,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
                             </Grid>
 
                             <Grid Grid.Row="2" Grid.Column="2">
-                                <TextBox x:Name="TT_tb_magv" Width="220" Margin="0,30,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
-                                <TextBox x:Name="TT_tb_hoten"  Width="220" Margin="0,90,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
+                                <TextBox x:Name="TT_tb_magv" IsReadOnly="True" Width="220" Margin="0,30,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
+                                <TextBox x:Name="TT_tb_hoten" IsReadOnly="True"  Width="220" Margin="0,90,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
                                 <DatePicker  x:Name="TT_tb_ngaysinh" Margin="0,150,0,0" Width="220" Style="{StaticResource MyStyle_DatePicker_TT}" />
-                                <ComboBox x:Name="TT_cb_gioitinh" Margin="0,210,0,0"  Width="220" Style="{StaticResource MyStyle_ComboBox_TT}"
-                                  AllowDrop="True">
-                                    <ComboBoxItem Content="Nam"/>
-                                    <ComboBoxItem Content="Nữ" />
-                                </ComboBox>
+                                <TextBox x:Name="TT_tb_gioitinh" IsReadOnly="True"  Width="220" Margin="0,210,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
                                 <TextBox x:Name="TT_tb_diachi" Margin="0,270,0,0" Width="220" Style="{StaticResource MyStyle_TextBox_TT}" HorizontalAlignment="Center"/>
+                                
                             </Grid>
 
                             <!--Bên phải-->
                             <Grid Grid.Row="2" Grid.Column="4">
                                 <Label Content="SĐT"  FontSize="18"   Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Lương"  FontSize="18"   Margin="0,90,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Phụ cấp"  FontSize="18"   Margin="0,150,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Vai trò"  FontSize="18"   Margin="0,210,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Phòng ban"  FontSize="18"   Margin="0,270,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                                <Label Content="Lương *"   FontSize="18"   Margin="0,90,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                                <Label Content="Phụ cấp *"  FontSize="18"   Margin="0,150,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                                <Label Content="Vai trò *"  FontSize="18"   Margin="0,210,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                                <Label Content="Phòng ban *"  FontSize="18"   Margin="0,270,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
 
                             </Grid>
                             <Grid Grid.Row="2" Grid.Column="5">
                                 <TextBox x:Name="TT_tb_sodienthoai" Margin="0,30,0,0" Width="220" Style="{StaticResource MyStyle_TextBox_TT}" HorizontalAlignment="Center"/>
-                                <TextBox x:Name="TT_tb_luong" Margin="0,90,0,0" Width="220" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" HorizontalAlignment="Center"/>
-                                <TextBox x:Name="TT_tb_phucap" Margin="0,150,0,0" Width="220" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" HorizontalAlignment="Center"/>
-                                <TextBox x:Name="TT_tb_vaitro" Width="220" Margin="0,210,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
-                                <TextBox x:Name="TT_tb_phongban" Width="220" Margin="0,270,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
+                                <TextBox x:Name="TT_tb_luong" IsReadOnly="True" Margin="0,90,0,0" Width="220" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="TT_tb_phucap" IsReadOnly="True" Margin="0,150,0,0" Width="220" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="TT_tb_vaitro" IsReadOnly="True" Width="220" Margin="0,210,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
+                                <TextBox x:Name="TT_tb_phongban" IsReadOnly="True" Width="220" Margin="0,270,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
 
                             </Grid>
                             <Button x:Name="TT_bt_capnhat"   Content="Cập nhật" Style="{StaticResource MyStyle_Button_Xanh}" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top" Width="90" Height="32"
@@ -144,6 +141,14 @@
                                Style="{StaticResource MyStyle_Label}" 
                                HorizontalAlignment="Right" 
                                VerticalAlignment="Bottom" Grid.Column="2"/>
+                            </Grid>
+                            <Grid Grid.Row="3">
+                                <Label 
+                               Content='Chú ý: không thể sửa các thuộc tính "*"'
+                               FontStyle="Italic"
+                               FontSize="15"
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Bottom" />
                             </Grid>
 
                         </Grid>
@@ -217,7 +222,12 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Mã nhân viên" Binding="{Binding MANV}"    Width="0.5*"/>
                                 <DataGridTextColumn Header="Mã đề án" Binding="{Binding MADA}"  Width="1*"  />
-                                <DataGridTextColumn Header="Ngày tham gia" Binding="{Binding THOIGIAN}"  Width="0.5*"/>
+                                <DataGridTextColumn Header="Ngày tham gia" Width="0.5*">
+                                    <DataGridTextColumn.Binding>
+                                        <Binding Path="THOIGIAN" StringFormat="dd/MM/yyyy" />
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+
                             </DataGrid.Columns>
                         </DataGrid >
                     </Grid>
@@ -252,14 +262,14 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
                         <DataGrid x:Name="PB_datagird"  
-                                  AutoGenerateColumns="True"
+                                  AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   Loaded="PB_datagird_Loaded"
                                   Background="White" Margin="10,10,10,10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã phòng" Binding="{Binding MAPHG}"    Width="0.5"/>
-                                <DataGridTextColumn Header="Tên phòng" Binding="{Binding TENPHG}"  Width="1"  />
-                                <DataGridTextColumn Header="Trưởng phòng" Binding="{Binding TRPHG}"  Width="0.5"/>
+                                <DataGridTextColumn Header="Mã phòng" Binding="{Binding MAPHG}"    Width="0.5*"/>
+                                <DataGridTextColumn Header="Tên phòng" Binding="{Binding TENPHG}"  Width="1*"  />
+                                <DataGridTextColumn Header="Trưởng phòng" Binding="{Binding TRPHG}"  Width="0.5*"/>
                             </DataGrid.Columns>
                         </DataGrid >
                     </Grid>
@@ -294,15 +304,20 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
                         <DataGrid x:Name="DA_datagird" 
-                                  AutoGenerateColumns="True"
+                                  AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   Loaded="DA_datagird_Loaded"
                                   Background="White" Margin="10,10,10,10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Mã đề án" Binding="{Binding MaDA}"    Width="0.5"/>
-                                <DataGridTextColumn Header="Tên đề án" Binding="{Binding MaDA}"  Width="1"  />
-                                <DataGridTextColumn Header="Ngày bắt đầu" Binding="{Binding THOIGIAN}"  Width="0.5"/>
-                                <DataGridTextColumn Header="Phòng ban phụ trách" Binding="{Binding PHONG}"  Width="0.5"/>
+                                <DataGridTextColumn Header="Mã đề án" Binding="{Binding MADA}"    Width="0.5*"/>
+                                <DataGridTextColumn Header="Tên đề án" Binding="{Binding TENDA}"  Width="1*"  />
+                                <DataGridTextColumn Header="Ngày bắt đầu" Width="0.5*">
+                                    <DataGridTextColumn.Binding>
+                                        <Binding Path="NGAYBD" StringFormat="dd/MM/yyyy" />
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Phòng ban phụ trách" Binding="{Binding PHONG}"  Width="0.5*"/>
                             </DataGrid.Columns>
                         </DataGrid >
                     </Grid>
