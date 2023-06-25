@@ -719,3 +719,112 @@ WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER');
 GRANT SELECT ON LayVaiTro TO NHANVIEN;
 /
 
+---------------------- CHÍNH SÁCH #1 ----------------------
+--CHÍNH SÁCH: CS#1
+--NhanVien quyền 1: xem thông tin cá nhân của chính mình
+create or replace view NV_XemThongTinChinhMinh
+as
+    select* from NhanVien
+    where MaNV= SYS_CONTEXT('USERENV', 'SESSION_USER');
+/
+
+--NhanVien quyen 2: xem thong tin phan cong cua chinh minh
+create or replace view NV_XemThongTinPhanCong
+as
+    select* from PhanCong
+    where MaNV= SYS_CONTEXT('USERENV', 'SESSION_USER');
+--NhanVien quyen 3: sua thong tin cua minh tren 
+
+/
+--NhanVien quyen 4: xem tat ca phong ban
+create or replace view NV_XemThongTinPhongBan
+as
+    select* from PhongBan;
+--NhanVien quyen 5: xem tat ca
+/
+create or replace view NV_XemThongTinDeAn
+as
+    select* from DeAn;
+/
+
+--Nhan vien update thong tin NGAYSINH, DIACHI,SODT cua chinh minh
+CREATE OR REPLACE PROCEDURE NV_SUATHONGTIN(
+    NGAYSINH_ IN DATE,
+    DIACHI_ IN VARCHAR2,
+    SODT_ IN NUMBER
+)
+IS
+BEGIN
+    UPDATE ATBM_ADMIN.NV_XemThongTinChinhMinh
+    SET  NGAYSINH=NGAYSINH_,DIACHI=DIACHI_,SODT=SODT_
+    WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER') ;
+    COMMIT;
+END;
+/
+--Grant cac quyen cho role NHANVIEN
+grant select,update On NV_XemThongTinChinhMinh to NhanVien;
+grant select On NV_XemThongTinPhanCong to NhanVien;
+grant select On NV_XemThongTinPhongBan to NhanVien;
+grant select On NV_XemThongTinDeAn to NhanVien;
+grant execute On NV_SUATHONGTIN to NhanVien;
+---------------------- CHÍNH SÁCH #2 ----------------------
+---------------------- Chính sách #3 Trưởng Phòng ----------------------
+
+-- T có quyền như là một nhân viên thông thường (vai trò “Nhân viên”). Ngoài ra, với các dòng trong quan hệ NHANVIEN liên quan đến các nhân viên thuộc phòng ban mà T làm trưởng phòng thì T có quyền xem tất cả các thuộc tính, trừ thuộc tính LUONG và PHUCAP.
+CREATE VIEW TP_NHANVIEN AS
+SELECT MANV, TENNV,	PHAI, NGAYSINH,	DIACHI, SODT, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),LUONG,NULL) LUONG, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),PHUCAP,NULL) PHUCAP, VAITRO,	MANQL, PHG
+FROM NHANVIEN 
+WHERE PHG = (select PHG from NHANVIEN where MANV =  SYS_CONTEXT('USERENV', 'SESSION_USER'));
+/
+grant select on ATBM_ADMIN.TP_NHANVIEN to TRUONGPHONG
+/
+-- Có thể thêm, xóa, cập nhật trên quan hệ PHANCONG liên quan đến các nhân viên thuộc phòng ban mà T làm trưởng phòng.
+CREATE or replace VIEW TP_PHANCONG AS
+SELECT *
+FROM PHANCONG 
+WHERE MANV in (select MANV from NHANVIEN where PHG = (select PHG from NHANVIEN where MANV =  SYS_CONTEXT('USERENV', 'SESSION_USER')));
+/
+grant select, update, DELETE on TP_PHANCONG to TRUONGPHONG;
+/
+CREATE OR REPLACE PROCEDURE TP_ThemPhanCong(
+    MaNV_ IN VARCHAR2,
+    MaDA_ IN VARCHAR2,
+    ThoiGian_ IN DATE
+)
+IS
+BEGIN
+    INSERT INTO ATBM_ADMIN.TP_PHANCONG (MANV, MADA, THOIGIAN)
+    VALUES (MaNV_, MaDA_, ThoiGian_);
+    COMMIT;
+END;
+/
+CREATE OR REPLACE PROCEDURE TP_SuaPhanCong(
+    MaNV_ IN VARCHAR2,
+    MaDA_ IN VARCHAR2,
+    ThoiGian_ IN DATE
+)
+IS
+BEGIN
+    UPDATE ATBM_ADMIN.TP_PHANCONG
+    SET THOIGIAN = ThoiGian_
+    WHERE MANV = MaNV_ AND MADA = MaDA_;
+    COMMIT;
+END;
+/
+create or replace PROCEDURE TP_XoaPhanCong(
+    MaNV_ in varchar2,
+    MaDA_ in VARCHAR2
+)
+IS
+BEGIN
+    delete from ATBM_ADMIN.TP_PHANCONG
+    where MANV = MaNV_ and MADA = MaDA_;
+END;
+/
+grant EXECUTE ON TP_ThemPhanCong to TRUONGPHONG;
+grant EXECUTE ON TP_SuaPhanCong to TRUONGPHONG;
+grant EXECUTE ON TP_XoaPhanCong to TRUONGPHONG;
+/
+---------------------- CHÍNH SÁCH #4 ----------------------
+---------------------- CHÍNH SÁCH #5 ----------------------
+---------------------- CHÍNH SÁCH #6 ----------------------

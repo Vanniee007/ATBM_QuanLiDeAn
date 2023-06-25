@@ -192,6 +192,32 @@
                 </TabControl>
                 <!--Hết item Thông tin-->
             </TabItem>
+            <TabItem x:Name="CV_tabitem" >
+                <TabItem.Header >
+                    <TextBlock Text="Công việc"  FontSize="18" Foreground="White" FontWeight="Medium"    />
+                </TabItem.Header>
+                <Grid Background="WhiteSmoke">
+                    <DataGrid x:Name="CV_datagird" 
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True"
+                              Loaded="CV_datagird_Loaded"
+                        Background="White" Grid.ColumnSpan="2" Margin="10" Grid.RowSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã nhân viên" Binding="{Binding MANV}"  Width="0.5*"  />
+                            <DataGridTextColumn Header="Họ tên" Binding="{Binding TENNV}"  Width="1*"  />
+                            <DataGridTextColumn Header="Phái" Binding="{Binding PHAI}" />
+                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding NGAYSINH, StringFormat=\{0:dd/MM/yyyy\}}" />
+
+                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding DIACHI}"  Width="2*"  />
+                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SODT}"  />
+                            <DataGridTextColumn Header="Vai trò" Binding="{Binding VAITRO}" />
+                            <DataGridTextColumn Header="Lương" Binding="{Binding LUONG}"  />
+                            <DataGridTextColumn Header="Phụ cấp" Binding="{Binding PHUCAP}"  />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
             <TabItem x:Name="PB_tabitem" Loaded="PB_loaded">
                 <TabItem.Header >
                     <TextBlock Text="Phòng ban"  FontSize="18" Foreground="White" FontWeight="Medium"    />
@@ -217,6 +243,32 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
+            <TabItem x:Name="DA_tabitem" >
+                <TabItem.Header >
+                    <TextBlock Text="Đề án"  FontSize="18" Foreground="White" FontWeight="Medium"    />
+                </TabItem.Header>
+                <Grid Background="WhiteSmoke">
+                    <DataGrid x:Name="DA_datagird" 
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True"
+                              Loaded="DA_datagird_Loaded"
+                        Background="White" Grid.ColumnSpan="2" Margin="10" Grid.RowSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã nhân viên" Binding="{Binding MANV}"  Width="0.5*"  />
+                            <DataGridTextColumn Header="Họ tên" Binding="{Binding TENNV}"  Width="1*"  />
+                            <DataGridTextColumn Header="Phái" Binding="{Binding PHAI}" />
+                            <DataGridTextColumn Header="Ngày sinh" Binding="{Binding NGAYSINH, StringFormat=\{0:dd/MM/yyyy\}}" />
+
+                            <DataGridTextColumn Header="Địa chỉ" Binding="{Binding DIACHI}"  Width="2*"  />
+                            <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SODT}"  />
+                            <DataGridTextColumn Header="Vai trò" Binding="{Binding VAITRO}" />
+                            <DataGridTextColumn Header="Lương" Binding="{Binding LUONG}"  />
+                            <DataGridTextColumn Header="Phụ cấp" Binding="{Binding PHUCAP}"  />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
             <TabItem x:Name="PC_tabitem" Loaded="PC_loaded">
                 <TabItem.Header >
                     <TextBlock Text="Phân công"  FontSize="18" Foreground="White" FontWeight="Medium"    />
@@ -228,7 +280,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid Background="WhiteSmoke">
                         <DataGrid x:Name="PC_datagird"  SelectionChanged="PC_datagird_SelectionChanged"
-                                  AutoGenerateColumns="True"
+                                  AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   Loaded="PC_datagird_Loaded"
                                   Background="White" Margin="10,10,10,10">
@@ -253,10 +305,11 @@
                         <!--Nút thêm xoá sửa-->
                         <Grid  Grid.ColumnSpan="2"  HorizontalAlignment="Right" Margin="20">
                         </Grid>
+                        <Label x:Name="PC_lb_error" Grid.Column="1"  Content="Mã nhân viên"  FontSize="18"   Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
 
                         <!--Lable-->
                         <Grid  Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right">
-                            <Label Content="Mã nhân viên"  FontSize="18"   Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
+                            <Label Content="thông báo"  FontSize="18"   Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
                             <Label Content="Tên nhân viên"  FontSize="18"   Margin="0,90,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
                             <Label Content="Mã đề án"  FontSize="18"   Margin="0,150,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
                             <Label Content="Tên đề án"  FontSize="18"   Margin="0,210,0,0" Style="{StaticResource MyStyle_Label_TT}"/>

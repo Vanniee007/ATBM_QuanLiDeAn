@@ -27,7 +27,7 @@ namespace ATBM_QuanLiDeAn
             InitializeComponent();
             tb_username.Text = username;
             tb_username.Focus();
-            tb_username.Text = "TP01";
+            tb_username.Text = "NV001";
             tb_password.Password = "1";
         }
 
@@ -127,9 +127,9 @@ namespace ATBM_QuanLiDeAn
                     switch (VaiTro)
                     {
                         case "Nhân viên":
-                            NhanVien_Main nv = new NhanVien_Main(username);
-                            nv.Show();
-                            this.Close();
+                            //NhanVien_Main nv = new NhanVien_Main(username);
+                            //nv.Show();
+                            //this.Close();
                             break;
 
                         case "Trưởng phòng":
@@ -138,6 +138,11 @@ namespace ATBM_QuanLiDeAn
                             this.Close();
                             break;
 
+                        case "QL trực tiếp":
+                            //QLTrucTiep_Main ql = new QLTrucTiep_Main(username);
+                            //ql.Show();
+                            //this.Close();
+                            break;
                     }
 
 
