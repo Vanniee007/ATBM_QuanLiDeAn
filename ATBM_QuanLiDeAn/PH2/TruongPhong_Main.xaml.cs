@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 
 namespace ATBM_QuanLiDeAn.PH2
 {
@@ -124,17 +127,13 @@ namespace ATBM_QuanLiDeAn.PH2
             PB_Get_DSUser();
         }
 
-        private void PB_Get_Data()
+        private void PC_Get_Data()
         {
             try
             {
-                DataTable table_User;
+                DataTable  table_User = new DataTable();
                 string sql;
                 sql = "select * from ATBM_ADMIN.TP_PHANCONG";
-                //if (cbOnly.IsChecked == false)
-                //{
-                //    sql = sql + " AND USERNAME LIKE 'U%'";
-                //}
                 table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
                 PC_datagird.ItemsSource = null;
                 PC_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
@@ -145,6 +144,25 @@ namespace ATBM_QuanLiDeAn.PH2
 
         }
 
+        private void CV_loaded(object sender, RoutedEventArgs e)
+        {
+        }
+        private void CV_Get_Data()
+        {
+            try
+            {
+                DataTable table_User;
+                string sql;
+                sql = "select * from ATBM_ADMIN.TP_PHANCONG";
+                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
+                PC_datagird.ItemsSource = null;
+                PC_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
+                PC_LayDanhSach_DoAn();
+                PC_LayDanhSach_NhanVien();
+            }
+            catch { }
+
+        }
         private void PC_loaded(object sender, RoutedEventArgs e)
         {
         }
@@ -162,8 +180,8 @@ namespace ATBM_QuanLiDeAn.PH2
                         //PC_tb_TenNV.Text = rowview["MANV"].ToString();
                         PC_Combobox_MaDA.Text= rowview["MADA"].ToString();
                         //PC_tb_TenDA.Text = rowview["MADA"].ToString();
-                        PC_tb_NgayBD.Text = rowview["NGAYBD"].ToString();
-                        PC_tb_ThoiGian.Text = rowview["THOIGIAN"].ToString();
+                        //PC_tb_NgayBD.Text = rowview["NGAYBD"].ToString();
+                        PC_tb_ThoiGian.Text = FormatShortDate(rowview["THOIGIAN"].ToString());
                     }
                 }
             }
@@ -197,7 +215,7 @@ namespace ATBM_QuanLiDeAn.PH2
                 DataTable table_User;
                 string sql;
                 //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select distinct MADA from ATBM_ADMIN.DEAN";
+                sql = "select distinct MADA from ATBM_ADMIN.NV_XemThongTinDeAn";
                 table_User = Class.DB_Config.GetDataToTable(sql);
                 var ds = new List<string>();
                 DataRow r;
@@ -213,7 +231,11 @@ namespace ATBM_QuanLiDeAn.PH2
 
         private void PC_datagird_Loaded(object sender, RoutedEventArgs e)
         {
-            PB_Get_Data();
+            PC_Get_Data();
+        }
+        private void CV_datagird_Loaded(object sender, RoutedEventArgs e)
+        {
+            CV_Get_Data();
         }
 
         private void PC_Combobox_MaNV_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -229,7 +251,23 @@ namespace ATBM_QuanLiDeAn.PH2
             }
             catch { }
         }
+        private string FormatShortDate(string dateTimeString)
+        {
+            DateTime dateTime;
 
+            // Using DateTime.Parse()
+            dateTime = DateTime.Parse(dateTimeString);
+
+            // Using DateTime.TryParse()
+            if (DateTime.TryParse(dateTimeString, out dateTime))
+            {
+                // Conversion successful
+                // Format the DateTime object to date string
+                string dateString = dateTime.ToString("dd/MM/yyyy");
+                return dateString;
+            }
+            return dateTimeString;
+        }
         private void PC_Combobox_MaDA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -237,30 +275,46 @@ namespace ATBM_QuanLiDeAn.PH2
                 DataTable table_User;
                 string sql;
                 //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select TENDA, NGAYBD from ATBM_ADMIN.DEAN where MADA = '" + PC_Combobox_MaDA.Text + "'";
+                sql = "select TENDA, NGAYBD from ATBM_ADMIN.NV_XemThongTinDeAn where MADA = '" + PC_Combobox_MaDA.Text + "'";
                 table_User = Class.DB_Config.GetDataToTable(sql);
                 PC_tb_TenDA.Text = table_User.Rows[0][0].ToString();
-                PC_tb_NgayBD.Text = table_User.Rows[0][1].ToString();
+                PC_tb_NgayBD.Text = FormatShortDate(table_User.Rows[0][1].ToString());
             }
             catch { }
         }
 
         private void PC_tb_Xoa_Click(object sender, RoutedEventArgs e)
         {
-            DataTable table_User;
-            string sql;
-            //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-            sql = "select * from ATBM_ADMIN.TP_PHANCONG where MADA = '" + PC_Combobox_MaDA.Text + "' and MANV = '" + PC_Combobox_MaNV.Text + "'";
-            table_User = Class.DB_Config.GetDataToTable(sql);
-            if (table_User.Rows.Count > 0)
+            try
             {
-                MessageBox.Show("xoá" + PC_Combobox_MaDA.Text + "/" + PC_Combobox_MaNV.Text);
-            }
-            else
-            {
-                MessageBox.Show("vui lòng chọn đúng dòng cần xoá");
+                DataTable table_User;
+                string sql;
+                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
+                sql = "select * from ATBM_ADMIN.TP_PHANCONG where MADA = '" + PC_Combobox_MaDA.Text + "' and MANV = '" + PC_Combobox_MaNV.Text + "'";
+                table_User = Class.DB_Config.GetDataToTable(sql);
+                if (table_User.Rows.Count > 0)
+                {
+                    Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+                    
+                    sql = "begin ATBM_ADMIN.TP_XoaPhanCong('" +  PC_Combobox_MaNV.Text + "','"+ PC_Combobox_MaDA.Text + "'); end;";
+                    bool kq = Class.DB_Config.RunSQL(sql);
+                    PC_Get_Data();
+                    if (kq)
+                    {
+                        PC_lb_error.Content = "Xoá phân công thành công";
+                    }
+                    else
+                    {
+                        PC_lb_error.Content = "Xoá phân công thất bại";
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("vui lòng chọn đúng dòng cần xoá");
 
+                }
             }
+            catch { }
 
 
         }
@@ -277,13 +331,37 @@ namespace ATBM_QuanLiDeAn.PH2
                 if (table_User.Rows.Count > 0)
                 {
                     //sửa
+                    sql = "begin ATBM_ADMIN.TP_SuaPhanCong('" + PC_Combobox_MaNV.Text + "','" + PC_Combobox_MaDA.Text + "',TO_DATE('"+PC_tb_ThoiGian.Text+ "','dd/mm/yyyy')); end;";
+                    Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+                    bool kq = Class.DB_Config.RunSQL(sql);
+                    PC_Get_Data();
+                    if (kq)
+                    {
+                        PC_lb_error.Content = "Sửa phân công thành công";
+                    }
+                    else
+                    {
+                        PC_lb_error.Content = "Sửa phân công thất bại";
+                    }
 
-                    MessageBox.Show("sửa"+ PC_Combobox_MaDA.Text + "/" + PC_Combobox_MaNV.Text);
                 }
                 else
                 {
                     //thêm
-                    MessageBox.Show("thêm"+ PC_Combobox_MaDA.Text + "/" + PC_Combobox_MaNV.Text);
+                    sql = "BEGIN ATBM_ADMIN.TP_ThemPhanCong('" + PC_Combobox_MaNV.Text + "','" + PC_Combobox_MaDA.Text + "',TO_DATE('" + PC_tb_ThoiGian.Text + "','dd/mm/yyyy')); end;";
+                    Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+                    bool kq = Class.DB_Config.RunSQL(sql);
+                    PC_Get_Data();
+                    PC_Get_Data();
+                    if (kq)
+                    {
+                        PC_lb_error.Content = "Sửa phân công thành công";
+                    }
+                    else
+                    {
+                        PC_lb_error.Content = "Sửa phân công thất bại";
+                    }
+
                 }
 
             }
@@ -322,5 +400,9 @@ namespace ATBM_QuanLiDeAn.PH2
             TT_Load();
         }
 
+        private void DA_datagird_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
