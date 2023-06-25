@@ -65,28 +65,25 @@ namespace ATBM_QuanLiDeAn.PH2
         {
             try
             {
-                if (!validation.ValidUsername(TT_tb_ngaysinh.Text))
+                //sửa
+                string sql = "begin ATBM_ADMIN.NV_SUATHONGTIN(TO_DATE('" + TT_tb_ngaysinh.Text + "','dd/mm/yyyy'),'" + TT_tb_diachi.Text + "','" + TT_tb_sodienthoai.Text + "'); end;";
+                Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+                bool kq = Class.DB_Config.RunSQL(sql);
+
+                if (kq)
                 {
-                    //lb_error.Content = "Tên đăng nhập không hợp lệ";
-                    //lb_error.Foreground = Brushes.IndianRed;
-                    return;
+                    Tt_lb_thongtincanhan_errorout.Content = "Sửa thông tin thành công";
+                    Tt_lb_thongtincanhan_errorout.Foreground = Brushes.Green;
                 }
-                if (!validation.ValidPassword(TT_tb_diachi.Text))
+                else
                 {
-                    //lb_error.Content = "Mật khẩu không hợp lệ";
-                    //lb_error.Foreground = Brushes.IndianRed;
-                    return;
-                }
-                if (!validation.ValidPassword(TT_tb_sodienthoai.Text))
-                {
-                    //lb_error.Content = "Mật khẩu không hợp lệ";
-                    //lb_error.Foreground = Brushes.IndianRed;
-                    return;
+                    Tt_lb_thongtincanhan_errorout.Content = "Sửa thông tin thất bại";
+                    Tt_lb_thongtincanhan_errorout.Foreground = Brushes.IndianRed;
                 }
 
-                MessageBox.Show("Cập nhật thông tin");
             }
             catch { }
+        
         }
 
         private void Tt_doimatkhau_loaded(object sender, RoutedEventArgs e)
