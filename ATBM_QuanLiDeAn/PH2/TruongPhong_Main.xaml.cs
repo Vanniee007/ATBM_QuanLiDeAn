@@ -29,15 +29,17 @@ namespace ATBM_QuanLiDeAn.PH2
             username = username_;
         }
 
-
-
         private void Btn_dangxuat_Click(object sender, RoutedEventArgs e)
         {
-            Login_Window lg = new Login_Window(username);
             Class.DB_Config.Disconnect();
+            Login_Window lg = new Login_Window(username);
             this.Close();
             lg.Show();
 
+        }
+        private void lb_information_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TT_tabitem.Focus();
         }
         private void bt_mini_click(object sender, RoutedEventArgs e)
         {
@@ -62,10 +64,9 @@ namespace ATBM_QuanLiDeAn.PH2
         }
 
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-        }
+        /*=============================================TABITEM: THONG TIN ============================================
+         * =========================================================================================================*/
 
         private void Tt_capnhatthongtincanhan_click(object sender, RoutedEventArgs e)
         {
@@ -85,7 +86,6 @@ namespace ATBM_QuanLiDeAn.PH2
 
 
 
-
         private void TT_Tabitem_Loaded(object sender, RoutedEventArgs e)
         {
             NhanVien_Main.TT_Load(TT_tb_manv, TT_tb_hoten, TT_tb_ngaysinh, TT_tb_gioitinh, TT_tb_diachi, TT_tb_sodienthoai, TT_tb_luong, TT_tb_phucap, TT_tb_vaitro, TT_tb_phongban, lb_information);
@@ -100,59 +100,32 @@ namespace ATBM_QuanLiDeAn.PH2
         }
         /*=============================================TABITEM:PHONGBAN============================================
         * =========================================================================================================*/
-        private void PB_get_DSPhongBan()
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                sql = "select * from ATBM_ADMIN.NV_XemThongTinPhongBan";
-                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
-                PB_datagird.ItemsSource = null;
-                PB_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
-
-            }
-            catch { }
-
-        }
+        
         private void PB_loaded(object sender, RoutedEventArgs e)
         {
-            PB_get_DSPhongBan();
+            NhanVien_Main.PB_get_DSPhongBan(PC_datagird);
         }
 
         private void PB_datagird_Loaded(object sender, RoutedEventArgs e)
         {
-            PB_get_DSPhongBan();
+            NhanVien_Main.PB_get_DSPhongBan(PC_datagird);
         }
         /*=============================================TABITEM: ============================================
       * =========================================================================================================*/
-        private void DA_get_DSDeAn()
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                sql = "select * from ATBM_ADMIN.NV_XemThongTinDeAn";
-                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
-                DA_datagird.ItemsSource = null;
-                DA_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
-
-            }
-            catch { }
-
-        }
+  
         private void DA_loaded(object sender, RoutedEventArgs e)
         {
-            DA_get_DSDeAn();
+            NhanVien_Main.DA_get_DSDeAn(DA_datagird);
         }
 
         private void DA_datagird_Loaded(object sender, RoutedEventArgs e)
         {
-            DA_get_DSDeAn();
+            NhanVien_Main.DA_get_DSDeAn(PC_datagird);
         }
 
 
-
+        /*============================================= TABITEM: PHAN CONG ============================================
+        */
         private void PC_Get_Data()
         {
             try
@@ -170,9 +143,6 @@ namespace ATBM_QuanLiDeAn.PH2
 
         }
 
-        private void PC_loaded(object sender, RoutedEventArgs e)
-        {
-        }
 
         private void PC_datagird_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -370,10 +340,6 @@ namespace ATBM_QuanLiDeAn.PH2
             catch { }
         }
 
-        private void lb_information_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            TT_tabitem.Focus();
-        }
 
     }
 }

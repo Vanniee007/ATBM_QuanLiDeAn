@@ -34,6 +34,10 @@ namespace ATBM_QuanLiDeAn.PH2
             lg.Show();
 
         }
+        private void lb_information_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TT_tabitem.Focus();
+        }
         private void bt_mini_click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
@@ -57,10 +61,9 @@ namespace ATBM_QuanLiDeAn.PH2
         }
 
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-        }
+        /*=============================================TABITEM: THONG TIN ============================================
+         * =========================================================================================================*/
 
         private void Tt_capnhatthongtincanhan_click(object sender, RoutedEventArgs e)
         {
@@ -145,9 +148,13 @@ namespace ATBM_QuanLiDeAn.PH2
             TT_Load(TT_tb_manv, TT_tb_hoten, TT_tb_ngaysinh, TT_tb_gioitinh, TT_tb_diachi, TT_tb_sodienthoai, TT_tb_luong, TT_tb_phucap, TT_tb_vaitro, TT_tb_phongban, lb_information);
         }
 
+
+
+
         /*=============================================TABITEM: CONGVIEC============================================
          * =========================================================================================================*/
-
+       
+        //có thể dùng lại ở các role khác
         public static void CV_get_DSCongViec(DataGrid CV_datagird)
         {
             try
@@ -165,9 +172,13 @@ namespace ATBM_QuanLiDeAn.PH2
         {
             CV_get_DSCongViec(CV_datagird);
         }
+
+
+
         /*=============================================TABITEM: PHONGBAN============================================
         * =========================================================================================================*/
 
+        //có thể dùng lại ở các role khác
         public static void PB_get_DSPhongBan(DataGrid dataGrid)
         {
             try
@@ -208,9 +219,5 @@ namespace ATBM_QuanLiDeAn.PH2
             DA_get_DSDeAn(DA_datagird);
         }
 
-        private void lb_information_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            TT_tabitem.Focus();
-        }
     }
 }
