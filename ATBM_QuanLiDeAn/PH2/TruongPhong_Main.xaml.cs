@@ -355,11 +355,11 @@ namespace ATBM_QuanLiDeAn.PH2
                     PC_Get_Data();
                     if (kq)
                     {
-                        PC_lb_error.Content = "Sửa phân công thành công";
+                        PC_lb_error.Content = "Thêm phân công thành công";
                     }
                     else
                     {
-                        PC_lb_error.Content = "Sửa phân công thất bại";
+                        PC_lb_error.Content = "Thêm phân công thất bại";
                     }
 
                 }
