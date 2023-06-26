@@ -269,7 +269,7 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="PC_tabitem" Loaded="PC_loaded">
+            <TabItem x:Name="PC_tabitem" >
                 <TabItem.Header >
                     <TextBlock Text="Phân công"  FontSize="18" Foreground="White" FontWeight="Medium"    />
                 </TabItem.Header>
@@ -305,7 +305,6 @@
                         <!--Nút thêm xoá sửa-->
                         <Grid  Grid.ColumnSpan="2"  HorizontalAlignment="Right" Margin="20">
                         </Grid>
-                        <Label x:Name="PC_lb_error" Grid.Column="1"  Content="Mã nhân viên"  FontSize="18"   Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
 
                         <!--Lable-->
                         <Grid  Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right">
@@ -349,5 +348,6 @@
                 <Button Style="{StaticResource MyStyle_Button_Do}" HorizontalAlignment="Left" Height="20" Width="20" Click="bt_close_click"/>
             </StackPanel>
         </Grid>
+        <Label x:Name="lb_error" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content=""  FontSize="18"   Margin="10" Style="{StaticResource MyStyle_Label_TT}"/>
     </Grid>
 </Window>
