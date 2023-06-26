@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SupportFunction.cs" />
     <Page Include="Login_Window.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -145,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PH2\NhanVien_Main.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PH2\TruongPhong_Main.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -165,6 +170,9 @@
     <Compile Include="PH1\Role_User.xaml.cs" />
     <Compile Include="PH1\Role_XemQuyen.xaml.cs">
       <DependentUpon>Role_XemQuyen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PH2\NhanVien_Main.xaml.cs">
+      <DependentUpon>NhanVien_Main.xaml</DependentUpon>
     </Compile>
     <Compile Include="PH2\TruongPhong_Main.xaml.cs">
       <DependentUpon>TruongPhong_Main.xaml</DependentUpon>

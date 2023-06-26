@@ -82,13 +82,13 @@ namespace ATBM_QuanLiDeAn
         }
         private void Login()
         {
-            if (!validation.ValidUsername(tb_username.Text))
+            if (!InputValidation.ValidUsername(tb_username.Text))
             {
                 lb_error.Content = "Tên đăng nhập không hợp lệ";
                 lb_error.Foreground = Brushes.IndianRed;
                 return;
             }
-            if (!validation.ValidPassword(tb_password.Password) )
+            if (!InputValidation.ValidPassword(tb_password.Password) )
             {
                 lb_error.Content = "Mật khẩu không hợp lệ";
                 lb_error.Foreground = Brushes.IndianRed;
@@ -127,9 +127,9 @@ namespace ATBM_QuanLiDeAn
                     switch (VaiTro)
                     {
                         case "Nhân viên":
-                            //NhanVien_Main nv = new NhanVien_Main(username);
-                            //nv.Show();
-                            //this.Close();
+                            NhanVien_Main nv = new NhanVien_Main(username);
+                            nv.Show();
+                            this.Close();
                             break;
 
                         case "Trưởng phòng":
