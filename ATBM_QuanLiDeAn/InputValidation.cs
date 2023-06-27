@@ -50,5 +50,25 @@ namespace ATBM_QuanLiDeAn
 			if (isMatch) { return true; }
 			else { return false; }
 		}
-	}
+        public static bool ValidName(string name)
+        {
+            // Kiểm tra không có ký tự đặc biệt
+            const string specialCharacters = @"[@!#$%^&*()<>?/\|}{~:]";
+            bool hasSpecialCharacter = Regex.IsMatch(name, specialCharacters);
+            if (hasSpecialCharacter)
+            {
+                return false;
+            }
+
+            // Chuẩn hóa tên theo dạng "Lê Minh Tiến" (giữa các từ chỉ có 1 khoảng trắng)
+            string[] nameParts = name.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string normalizedName = string.Join(" ", nameParts);
+
+            // Kiểm tra tên đã chuẩn hóa
+            const string nameRegex = @"^[a-zA-Z\s]+$";
+            bool isMatch = Regex.IsMatch(normalizedName, nameRegex);
+            return isMatch;
+        }
+
+    }
 }
