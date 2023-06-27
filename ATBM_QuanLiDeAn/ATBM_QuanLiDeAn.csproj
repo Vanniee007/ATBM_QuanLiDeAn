@@ -100,6 +100,9 @@
     <Compile Include="PH2\NhanSu_Main.xaml.cs">
       <DependentUpon>NhanSu_Main.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PH2\TruongDeAn_main.xaml.cs">
+      <DependentUpon>TruongDeAn_main.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SupportFunction.cs" />
     <Page Include="Login_Window.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -165,6 +168,10 @@
     <Page Include="PH2\NhanSu_ThemNhanVien.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PH2\TruongDeAn_main.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="PH2\NhanVien_Main.xaml">
       <Generator>MSBuild:Compile</Generator>

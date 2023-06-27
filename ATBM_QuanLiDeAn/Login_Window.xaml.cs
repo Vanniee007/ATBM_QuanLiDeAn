@@ -123,6 +123,12 @@ namespace ATBM_QuanLiDeAn
                             ns.Show();
                             this.Close();
                             break;
+
+                        case "Trưởng đề án":
+                            TruongDeAn_Main trgda = new TruongDeAn_Main(username);
+                            trgda.Show();
+                            this.Close();
+                            break;
                     }
                 }
                 catch (Exception ex)
