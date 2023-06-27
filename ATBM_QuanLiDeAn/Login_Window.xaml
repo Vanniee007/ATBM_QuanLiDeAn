@@ -126,8 +126,8 @@
 
                 </Grid>
                 <!--Nút đăng nhập-->
-                <Grid Height="100"  Background="Transparent" Margin="0,10,0,0">
-                    <Label x:Name="lb_error" Content="" Style="{StaticResource MyStyle_Label_TT}"  FontWeight="Medium" HorizontalAlignment="Center" />
+                <Grid Height="110"  Background="Transparent" Margin="0,20,0,0">
+                    <Label x:Name="lb_error" Content="" Style="{StaticResource MyStyle_Label_TT}"  FontWeight="Medium" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     <Button Style="{StaticResource Login_Button}" Content="Đăng nhập" 
                             Foreground="White" FontWeight="SemiBold"  
                                 FontSize="20"         
@@ -136,17 +136,9 @@
                                 Click="DangNhap_Click"
                                 FocusVisualStyle="{x:Null}"
                                 BorderBrush="Transparent" Margin="0,35,0,0" VerticalAlignment="Top"/>
-
+                    <Label Content="Quên mật khẩu" HorizontalAlignment="Center" VerticalAlignment="Bottom" MouseDown="QuenMatKhau_MouseDown"/>
                 </Grid>
 
-                <Label x:Name="login_lb_error" 
-                       Content=""  
-                       FontSize="16"  
-                       FontWeight="DemiBold"
-                       Foreground="DarkSeaGreen"
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Top" 
-                       Margin="0,140,0,0"/>
             </Grid>
         </Grid>
 
