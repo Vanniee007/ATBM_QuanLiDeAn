@@ -27,7 +27,7 @@ namespace ATBM_QuanLiDeAn
             InitializeComponent();
             tb_username.Text = username;
             tb_username.Focus();
-            tb_username.Text = "NV001";
+            tb_username.Text = "NV026";
             tb_password.Password = "1";
         }
 
@@ -142,6 +142,11 @@ namespace ATBM_QuanLiDeAn
                             //QLTrucTiep_Main ql = new QLTrucTiep_Main(username);
                             //ql.Show();
                             //this.Close();
+                            break;
+                        case "Tài chính":
+                            TaiChinh_Main tc = new TaiChinh_Main(username);
+                            tc.Show();
+                            this.Close();
                             break;
 
                         case "Trưởng đề án":
