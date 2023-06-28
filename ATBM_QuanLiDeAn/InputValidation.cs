@@ -69,6 +69,14 @@ namespace ATBM_QuanLiDeAn
             bool isMatch = Regex.IsMatch(normalizedName, nameRegex);
             return isMatch;
         }
+        public static bool ValidCheckLuong_PhuCap(string input)
+        {
+            const string regex = @"^[1-9][0-9]*(\.[0-9]+)?$";
+            bool isMatch = Regex.IsMatch(input, regex);
+            if (isMatch) { return true; }
+            else { return false; }
+        }
+
 
     }
 }
