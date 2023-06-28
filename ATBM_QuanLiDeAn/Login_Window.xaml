@@ -136,7 +136,6 @@
                                 Click="DangNhap_Click"
                                 FocusVisualStyle="{x:Null}"
                                 BorderBrush="Transparent" Margin="0,35,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Quên mật khẩu" HorizontalAlignment="Center" VerticalAlignment="Bottom" MouseDown="QuenMatKhau_MouseDown"/>
                 </Grid>
 
             </Grid>

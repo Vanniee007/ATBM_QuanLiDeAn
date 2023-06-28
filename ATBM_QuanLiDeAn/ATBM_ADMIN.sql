@@ -211,106 +211,104 @@ SELECT * FROM dual;
 
 /
 INSERT ALL
-into NHANVIEN 
-values ('NV001', 'Trần Bá Hộ','Nam',TO_DATE('02/11/1970','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM', 0123456789, 5000, 500, 'Trưởng phòng', null,'PB01')
-
-into NHANVIEN 
-values ('NV002', 'Nguyễn Thanh Tùng','Nam',TO_DATE('20/08/1972','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Tp HCM', 0123157789, 1000, 400, 'QL trực tiếp', null,'PB01')
-
-into NHANVIEN 
-values ('NV003', 'Bùi Ngọc Hằng','Nam',TO_DATE('3/11/1984','dd/mm/yyyy'),'332 Nguyễn Thái Học, Tp HCM', 0123157143, 2500, 200, 'QL trực tiếp', null,'PB01')
-
-into NHANVIEN 
-values ('NV004', 'Lê Quỳnh Như','Nữ',TO_DATE('02/01/1992','dd/mm/yyyy'),'291 Hồ Văn Huê,  Tp HCM', 0123157789, 1300, 200, 'Nhân viên', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV005', 'Nguyễn Mạnh Hùng','Nam',TO_DATE('03/04/1985','dd/mm/yyyy'),'95 Bà Rịa, Vũng Tàu', 0123157632, 1800, 200, 'Nhân viên', 'NV002','PB01')
-
-into NHANVIEN 
-values ('NV006', 'Trần Thanh Tâm','Nam',TO_DATE('05/04/1975','dd/mm/yyyy'),'34 Mai Thị Lựu, Tp HCM', 0123109832, 1200, 200, 'Nhân viên', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV007', 'Trần Hồng Quang','Nam',TO_DATE('09/01/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Tp HCM', 0125609832, 2500, 200, 'Nhân viên', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV008', 'Phạm Văn Vinh','Nữ',TO_DATE('01/01/1999','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội', 0125609832, 2200, 200, 'Nhân viên', 'NV002','PB01')
-
-into NHANVIEN 
-values ('NV009', 'Đinh Văn Hoàng','Nam',TO_DATE('02/01/1971','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM', 0123456789, 3300, 200, 'Trưởng phòng', null,'PB02')
-
-into NHANVIEN 
-values ('NV010', 'Nguyễn Thanh Minh','Nam',TO_DATE('20/08/1997','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Tp HCM', 0123157789, 2000, 200, 'QL trực tiếp', null,'PB02')
-
-into NHANVIEN 
-values ('NV011', 'Hà Văn Nam','Nam',TO_DATE('02/11/1987','dd/mm/yyyy'),'332 Nguyễn Thái Công, Tp HCM', 0123157143, 2500, 300, 'QL trực tiếp', null,'PB02')
-
-
-into NHANVIEN 
-values ('NV012', 'Lê Bảo Ngọc','Nữ',TO_DATE('03/01/1997','dd/mm/yyyy'),'211 Hồ Văn Cường,  Tp HCM', 0123157789, 4300, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV013', 'Nguyễn Hùng Chung','Nam',TO_DATE('01/04/1997','dd/mm/yyyy'),'95 Bà Rịa, Long Thành', 0123157632, 3800, 200, 'Nhân viên', 'NV011','PB02')
-
-into NHANVIEN 
-values ('NV014', 'Trần Tâm Như','Nam',TO_DATE('05/04/1987','dd/mm/yyyy'),'156 Mai Thị Lựu, Tp HCM', 0123109832, 3200, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV015', 'Quách Đại Hiệp','Nam',TO_DATE('09/01/1995','dd/mm/yyyy'),'90 Lê Hồng Phong, Tp HCM', 0125609832, 2500, 200, 'Nhân viên', 'NV011','PB02')
-
-into NHANVIEN 
-values ('NV016', 'Hà Ánh Tuyết','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội', 0125609832, 2200, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV017', 'Lê Văn Hải','Nam',TO_DATE('01/11/1960','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương', 0373456789, 3000, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV018', 'Nguyễn Hải Châu','Nam',TO_DATE('26/08/2000','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Bình Dương', 0373157789, 4000, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV019', 'Bùi Minh Long','Nam',TO_DATE('3/11/1974','dd/mm/yyyy'),'332 Nguyễn Thái Học, Bình Dương', 0373157143, 2500, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV020', 'Lê Thị Quỳnh','Nữ',TO_DATE('02/09/1982','dd/mm/yyyy'),'291 Hồ Văn Huê,  Bình Dương', 0373157789, 4300, 500, 'Trưởng phòng', null,'PB03')
-
-into NHANVIEN 
-values ('NV021', 'Nguyễn Mạnh Cường','Nam',TO_DATE('03/08/1985','dd/mm/yyyy'),'95 Bà Rịa, Gia Lai', 0373157632, 2000, 400, 'Tài chính', null,'PB03')
-
-into NHANVIEN 
-values ('NV022', 'Trần Thanh Hà','Nam',TO_DATE('05/07/1995','dd/mm/yyyy'),'34 Mai Thị Lựu, Bình Dương', 0373109832, 2200, 500, 'Tài chính', null,'PB03')
-
-into NHANVIEN 
-values ('NV023', 'Trần Hồng Bàng','Nam',TO_DATE('09/05/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Bình Dương', 0375609832, 3000, 100, 'Trưởng phòng',null,'PB04')
-
-into NHANVIEN 
-values ('NV024', 'Phạm Văn Vũ','Nữ',TO_DATE('01/01/1989','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội', 0375609832, 1800, 200, 'Nhân sự',null,'PB04')
-
-into NHANVIEN 
-values ('NV025', 'Đinh Ngọc Hoàng','Nam',TO_DATE('02/01/1998','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương', 0373412789, 1500, 200, 'Nhân sự', null,'PB04')
-
-into NHANVIEN 
-values ('NV026', 'Nguyễn Hải Minh','Nam',TO_DATE('20/08/1996','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Bình Dương', 0373150089, 2000, 200, 'Tài chính', null,'PB03')
-
-into NHANVIEN 
-values ('NV027', 'Hà Hoàng Nam','Nam',TO_DATE('02/11/1989','dd/mm/yyyy'),'332 Nguyễn Thái Công, Bình Dương', 0373157103, 1500, 200,'Nhân viên','NV002','PB01')
-
-
-into NHANVIEN 
-values ('NV028', 'Nguyễn Ngọc Bích','Nữ',TO_DATE('03/01/1977','dd/mm/yyyy'),'211 Hồ Văn Cường,  Bình Dương', 0373157709, 2300, 200, 'Trưởng đề án','NV010','PB02')
-
-into NHANVIEN 
-values ('NV029', 'Nguyễn Hải Minh','Nam',TO_DATE('01/04/1999','dd/mm/yyyy'),'95 Bà Rịa, Long Thành', 0373157637, 3800, 200, 'Trưởng đề án', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV030', 'Trần Đại Phong','Nam',TO_DATE('05/04/1989','dd/mm/yyyy'),'156 Mai Thị Lựu, Bình Dương', 0373109831, 2000, 200, 'QL trực tiếp', null,'PB02')
-
-into NHANVIEN 
-values ('NV031', 'Quách Văn Tỉnh','Nam',TO_DATE('09/01/1999','dd/mm/yyyy'),'90 Lê Hồng Phong, Bình Dương', 0375609832, 1000, 200, 'Nhân viên', 'NV030','PB02')
-
-into NHANVIEN 
-values ('NV032', 'Hà Hồi Hạnh','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội', 0375609832, 1600, 120, 'Nhân viên', 'NV030','PB02')
-
-into NHANVIEN 
-values ('NV033', 'Hoàng Minh Tiến','Nam',TO_DATE('01/04/1979','dd/mm/yyyy'),'95 Bà Rịa, Đà Nẵng', 0373157637, 3800, 200, 'Trưởng đề án', 'NV003','PB04')
+into NHANVIEN
+values ('NV001', 'Trần Bá Hộ','Nam',TO_DATE('02/11/1970','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM',123456789,'5000','500', 'Trưởng phòng', null,'PB01')
+	
+into NHANVIEN
+values ('NV002', 'Nguyễn Thanh Tùng','Nam',TO_DATE('20/08/1972','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Tp HCM',123157789,'1000','400', 'QL trực tiếp', null,'PB01')
+	
+into NHANVIEN
+values ('NV003', 'Bùi Ngọc Hằng','Nam',TO_DATE('3/11/1984','dd/mm/yyyy'),'332 Nguyễn Thái Học, Tp HCM',123157143,'2500','200', 'QL trực tiếp', null,'PB01')
+	
+into NHANVIEN
+values ('NV004', 'Lê Quỳnh Như','Nữ',TO_DATE('02/01/1992','dd/mm/yyyy'),'291 Hồ Văn Huê,  Tp HCM',123157789,'1300','200', 'Nhân viên', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV005', 'Nguyễn Mạnh Hùng','Nam',TO_DATE('03/04/1985','dd/mm/yyyy'),'95 Bà Rịa, Vũng Tàu',123157632,'1800','200', 'Nhân viên', 'NV002','PB01')
+	
+into NHANVIEN
+values ('NV006', 'Trần Thanh Tâm','Nam',TO_DATE('05/04/1975','dd/mm/yyyy'),'34 Mai Thị Lựu, Tp HCM',123109832,'1200','200', 'Nhân viên', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV007', 'Trần Hồng Quang','Nam',TO_DATE('09/01/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Tp HCM',125609832,'2500','200', 'Nhân viên', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV008', 'Phạm Văn Vinh','Nữ',TO_DATE('01/01/1999','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội',125609832,'2200','200', 'Nhân viên', 'NV002','PB01')
+	
+into NHANVIEN
+values ('NV009', 'Đinh Văn Hoàng','Nam',TO_DATE('02/01/1971','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM',123456789,'3300','200', 'Trưởng phòng', null,'PB02')
+	
+into NHANVIEN
+values ('NV010', 'Nguyễn Thanh Minh','Nam',TO_DATE('20/08/1997','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Tp HCM',123157789,'2000','200', 'QL trực tiếp', null,'PB02')
+	
+into NHANVIEN
+values ('NV011', 'Hà Văn Nam','Nam',TO_DATE('02/11/1987','dd/mm/yyyy'),'332 Nguyễn Thái Công, Tp HCM',123157143,'2500','300', 'QL trực tiếp', null,'PB02')
+	
+into NHANVIEN
+values ('NV012', 'Lê Bảo Ngọc','Nữ',TO_DATE('03/01/1997','dd/mm/yyyy'),'211 Hồ Văn Cường,  Tp HCM',123157789,'4300','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV013', 'Nguyễn Hùng Chung','Nam',TO_DATE('01/04/1997','dd/mm/yyyy'),'95 Bà Rịa, Long Thành',123157632,'3800','200', 'Nhân viên', 'NV011','PB02')
+	
+into NHANVIEN
+values ('NV014', 'Trần Tâm Như','Nam',TO_DATE('05/04/1987','dd/mm/yyyy'),'156 Mai Thị Lựu, Tp HCM',123109832,'3200','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV015', 'Quách Đại Hiệp','Nam',TO_DATE('09/01/1995','dd/mm/yyyy'),'90 Lê Hồng Phong, Tp HCM',125609832,'2500','200', 'Nhân viên', 'NV011','PB02')
+	
+into NHANVIEN
+values ('NV016', 'Hà Ánh Tuyết','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội',125609832,'2200','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV017', 'Lê Văn Hải','Nam',TO_DATE('01/11/1960','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương',373456789,'3000','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV018', 'Nguyễn Hải Châu','Nam',TO_DATE('26/08/2000','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Bình Dương',373157789,'4000','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV019', 'Bùi Minh Long','Nam',TO_DATE('3/11/1974','dd/mm/yyyy'),'332 Nguyễn Thái Học, Bình Dương',373157143,'2500','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV020', 'Lê Thị Quỳnh','Nữ',TO_DATE('02/09/1982','dd/mm/yyyy'),'291 Hồ Văn Huê,  Bình Dương',373157789,'4300','500', 'Trưởng phòng', null,'PB03')
+	
+into NHANVIEN
+values ('NV021', 'Nguyễn Mạnh Cường','Nam',TO_DATE('03/08/1985','dd/mm/yyyy'),'95 Bà Rịa, Gia Lai',373157632,'2000','400', 'Tài chính', null,'PB03')
+	
+into NHANVIEN
+values ('NV022', 'Trần Thanh Hà','Nam',TO_DATE('05/07/1995','dd/mm/yyyy'),'34 Mai Thị Lựu, Bình Dương',373109832,'2200','500', 'Tài chính', null,'PB03')
+	
+into NHANVIEN
+values ('NV023', 'Trần Hồng Bàng','Nam',TO_DATE('09/05/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Bình Dương',375609832,'3000','100', 'Trưởng phòng',null,'PB04')
+	
+into NHANVIEN
+values ('NV024', 'Phạm Văn Vũ','Nữ',TO_DATE('01/01/1989','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội',375609832,'1800','200', 'Nhân sự',null,'PB04')
+	
+into NHANVIEN
+values ('NV025', 'Đinh Ngọc Hoàng','Nam',TO_DATE('02/01/1998','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương',373412789,'1500','200', 'Nhân sự', null,'PB04')
+	
+into NHANVIEN
+values ('NV026', 'Nguyễn Hải Minh','Nam',TO_DATE('20/08/1996','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Bình Dương',373150089,'2000','200', 'Tài chính', null,'PB03')
+	
+into NHANVIEN
+values ('NV027', 'Hà Hoàng Nam','Nam',TO_DATE('02/11/1989','dd/mm/yyyy'),'332 Nguyễn Thái Công, Bình Dương',373157103,'1500','200','Nhân viên','NV002','PB01')
+	
+into NHANVIEN
+values ('NV028', 'Nguyễn Ngọc Bích','Nữ',TO_DATE('03/01/1977','dd/mm/yyyy'),'211 Hồ Văn Cường,  Bình Dương',373157709,'2300','200', 'Trưởng đề án','NV010','PB02')
+	
+into NHANVIEN
+values ('NV029', 'Nguyễn Hải Minh','Nam',TO_DATE('01/04/1999','dd/mm/yyyy'),'95 Bà Rịa, Long Thành',373157637,'3800','200', 'Trưởng đề án', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV030', 'Trần Đại Phong','Nam',TO_DATE('05/04/1989','dd/mm/yyyy'),'156 Mai Thị Lựu, Bình Dương',373109831,'2000','200', 'QL trực tiếp', null,'PB02')
+	
+into NHANVIEN
+values ('NV031', 'Quách Văn Tỉnh','Nam',TO_DATE('09/01/1999','dd/mm/yyyy'),'90 Lê Hồng Phong, Bình Dương',375609832,'1000','200', 'Nhân viên', 'NV030','PB02')
+	
+into NHANVIEN
+values ('NV032', 'Hà Hồi Hạnh','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội',375609832,'1600','120', 'Nhân viên', 'NV030','PB02')
+	
+into NHANVIEN
+values ('NV033', 'Hoàng Minh Tiến','Nam',TO_DATE('01/04/1979','dd/mm/yyyy'),'95 Bà Rịa, Đà Nẵng',373157637,'3800','200', 'Trưởng đề án', 'NV003','PB04')
 
 SELECT * FROM dual;
 
@@ -709,6 +707,7 @@ BEGIN
 END;
 /
 
+
 -- Gắn view này cho role NHANVIEN
 CREATE VIEW LayVaiTro AS
 SELECT VAITRO 
@@ -730,7 +729,7 @@ as
 create or replace view NV_XemThongTinChinhMinh
 as
     select* from NhanVien
-    where MaNV= SYS_CONTEXT('USERENV', 'SESSION_USER');
+    where MANV= SYS_CONTEXT('USERENV', 'SESSION_USER');
 /
 
 --NhanVien quyen 2: xem thong tin phan cong cua chinh minh
@@ -1041,6 +1040,7 @@ BEGIN
       ELSIF P_VAITRO = 'Nhân sự' THEN
          execute immediate('GRANT NHANSU TO ' || P_MANV);
       END IF;
+      COMMIT;
 END;
 /
 CREATE OR REPLACE PROCEDURE NS_SUA_NHANVIEN (
@@ -1079,3 +1079,30 @@ grant EXECUTE on NS_SUA_NHANVIEN to NHANSU;
 
 
 ---------------------- CHÍNH SÁCH #6 ----------------------
+
+
+CREATE OR REPLACE PROCEDURE THEM_NHANVIEN (
+    P_MANV      IN NHANVIEN.MANV%TYPE,
+    P_PASSWORD      varchar,
+    P_VAITRO    IN NHANVIEN.VAITRO%TYPE
+) AS
+BEGIN
+    -- Thêm mới NHANVIEN
+    INSERT INTO NHANVIEN (MANV, TENNV, PHAI, NGAYSINH, DIACHI, SODT, LUONG, PHUCAP, VAITRO, MANQL, PHG)
+    VALUES (P_MANV, null, null, null, null, null, NULL, NULL, P_VAITRO, null, null);
+    EXECUTE IMMEDIATE 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
+       execute immediate('CREATE USER ' || P_MANV || ' IDENTIFIED BY ' ||  P_PASSWORD ||' DEFAULT TABLESPACE DA_ATBM');
+      execute immediate('GRANT CREATE SESSION TO ' || P_MANV);
+      execute immediate('GRANT NHANVIEN TO ' || P_MANV);
+      IF P_VAITRO = 'Trưởng phòng' THEN
+         execute immediate('GRANT TRUONGPHONG TO ' || P_MANV);
+      ELSIF P_VAITRO = 'QL trực tiếp' THEN
+         execute immediate('GRANT QLTRUCTIEP TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Tài chính' THEN
+         execute immediate('GRANT TAICHINH TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Nhân sự' THEN
+         execute immediate('GRANT NHANSU TO ' || P_MANV);
+      END IF;
+      COMMIT;
+END;
+/

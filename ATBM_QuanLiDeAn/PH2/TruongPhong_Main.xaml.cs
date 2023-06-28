@@ -347,5 +347,12 @@ namespace ATBM_QuanLiDeAn.PH2
             catch { }
         }
 
+        private void Windows_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
     }
 }

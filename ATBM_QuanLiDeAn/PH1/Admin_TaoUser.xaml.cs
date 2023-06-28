@@ -23,19 +23,6 @@ namespace ATBM_QuanLiDeAn.PH1
         public Admin_TaoUser()
         {
             InitializeComponent();
-            DSRole();
-        }
-
-        private void DSRole()
-        {
-            string sql = "SELECT GRANTED_ROLE AS ROLE FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE != 'RESOURCE'";
-            DataTable dt = new DataTable();
-            dt = Class.DB_Config.GetDataToTable(sql);
-            TB_Role.Items.Clear();
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                TB_Role.Items.Add(dt.Rows[i]["ROLE"]);
-            }
         }
 
         private void Button_TaoUser_Click(object sender, RoutedEventArgs e)
@@ -44,17 +31,7 @@ namespace ATBM_QuanLiDeAn.PH1
             {
                 string username = TB_Username.Text.ToString();
                 string password = TB_Password.Password.ToString();
-                string sql;
-                if (((username[0] >= 'a') && (username[0] <= 'z')) || ((username[0] >= 'A') && (username[0] <= 'Z')))
-                {
-                    sql = "CREATE USER " + username + " IDENTIFIED BY " + password;
-                }
-                else
-                {
-                    sql = "CREATE USER " + "\"" + username + "\"" + " IDENTIFIED BY " + password;
-                }
-                sql += " DEFAULT TABLESPACE DA_ATBM";
-                Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
+                string sql = "begin THEM_NHANVIEN('"+TB_Username.Text+"','"+TB_Password.Password+"','"+TB_Role.Text+"'); end;";
                 bool kq = Class.DB_Config.RunSQL(sql);
                 if (kq)
                 {
@@ -63,18 +40,6 @@ namespace ATBM_QuanLiDeAn.PH1
                 else
                 {
                     Label_error.Content = "Tạo tài khoản thất bại";
-                }
-                Class.DB_Config.RunSqlDel("grant connect to " + username.ToUpper());
-
-                //Nếu chọn role gán cùng
-                if (TB_Role.SelectedItem.ToString()!="")
-                {
-                    sql = "GRANT " + TB_Role.SelectedItem.ToString() + " TO " + username;
-                    kq = Class.DB_Config.RunSQL(sql);
-                    if (kq)
-                    {
-                        Label_error.Content = "Gán tài khoản thành công";
-                    }
                 }
 
 
