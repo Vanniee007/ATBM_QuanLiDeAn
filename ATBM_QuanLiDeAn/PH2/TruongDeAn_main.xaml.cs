@@ -377,12 +377,6 @@ namespace ATBM_QuanLiDeAn.PH2
                     SupportFunction.ShowError(lb_error, "Mã đề án không hợp lệ");
                     return;
                 }
-
-                if (!InputValidation.ValidDate(Da_tb_NgayBatDau.Text))
-                {
-                    SupportFunction.ShowError(lb_error, "Thời gian không hợp lệ");
-                    return;
-                }
                 DataTable table_User;
                 string sql;
                 sql = "select * from ATBM_ADMIN.NV_XemThongTinDeAn where MADA = '" + DA_tb_MaDeAn.Text + "'";
