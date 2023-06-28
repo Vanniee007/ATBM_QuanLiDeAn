@@ -128,12 +128,29 @@ namespace ATBM_QuanLiDeAn.PH2
                 //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
                 sql = "select * from ATBM_ADMIN.NV_XemThongTinChinhMinh";
                 table_User = Class.DB_Config.GetDataToTable(sql);
+                //Giải mã 
+                MaHoa mahoa = new MaHoa();
+                string manv = table_User.Rows[0]["MANV"].ToString();
+                string privateKey = mahoa.LoadPrivateKeyFromOracle(manv);
+                string encryptedLuong = table_User.Rows[0]["LUONG"].ToString();
+                string encryptedPhuCap = table_User.Rows[0]["PHUCAP"].ToString();
+                if (!string.IsNullOrEmpty(privateKey) && !string.IsNullOrEmpty(encryptedLuong) && !string.IsNullOrEmpty(encryptedPhuCap))
+                {
+                    byte[] encryptedLuongBytes = mahoa.Bytes(encryptedLuong);
+                    byte[] encryptedPhuCapBytes = mahoa.Bytes(encryptedPhuCap);
+                    string decryptedLuong = mahoa.RSADecrypt(encryptedLuongBytes, privateKey);
+                    string decryptedPhuCap = mahoa.RSADecrypt(encryptedPhuCapBytes, privateKey);
+                    // Xử lý giá trị mới của cột "Luong"
+
+                    Luong.Text = decryptedLuong;
+                    PhuCap.Text = decryptedPhuCap;
+                }
+                //Truyền giữ liệu vào cb, tb...
                 Ma.Text = table_User.Rows[0]["MANV"].ToString();
                 Ten.Text = table_User.Rows[0]["TENNV"].ToString();
                 NS.Text = SupportFunction.FormatShortDate(table_User.Rows[0]["NGAYSINH"].ToString());
                 GioiTinh.Text = table_User.Rows[0]["PHAI"].ToString();
                 DiaChi.Text = table_User.Rows[0]["DIACHI"].ToString();
-
                 SDT.Text = "0" + table_User.Rows[0]["SODT"].ToString();
                 VaiTro.Text = table_User.Rows[0]["VAITRO"].ToString();
                 PhongBan.Text = table_User.Rows[0]["PHG"].ToString();
@@ -146,6 +163,8 @@ namespace ATBM_QuanLiDeAn.PH2
                 else PhuCap.Text = table_User.Rows[0]["PHUCAP"].ToString();
             }
             catch { }
+       
+        
         }
         private void TT_Tabitem_Loaded(object sender, RoutedEventArgs e)
         {
