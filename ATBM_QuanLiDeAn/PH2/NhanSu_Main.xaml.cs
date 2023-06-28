@@ -20,10 +20,10 @@ namespace ATBM_QuanLiDeAn.PH2
 {
     /// <summary>
     /// </summary>
-    public partial class TruongPhong_Main : Window
+    public partial class NhanSu_Main : Window
     {
         string username;
-        public TruongPhong_Main(string username_)
+        public NhanSu_Main(string username_)
         {
             InitializeComponent();
             username = username_;
@@ -102,10 +102,15 @@ namespace ATBM_QuanLiDeAn.PH2
         /*=============================================TABITEM:PHONGBAN============================================
         * =========================================================================================================*/
         
-
-        private void PB_datagird_Loaded(object sender, RoutedEventArgs e)
+        private void PB_Get_Data()
         {
             NhanVien_Main.PB_get_DSPhongBan(PB_datagird);
+            PB_LayDanhSach_TruongPhong();
+            PB_LayDanhSach_PhongBan(PB_Combobox_MaPhong);
+        }
+        private void PB_datagird_Loaded(object sender, RoutedEventArgs e)
+        {
+            PB_Get_Data();
         }
         /*=============================================TABITEM: ============================================
       * =========================================================================================================*/
@@ -117,13 +122,13 @@ namespace ATBM_QuanLiDeAn.PH2
 
 
         /*=============================================TABITEM:NHANVIEN============================================* =========================================================================================================*/
-        private void NV_LayDanhSach_NhanVien()
+        private  void NV_LayDanhSach_NhanVien()
         {
             try
             {
                 DataTable table_User;
                 string sql;
-                sql = "select * from ATBM_ADMIN.TP_NHANVIEN";
+                sql = "select * from ATBM_ADMIN.NS_XEMNHANVIEN";
                 table_User = Class.DB_Config.GetDataToTable(sql);
                 NV_datagird.ItemsSource = null;
                 NV_datagird.ItemsSource = table_User.DefaultView;
@@ -136,36 +141,60 @@ namespace ATBM_QuanLiDeAn.PH2
         }
         /*============================================= TABITEM: PHAN CONG ============================================
         */
-        private void PC_Get_Data()
+
+
+
+        private void PB_LayDanhSach_TruongPhong()
         {
             try
             {
-                DataTable  table_User = new DataTable();
+                DataTable table_User;
                 string sql;
-                sql = "select * from ATBM_ADMIN.TP_PHANCONG";
-                table_User = Class.DB_Config.GetDataToTable(sql); //Đọc dữ liệu từ bảng
-                PC_datagird.ItemsSource = null;
-                PC_datagird.ItemsSource = table_User.DefaultView; //Nguồn dữ liệu
-                PC_LayDanhSach_DoAn();
-                PC_LayDanhSach_NhanVien();
+                sql = "select MANV from ATBM_ADMIN.NS_XEMNHANVIEN";
+                table_User = Class.DB_Config.GetDataToTable(sql);
+                var ds = new List<string>();
+                DataRow r;
+                for (int i = 0; i < table_User.Rows.Count; i++)
+                {
+                    r = table_User.Rows[i];
+                    ds.Add(r[0].ToString());
+                }
+                PB_Combobox_MaTruongPhong.DataContext = ds;
             }
             catch { }
-
         }
-
-
-        private void PC_datagird_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public static void PB_LayDanhSach_PhongBan(ComboBox Combobox_)
         {
             try
             {
-                if (PC_datagird.SelectedIndex.ToString() != null)
+                DataTable table_User;
+                string sql;
+                sql = "select MAPHG from ATBM_ADMIN.PHONGBAN";
+                table_User = Class.DB_Config.GetDataToTable(sql);
+                var ds = new List<string>();
+                DataRow r;
+                for (int i = 0; i < table_User.Rows.Count; i++)
                 {
-                    DataRowView rowview = (DataRowView)PC_datagird.SelectedItem;
+                    r = table_User.Rows[i];
+                    ds.Add(r[0].ToString());
+                }
+                Combobox_.DataContext = ds;
+            }
+            catch { }
+        }
+
+        private void PB_datagird_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (PB_datagird.SelectedIndex.ToString() != null)
+                {
+                    DataRowView rowview = (DataRowView)PB_datagird.SelectedItem;
                     if (rowview != null)
                     {
-                        PC_Combobox_MaNV.Text= rowview["MANV"].ToString();
-                        PC_Combobox_MaDA.Text= rowview["MADA"].ToString();
-                        PC_tb_ThoiGian.Text = SupportFunction.FormatShortDate(rowview["THOIGIAN"].ToString());
+                        PB_Combobox_MaPhong.Text = rowview["MAPHG"].ToString();
+                        PB_tb_TenPhong.Text = rowview["TENPHG"].ToString();
+                        PB_Combobox_MaTruongPhong.Text = rowview["TRPHG"].ToString();
                     }
                 }
             }
@@ -173,179 +202,124 @@ namespace ATBM_QuanLiDeAn.PH2
             { }
         }
 
-        private void PC_LayDanhSach_NhanVien()
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                sql = "select MaNV from ATBM_ADMIN.TP_NHANVIEN";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                var ds = new List<string>();
-                DataRow r;
-                for (int i = 0; i < table_User.Rows.Count; i++)
-                {
-                    r = table_User.Rows[i];
-                    ds.Add(r[0].ToString());
-                }
-                PC_Combobox_MaNV.DataContext = ds;
-            }
-            catch { }
-        }
-        private void PC_LayDanhSach_DoAn()
+        private void PB_Combobox_MaTruongPhong_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 DataTable table_User;
                 string sql;
                 //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select distinct MADA from ATBM_ADMIN.NV_XemThongTinDeAn";
+                sql = "select TENNV from ATBM_ADMIN.NS_XEMNHANVIEN where MANV = '" + PB_Combobox_MaTruongPhong.SelectedItem.ToString() + "'";
                 table_User = Class.DB_Config.GetDataToTable(sql);
-                var ds = new List<string>();
-                DataRow r;
-                for (int i = 0; i < table_User.Rows.Count; i++)
-                {
-                    r = table_User.Rows[i];
-                    ds.Add(r[0].ToString());
-                }
-                PC_Combobox_MaDA.DataContext = ds;
+                PB_tb_TenTruongPhong.Text = table_User.Rows[0][0].ToString();
             }
             catch { }
         }
 
-        private void PC_datagird_Loaded(object sender, RoutedEventArgs e)
-        {
-            PC_Get_Data();
-        }
 
-        private void PC_Combobox_MaNV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void PB_tb_Luu_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select TENNV from ATBM_ADMIN.TP_NHANVIEN where MANV = '"+PC_Combobox_MaNV.SelectedItem.ToString()+"'";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                PC_tb_TenNV.Text = table_User.Rows[0][0].ToString();   
-            }
-            catch { }
-        }
-        private void PC_Combobox_MaDA_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select TENDA, NGAYBD from ATBM_ADMIN.NV_XemThongTinDeAn where MADA = '" + PC_Combobox_MaDA.SelectedItem + "'";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                PC_tb_TenDA.Text = table_User.Rows[0][0].ToString();
-                PC_tb_NgayBD.Text = SupportFunction.FormatShortDate(table_User.Rows[0][1].ToString());
-            }
-            catch { }
-        }
 
-        private void PC_tb_Xoa_Click(object sender, RoutedEventArgs e)
-        {
             try
             {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select * from ATBM_ADMIN.TP_PHANCONG where MADA = '" + PC_Combobox_MaDA.Text + "' and MANV = '" + PC_Combobox_MaNV.Text + "'";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                if (table_User.Rows.Count > 0)
+
+                if (!InputValidation.ValidUsername(PB_Combobox_MaPhong.Text))
                 {
-                    Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
-                    
-                    sql = "begin ATBM_ADMIN.TP_XoaPhanCong('" +  PC_Combobox_MaNV.Text + "','"+ PC_Combobox_MaDA.Text + "'); end;";
-                    bool kq = Class.DB_Config.RunSQL(sql);
-                    PC_Get_Data();
-                    if (kq)
-                    {
-                        SupportFunction.ShowSuccess(lb_error, "Xoá phân công thành công");
-                    }
-                    else
-                    {
-
-                        SupportFunction.ShowError(lb_error, "Xoá phân công thất bại");
-                    }
-                }
-                else
-                {
-                    SupportFunction.ShowError(lb_error, "Vui lòng chọn đúng dòng cần xoá");
-                }
-            }
-            catch { }
-
-
-
-        }
-
-        private void PC_tb_Luu_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-                if (!InputValidation.ValidUsername(PC_Combobox_MaDA.Text))
-                {
-                    SupportFunction.ShowError(lb_error, "Mã đề án không hợp lệ");
+                    SupportFunction.ShowError(lb_error, "Mã phòng không hợp lệ");
                     return;
                 }
-                if (!InputValidation.ValidUsername(PC_Combobox_MaNV.Text))
+                if (!InputValidation.ValidUsername(PB_Combobox_MaTruongPhong.Text))
                 {
                     SupportFunction.ShowError(lb_error, "Mã nhân viên không hợp lệ");
                     return;
                 }
-                if (!InputValidation.ValidDate(PC_tb_ThoiGian.Text))
-                {
-                    SupportFunction.ShowError(lb_error, "Thời gian không hợp lệ");
-                    return;
-                }
                 DataTable table_User;
-
                 string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select * from ATBM_ADMIN.TP_PHANCONG where MADA = '" + PC_Combobox_MaDA.Text + "' and MANV = '"+PC_Combobox_MaNV.Text+"'";
+                sql = "select * from ATBM_ADMIN.PHONGBAN where MAPHG = '" + PB_Combobox_MaPhong.Text + "'";
                 table_User = Class.DB_Config.GetDataToTable(sql);
                 if (table_User.Rows.Count > 0)
                 {
                     //sửa
-                    sql = "begin ATBM_ADMIN.TP_SuaPhanCong('" + PC_Combobox_MaNV.Text + "','" + PC_Combobox_MaDA.Text + "',TO_DATE('"+PC_tb_ThoiGian.Text+ "','dd/mm/yyyy')); end;";
+                    sql = "begin ATBM_ADMIN.NS_SUA_PHONGBAN('" + PB_Combobox_MaPhong.Text + "','" + PB_tb_TenPhong.Text + "','" + PB_Combobox_MaTruongPhong.Text + "'); end;";
                     Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
                     bool kq = Class.DB_Config.RunSQL(sql);
-                    PC_Get_Data();
+                    PB_Get_Data();
                     if (kq)
                     {
-                        SupportFunction.ShowSuccess(lb_error, "Sửa phân công thành công");
+                        SupportFunction.ShowSuccess(lb_error, "Sửa phòng ban thành công");
                     }
                     else
                     {
-                        SupportFunction.ShowError(lb_error, "Sửa phân công thất bại");
+                        SupportFunction.ShowError(lb_error, "Sửa phòng ban thất bại");
                     }
 
                 }
                 else
                 {
                     //thêm
-                    sql = "BEGIN ATBM_ADMIN.TP_ThemPhanCong('" + PC_Combobox_MaNV.Text + "','" + PC_Combobox_MaDA.Text + "',TO_DATE('" + PC_tb_ThoiGian.Text + "','dd/mm/yyyy')); end;";
+                    sql = "begin ATBM_ADMIN.NS_THEM_PHONGBAN('" + PB_Combobox_MaPhong.Text + "','" + PB_tb_TenPhong.Text + "','" + PB_Combobox_MaTruongPhong.Text + "'); end;";
                     Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
                     bool kq = Class.DB_Config.RunSQL(sql);
-                    PC_Get_Data();
-                    PC_Get_Data();
                     if (kq)
                     {
-                        SupportFunction.ShowSuccess(lb_error, "Thêm phân công thành công");
+                        SupportFunction.ShowSuccess(lb_error, "Thêm phòng ban thành công");
+                        PB_Get_Data();
                     }
                     else
                     {
-                        SupportFunction.ShowError(lb_error, "Thêm phân công thất bại");
+                        SupportFunction.ShowError(lb_error, "Thêm phòng ban thất bại");
                     }
                 }
             }
             catch { }
         }
 
+        private void NV_tb_Them_Click(object sender, RoutedEventArgs e)
+        {
+            string username__ = "";
+            try
+            {
+                if (PB_datagird.SelectedIndex.ToString() != null)
+                {
+                    DataRowView rowview = (DataRowView)NV_datagird.SelectedItem;
+                    if (rowview != null)
+                    {
+                        username__ = rowview["MANV"].ToString();
+                    }
+                }
+            }
+            catch
+            { }
+            NhanSu_ThemNhanVien ns_them = new NhanSu_ThemNhanVien("THEMNHANVIEN", "");
+            ns_them.ShowDialog();
+            NV_LayDanhSach_NhanVien();
+
+
+        }
+
+        private void NV_tb_Sua_Click(object sender, RoutedEventArgs e)
+        {
+            string username__ = "";
+            try
+            {
+                if (PB_datagird.SelectedIndex.ToString() != null)
+                {
+                    DataRowView rowview = (DataRowView)NV_datagird.SelectedItem;
+                    if (rowview != null)
+                    {
+                        username__ = rowview["MANV"].ToString();
+                    }
+                }
+                else
+                {
+                    SupportFunction.ShowError(lb_error, "Vui lòng chọn nhân viên cần sửa");
+                }
+            }
+            catch
+            { }
+            NhanSu_ThemNhanVien ns_them = new NhanSu_ThemNhanVien("SUANHANVIEN", username__);
+            ns_them.ShowDialog();
+            NV_LayDanhSach_NhanVien();
+        }
     }
 }

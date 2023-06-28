@@ -269,7 +269,6 @@ values ('NV018', 'Nguyễn Hải Châu','Nam',TO_DATE('26/08/2000','dd/mm/yyyy')
 into NHANVIEN 
 values ('NV019', 'Bùi Minh Long','Nam',TO_DATE('3/11/1974','dd/mm/yyyy'),'332 Nguyễn Thái Học, Bình Dương', 0373157143, 2500, 200, 'Nhân viên', 'NV010','PB02')
 
-
 into NHANVIEN 
 values ('NV020', 'Lê Thị Quỳnh','Nữ',TO_DATE('02/09/1982','dd/mm/yyyy'),'291 Hồ Văn Huê,  Bình Dương', 0373157789, 4300, 500, 'Trưởng phòng', null,'PB03')
 
@@ -721,6 +720,12 @@ GRANT SELECT ON LayVaiTro TO NHANVIEN;
 
 ---------------------- CHÍNH SÁCH #1 ----------------------
 --CHÍNH SÁCH: CS#1
+create or replace view NV_CAUHOIBAOMAT
+as
+    select* from CAUHOIBAOMAT
+    where MaNV= SYS_CONTEXT('USERENV', 'SESSION_USER')
+/
+
 --NhanVien quyền 1: xem thông tin cá nhân của chính mình
 create or replace view NV_XemThongTinChinhMinh
 as
@@ -761,13 +766,132 @@ BEGIN
     COMMIT;
 END;
 /
+CREATE OR REPLACE PROCEDURE NV_ThemSua_CauHoiBaoMat(
+    p_CAUHOI IN CAUHOIBAOMAT.CAUHOI%TYPE,
+    p_CAUTRALOI IN CAUHOIBAOMAT.CAUTRALOI%TYPE
+)
+AS
+    v_MANV CAUHOIBAOMAT.MANV%TYPE;
+    v_COUNT NUMBER;
+BEGIN
+    -- Generate the employee code using SESSION_USER
+    v_MANV := SYS_CONTEXT('USERENV', 'SESSION_USER');
+    
+    -- Check if the record exists for the generated MANV
+    SELECT COUNT(*) INTO v_COUNT FROM CAUHOIBAOMAT WHERE MANV = v_MANV;
+    
+    IF v_COUNT > 0 THEN
+        -- Update the existing record
+        UPDATE CAUHOIBAOMAT
+        SET CAUHOI = p_CAUHOI,
+            CAUTRALOI = p_CAUTRALOI
+        WHERE MANV = v_MANV;
+    ELSE
+        -- Insert a new record
+        INSERT INTO CAUHOIBAOMAT (MANV, CAUHOI, CAUTRALOI, SOLANTRALOI)
+        VALUES (v_MANV, p_CAUHOI, p_CAUTRALOI, 5);
+    END IF;
+    
+    COMMIT; -- Commit the transaction
+END;
+/
+CREATE OR REPLACE PROCEDURE NV_QUENMATKHAU(
+    p_MANV IN CAUHOIBAOMAT.MANV%TYPE,
+    p_CAUHOI IN CAUHOIBAOMAT.CAUHOI%TYPE,
+    p_CAUTRALOI IN CAUHOIBAOMAT.CAUTRALOI%TYPE
+)
+AS
+    v_SOCAUTRALOI CAUHOIBAOMAT.SOCAUTRALOI%TYPE;
+BEGIN
+    -- Retrieve the current value of SOCAUTRALOI for the specified MANV and CAUHOI
+    SELECT SOCAUTRALOI INTO v_SOCAUTRALOI
+    FROM CAUHOIBAOMAT
+    WHERE MANV = p_MANV
+    AND CAUHOI = p_CAUHOI;
+
+    IF p_CAUTRALOI = CAUHOIBAOMAT.CAUTRALOI AND p_CAUHOI = CAUHOIBAOMAT.CAUHOI THEN
+        -- Set SOCAUTRALOI to 5 if the condition is true
+        v_SOCAUTRALOI := 5;
+    ELSE
+        -- Decrement SOCAUTRALOI by 1 if the condition is false and above 0
+        v_SOCAUTRALOI := v_SOCAUTRALOI - 1;
+        IF v_SOCAUTRALOI < 0 THEN
+            v_SOCAUTRALOI := 0;
+        END IF;
+    END IF;
+
+    -- Update the SOCAUTRALOI value in the CAUHOIBAOMAT table
+    UPDATE CAUHOIBAOMAT
+    SET SOCAUTRALOI = v_SOCAUTRALOI
+    WHERE MANV = p_MANV
+    AND CAUHOI = p_CAUHOI;
+
+    COMMIT; -- Commit the transaction
+
+    DBMS_OUTPUT.PUT_LINE('SOCAUTRALOI updated successfully for MANV: ' || p_MANV || ', CAUHOI: ' || p_CAUHOI);
+END;
+/
+
 --Grant cac quyen cho role NHANVIEN
 grant select,update On NV_XemThongTinChinhMinh to NhanVien;
 grant select On NV_XemThongTinPhanCong to NhanVien;
 grant select On NV_XemThongTinPhongBan to NhanVien;
 grant select On NV_XemThongTinDeAn to NhanVien;
+grant select, insert, update On NV_CAUHOIBAOMAT to NhanVien;
 grant execute On NV_SUATHONGTIN to NhanVien;
+grant execute On NV_ThemSua_CauHoiBaoMat to NhanVien;
+/
+select * from CAUHOIBAOMAT
+/
+
 ---------------------- CHÍNH SÁCH #2 ----------------------
+--cs2
+--Q có quyền như là một nhân viên thông thường (vai trò “Nhân viên”). Ngoài ra, với các dòng
+--dữ liệu trong quan hệ NHANVIEN liên quan đến các nhân viên N mà Q quản lý trực tiếp thì
+--Q được xem tất cả các thuộc tính, trừ thuộc tính LUONG và PHUCAP.
+
+create or replace view QL_XEMNHANVIEN
+as
+    select 	MANV,
+    TENNV,
+	PHAI,
+    NGAYSINH,
+	DIACHI,
+    SODT, DECODE(MANV,sys_context('USERENV', 'CURRENT_USER'),luong,NULL) LUONG ,
+    DECODE(MANV,sys_context('USERENV', 'CURRENT_USER'),PHUCAP,NULL) PHUCAP, 
+    VAITRO ,
+	MANQL ,
+	PHG
+    from nhanvien
+    where MANV = sys_context('USERENV', 'CURRENT_USER') 
+        or MANQL = (select MANV
+                            from nhanvien
+                            where MANV = sys_context('USERENV', 'CURRENT_USER'));
+/
+
+--Có thể xem các dòng trong quan hệ PHANCONG liên quan đến chính Q và các nhân viên N
+--được quản lý trực tiếp bởi Q.
+create or replace view QL_XEMPHANCONG
+as
+    select 	MANV,
+	MADA ,
+	THOIGIAN
+    from PHANCONG
+    where MANV = sys_context('USERENV', 'CURRENT_USER') 
+        or MANV in (select MANV
+                            from nhanvien
+                            where MANQL = sys_context('USERENV', 'CURRENT_USER'));
+/
+--alter session set "_ORACLE_SCRIPT"=true;
+--GAN VIEW CHO ROLE
+GRANT SELECT ON QL_XEMNHANVIEN TO QLTRUCTIEP;
+GRANT SELECT ON QL_XEMPHANCONG TO QLTRUCTIEP;
+/
+--TEST
+--select * from ATBM_ADMIN.QL_XEMNHANVIEN;
+--select * from ATBM_ADMIN.QL_XEMPHANCONG;
+/
+
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
 
 -- T có quyền như là một nhân viên thông thường (vai trò “Nhân viên”). Ngoài ra, với các dòng trong quan hệ NHANVIEN liên quan đến các nhân viên thuộc phòng ban mà T làm trưởng phòng thì T có quyền xem tất cả các thuộc tính, trừ thuộc tính LUONG và PHUCAP.
@@ -827,4 +951,131 @@ grant EXECUTE ON TP_XoaPhanCong to TRUONGPHONG;
 /
 ---------------------- CHÍNH SÁCH #4 ----------------------
 ---------------------- CHÍNH SÁCH #5 ----------------------
+--Thêm, cập nhật dữ liệu trong quan hệ NHANVIEN với giá trị các trường LUONG, PHUCAP
+--là mang giá trị mặc định là NULL, không được xem LUONG, PHUCAP của người khác và
+--không được cập nhật trên các trường LUONG, PHUCAP.
+create or replace view NS_XEMNHANVIEN
+as
+    select 	MANV,
+    TENNV,
+	PHAI,
+    NGAYSINH,
+	DIACHI,
+    SODT, 
+    DECODE(MANV,sys_context('USERENV', 'CURRENT_USER'),luong,NULL) LUONG ,
+    DECODE(MANV,sys_context('USERENV', 'CURRENT_USER'),PHUCAP,NULL) PHUCAP, 
+    VAITRO ,
+	MANQL ,
+	PHG
+    from nhanvien
+/
+create or replace view NS_CNNHANVIEN
+as
+    select 	MANV,
+    TENNV,
+	PHAI,
+    NGAYSINH,
+	DIACHI,
+    SODT,
+    VAITRO ,
+	MANQL ,
+	PHG
+    from nhanvien
+/
+grant SELECT on NS_XEMNHANVIEN to NHANSU;
+grant SELECT, INSERT, UPDATE on NS_CNNHANVIEN to NHANSU;
+/
+--Được quyền thêm, cập nhật trên quan hệ PHONGBAN.
+grant select,insert,update on PHONGBAN to NHANSU;
+/
+CREATE OR REPLACE PROCEDURE NS_THEM_PHONGBAN (
+    P_MAPHG     IN PHONGBAN.MAPHG%TYPE,
+    P_TENPHG    IN PHONGBAN.TENPHG%TYPE,
+    P_TRPHG     IN PHONGBAN.TRPHG%TYPE
+) AS
+BEGIN
+    -- Thêm mới PHONGBAN
+    INSERT INTO PHONGBAN (MAPHG, TENPHG, TRPHG)
+    VALUES (P_MAPHG, P_TENPHG, P_TRPHG);
+END;
+/
+CREATE OR REPLACE PROCEDURE NS_SUA_PHONGBAN (
+    P_MAPHG     IN PHONGBAN.MAPHG%TYPE,
+    P_TENPHG    IN PHONGBAN.TENPHG%TYPE,
+    P_TRPHG     IN PHONGBAN.TRPHG%TYPE
+) AS
+BEGIN
+    -- Cập nhật PHONGBAN
+    UPDATE PHONGBAN
+    SET TENPHG = P_TENPHG,
+        TRPHG = P_TRPHG
+    WHERE MAPHG = P_MAPHG;
+END;
+/
+begin ATBM_ADMIN.NS_THEM_NHANVIEN('NV056','Lê Quỳnh Như','Nữ',TO_DATE('01/02/1997','dd/mm/yyyy'),'291 Hồ Văn Huê,  Tp HCM','0123157789','Nhân viên','NV003','PB01'); end;
+CREATE OR REPLACE PROCEDURE NS_THEM_NHANVIEN (
+    P_MANV      IN NHANVIEN.MANV%TYPE,
+    P_TENNV     IN NHANVIEN.TENNV%TYPE,
+    P_PHAI      IN NHANVIEN.PHAI%TYPE,
+    P_NGAYSINH  IN NHANVIEN.NGAYSINH%TYPE,
+    P_DIACHI    IN NHANVIEN.DIACHI%TYPE,
+    P_SODT      IN NHANVIEN.SODT%TYPE,
+    P_VAITRO    IN NHANVIEN.VAITRO%TYPE,
+    P_MANQL     IN NHANVIEN.MANQL%TYPE,
+    P_PHG       IN NHANVIEN.PHG%TYPE
+) AS
+BEGIN
+    -- Thêm mới NHANVIEN
+    INSERT INTO NHANVIEN (MANV, TENNV, PHAI, NGAYSINH, DIACHI, SODT, LUONG, PHUCAP, VAITRO, MANQL, PHG)
+    VALUES (P_MANV, P_TENNV, P_PHAI, P_NGAYSINH, P_DIACHI, P_SODT, NULL, NULL, P_VAITRO, P_MANQL, P_PHG);
+    EXECUTE IMMEDIATE 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
+       execute immediate('CREATE USER ' || P_MANV || ' IDENTIFIED BY 1 DEFAULT TABLESPACE DA_ATBM');
+      execute immediate('GRANT CREATE SESSION TO ' || P_MANV);
+      execute immediate('GRANT NHANVIEN TO ' || P_MANV);
+      IF P_VAITRO = 'Trưởng phòng' THEN
+         execute immediate('GRANT TRUONGPHONG TO ' || P_MANV);
+      ELSIF P_VAITRO = 'QL trực tiếp' THEN
+         execute immediate('GRANT QLTRUCTIEP TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Tài chính' THEN
+         execute immediate('GRANT TAICHINH TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Nhân sự' THEN
+         execute immediate('GRANT NHANSU TO ' || P_MANV);
+      END IF;
+END;
+/
+CREATE OR REPLACE PROCEDURE NS_SUA_NHANVIEN (
+    P_MANV      IN NHANVIEN.MANV%TYPE,
+    P_TENNV     IN NHANVIEN.TENNV%TYPE,
+    P_PHAI      IN NHANVIEN.PHAI%TYPE,
+    P_NGAYSINH  IN NHANVIEN.NGAYSINH%TYPE,
+    P_DIACHI    IN NHANVIEN.DIACHI%TYPE,
+    P_SODT      IN NHANVIEN.SODT%TYPE,
+    P_VAITRO    IN NHANVIEN.VAITRO%TYPE,
+    P_MANQL     IN NHANVIEN.MANQL%TYPE,
+    P_PHG       IN NHANVIEN.PHG%TYPE
+) AS
+BEGIN
+    -- Kiểm tra quyền của người dùng
+    -- Ở đây bạn có thể thêm các điều kiện phù hợp để kiểm tra quyền của người dùng trước khi cho phép cập nhật
+
+    -- Cập nhật NHANVIEN
+    UPDATE NHANVIEN
+    SET TENNV = P_TENNV,
+        PHAI = P_PHAI,
+        NGAYSINH = P_NGAYSINH,
+        DIACHI = P_DIACHI,
+        SODT = P_SODT,
+        VAITRO = P_VAITRO,
+        MANQL = P_MANQL,
+        PHG = P_PHG
+    WHERE MANV = P_MANV;
+END;
+/
+grant EXECUTE on NS_THEM_PHONGBAN to NHANSU;
+grant EXECUTE on NS_SUA_PHONGBAN to NHANSU;
+grant EXECUTE on NS_THEM_NHANVIEN to NHANSU;
+grant EXECUTE on NS_SUA_NHANVIEN to NHANSU;
+/
+
+
 ---------------------- CHÍNH SÁCH #6 ----------------------

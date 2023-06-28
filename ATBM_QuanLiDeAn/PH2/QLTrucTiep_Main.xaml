@@ -1,4 +1,4 @@
-﻿<Window x:Class="ATBM_QuanLiDeAn.PH2.TruongPhong_Main"
+﻿<Window x:Class="ATBM_QuanLiDeAn.PH2.QLTrucTiep_Main"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ATBM_QuanLiDeAn.PH2"
         mc:Ignorable="d"
         MinHeight="700"
-        MinWidth="1050"
+        MinWidth="1250"
         Background="#6695ed"
         WindowStyle="None"
         Title="Trưởng phòng" Width="560" >
@@ -40,7 +40,7 @@
                 </Style>
             </TabControl.Resources>
 
-            <TabItem x:Name="TT_tabitem">
+            <TabItem x:Name="TT_tabitem" Width="150">
                 <TabItem.Header >
                     <StackPanel Orientation="Horizontal"    ToolTip="Thông tin">
                         <TextBlock Text="Thông tin"  FontSize="18" Foreground="White" FontWeight="Medium"    />
@@ -197,7 +197,7 @@
                 </TabControl>
                 <!--Hết item Thông tin-->
             </TabItem>
-            <TabItem x:Name="CV_tabitem">
+            <TabItem x:Name="CV_tabitem"  Width="150">
                 <TabItem.Header >
                     <TextBlock Text="Công việc"  FontSize="18" Foreground="White" FontWeight="Medium"    />
                 </TabItem.Header>
@@ -244,7 +244,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="PB_tabitem">
+            <TabItem x:Name="PB_tabitem"  Width="150">
                 <TabItem.Header >
                     <TextBlock Text="Phòng ban"  FontSize="18" Foreground="White" FontWeight="Medium"    />
                 </TabItem.Header>
@@ -286,7 +286,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="DA_tabitem" >
+            <TabItem x:Name="DA_tabitem"  Width="150">
                 <TabItem.Header >
                     <TextBlock Text="Đề án"  FontSize="18" Foreground="White" FontWeight="Medium"    />
                 </TabItem.Header>
@@ -334,7 +334,8 @@
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="NV_tabitem" >
+
+            <TabItem x:Name="NV_tabitem"  Width="150">
                 <TabItem.Header >
                     <TextBlock  Text="Nhân viên"  FontSize="18" Foreground="White" FontWeight="Medium"    />
                 </TabItem.Header>
@@ -365,7 +366,8 @@
                                 <DataGridTextColumn Header="Địa chỉ" Binding="{Binding DIACHI}"  Width="2*"/>
                                 <DataGridTextColumn Header="Số điện thoại" Binding="{Binding SODT}"  />
                                 <DataGridTextColumn Header="Vai trò" Binding="{Binding VAITRO}"/>
-                                <DataGridTextColumn Header="Người QL" Binding="{Binding MANQL}"/>
+                                <DataGridTextColumn Header="Phòng" Binding="{Binding PHG}"/>
+                                <!--<DataGridTextColumn Header="Người QL" Binding="{Binding MANQL}"/>-->
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
@@ -381,89 +383,6 @@
 
 
                 </Grid>
-            </TabItem>
-            <TabItem x:Name="PC_tabitem" >
-                <TabItem.Header >
-                    <TextBlock Text="Phân công"  FontSize="18" Foreground="White" FontWeight="Medium"    />
-                </TabItem.Header>
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="30"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="20"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2">
-                        <Label Content="Phân công" 
-                               FontWeight="Medium"
-                               FontSize="36"
-                               HorizontalAlignment="Center" 
-                               VerticalAlignment="Center"/>
-                    </Grid>
-                    <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="500"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid Background="WhiteSmoke">
-                            <DataGrid x:Name="PC_datagird"  SelectionChanged="PC_datagird_SelectionChanged"
-                                  AutoGenerateColumns="False"
-                                  IsReadOnly="True"
-                                  Loaded="PC_datagird_Loaded"
-                                  Background="White" Margin="10">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Mã nhân viên" Binding="{Binding MANV}" Width="*"  />
-                                    <DataGridTextColumn Header="Mã đồ án" Binding="{Binding MADA}"   Width="*"  />
-                                    <DataGridTextColumn Header="Thời gian" Binding="{Binding THOIGIAN, StringFormat=\{0:dd/MM/yyyy\}}" Width="*"/>
-
-                                </DataGrid.Columns>
-                            </DataGrid >
-                        </Grid>
-
-                        <Grid Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.3*"/>
-                                <ColumnDefinition Width="0.5*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="0"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <!--Lable-->
-                            <Grid  Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right">
-                                <Label Content="Mã nhân viên"  FontSize="18"   Margin="0,30,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Tên nhân viên"  FontSize="18"   Margin="0,90,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Mã đề án"  FontSize="18"   Margin="0,150,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Tên đề án"  FontSize="18"   Margin="0,210,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Ngày bắt đầu"  FontSize="18"   Margin="0,270,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                                <Label Content="Thời gian" FontSize="18"   Margin="0,330,0,0" Style="{StaticResource MyStyle_Label_TT}"/>
-                            </Grid>
-                            <!--Textbox-->
-                            <Grid Grid.Column="1" Grid.Row="2">
-                                <ComboBox x:Name="PC_Combobox_MaNV" ItemsSource="{Binding}" SelectionChanged="PC_Combobox_MaNV_SelectionChanged"  Margin="0,30,0,0" Width="220" Style="{StaticResource MyStyle_ComboBox_TT}" HorizontalAlignment="Left"/>
-                                <TextBox x:Name="PC_tb_TenNV" Margin="0,90,0,0" Width="220" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" HorizontalAlignment="Left"/>
-                                <ComboBox x:Name="PC_Combobox_MaDA" ItemsSource="{Binding}"   SelectionChanged="PC_Combobox_MaDA_SelectionChanged" Margin="0,150,0,0" Width="220" Style="{StaticResource MyStyle_ComboBox_TT}" HorizontalAlignment="Left"/>
-                                <TextBox x:Name="PC_tb_TenDA" Margin="0,210,0,0" Width="220" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" HorizontalAlignment="Left"/>
-                                <TextBox x:Name="PC_tb_NgayBD" Width="220" Margin="0,270,0,0" Style="{StaticResource MyStyle_ReadOnlyTextbox_TT}" />
-                                <TextBox x:Name="PC_tb_ThoiGian" Margin="0,330,0,0" Width="220" Style="{StaticResource MyStyle_TextBox_TT}" HorizontalAlignment="Left" />
-                                <Button x:Name="PC_tb_Xoa" Content="Xoá" Style="{StaticResource MyStyle_Button_Do}" Margin="30,390,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PC_tb_Xoa_Click"/>
-                                <Button x:Name="PC_tb_Luu" Content="Lưu" Style="{StaticResource MyStyle_Button_Xanh}"  HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,390,90,0" Click="PC_tb_Luu_Click"/>
-
-                            </Grid>
-
-                        </Grid>
-
-                    </Grid>
-                </Grid>
-
             </TabItem>
         </TabControl>
 

@@ -43,7 +43,7 @@ namespace ATBM_QuanLiDeAn.Class
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
             return false;
         }
@@ -116,7 +116,7 @@ namespace ATBM_QuanLiDeAn.Class
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex.ToString());
             }
             cmd.Dispose();
             cmd = null;
