@@ -84,11 +84,10 @@ namespace ATBM_QuanLiDeAn
                     //Kiểm tra đăng nhập lần đầu
                     try
                     {
-                        sql = "SELECT * FROM ATBM_ADMIN.NV_CAUHOIBAOMAT";
+                        sql = "SELECT NGAYSINH, DIACHI, SODT FROM ATBM_ADMIN.NV_XemThongTinChinhMinh";
                         dt = Class.DB_Config.GetDataToTable(sql); //Đọc danh sách role của user hiện tại
-                        if (dt.Rows.Count == 0)
+                        if (dt.Rows[0][0].ToString() == "" || dt.Rows[0][1].ToString() == "" || dt.Rows[0][3].ToString() == "")
                         {
-                            // Có nhiều hơn 1 role -> admin 
                             NhanSu_ThemNhanVien ns = new NhanSu_ThemNhanVien("DANGNHAPLANDAU",username);
                             ns.Show();
                             this.Close();

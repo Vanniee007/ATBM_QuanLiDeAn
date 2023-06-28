@@ -321,5 +321,14 @@ namespace ATBM_QuanLiDeAn.PH2
             ns_them.ShowDialog();
             NV_LayDanhSach_NhanVien();
         }
+
+        private void Windows_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
     }
 }

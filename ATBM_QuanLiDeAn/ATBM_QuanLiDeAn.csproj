@@ -88,9 +88,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="PH2\CauHoiBaoMat.xaml.cs">
-      <DependentUpon>CauHoiBaoMat.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PH2\NhanSu_ThemNhanVien.xaml.cs">
       <DependentUpon>NhanSu_ThemNhanVien.xaml</DependentUpon>
     </Compile>
@@ -160,10 +157,6 @@
     <Page Include="PH1\Role_XemQuyen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PH2\CauHoiBaoMat.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PH2\NhanSu_ThemNhanVien.xaml">
       <SubType>Designer</SubType>

@@ -46,9 +46,9 @@ namespace ATBM_QuanLiDeAn.PH2
                     lb_title.Content = "Chỉnh sửa thông tin";
                     tb_manv.IsReadOnly = true;
                     tb_manv.Background =new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebecf0"));
-                    Combobox_vaitro.IsReadOnly = true;
-                    Combobox_nguoiQL.IsReadOnly = true;
-                    Combobox_phongban.IsReadOnly = true;
+                    Combobox_vaitro.IsEnabled = false;
+                    Combobox_nguoiQL.IsEnabled = false;
+                    Combobox_phongban.IsEnabled = false;
                     Combobox_vaitro.Background =new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebecf0"));
                     Combobox_nguoiQL.Background =new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebecf0"));
                     Combobox_phongban.Background =new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ebecf0"));
@@ -107,6 +107,7 @@ namespace ATBM_QuanLiDeAn.PH2
                     }
 
                 }
+
                 //Nhân sự - Sửa nhân viên 
                 if (LoaiChucNang == 2)
                 {
@@ -139,7 +140,6 @@ namespace ATBM_QuanLiDeAn.PH2
 
                 }
 
-
                 //Tất cả nhân viên - Đăng nhập lần đầu 
                 if (LoaiChucNang == 3)
                 {
@@ -149,8 +149,8 @@ namespace ATBM_QuanLiDeAn.PH2
                     if (kq)
                     {
                         SupportFunction.ShowSuccess(lb_thongtincanhan_errorout, "Sửa thông tin thành công");
-                        CauHoiBaoMat c = new CauHoiBaoMat(username,1);
-                        c.Show();
+                        Login_Window login_ = new Login_Window(username);
+                        login_.Show();
                         this.Close();
                         return;
                     }
@@ -180,7 +180,7 @@ namespace ATBM_QuanLiDeAn.PH2
                 if (LoaiChucNang == 3)
                     sql = "select MANQL from ATBM_ADMIN.NV_XemThongTinChinhMinh where MANV = '" + username + "'";
                 else
-                    sql = "select distinct MANQL from ATBM_ADMIN.NS_XEMNHANVIEN where MANV = '" + username + "'";
+                    sql = "select MANV from ATBM_ADMIN.NS_XEMNHANVIEN";
                 table_User = Class.DB_Config.GetDataToTable(sql);
                 var ds = new List<string>();
                 DataRow r;
@@ -235,6 +235,15 @@ namespace ATBM_QuanLiDeAn.PH2
 
         private void tb_manv_Loaded(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void Windows_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
         }
     }
 }
