@@ -1,16 +1,12 @@
--- DROP TABLESPACE DA_ATBMM INCLUDING CONTENTS ;
-DROP TABLESPACE DA_ATBM INCLUDING CONTENTS AND DATAFILES;
-
-
+--DROP TABLESPACE DA_ATBM INCLUDING CONTENTS;
 
 /*
 -----------------
 --TAO TABLESPACE
 CREATE TABLESPACE DA_ATBM
-   DATAFILE 'C:\Oracle\DA_ATBM_data.dbf' 
+   DATAFILE 'D:\temp\DA_ATBM_data.dbf' 
    SIZE 500m;
-
-drop user ATBM_ADMIN cascade ;
+--drop user ATBM_ADMIN
 --TAO TAI KHOAN ADMIN
 ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
 CREATE USER ATBM_ADMIN identified by 123 DEFAULT TABLESPACE DA_ATBM;
@@ -18,7 +14,6 @@ GRANT ALL PRIVILEGES TO ATBM_ADMIN WITH ADMIN OPTION;
 GRANT DBA TO ATBM_ADMIN;
 ------------------
 */
-
 
 
 --DROP FOREIGN KEY NEU CO
@@ -55,6 +50,17 @@ END;
 BEGIN
   EXECUTE IMMEDIATE 'ALTER TABLE CAUHOIBAOMAT'
             || ' DROP CONSTRAINT fk_CDBM_NHANVIEN' ;
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE != -2443 AND SQLCODE != -942 THEN
+      RAISE;
+    END IF;
+END;
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'ALTER TABLE NHANVIEN'
+            || ' DROP CONSTRAINT keys_ma_nv_fk';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -2443 AND SQLCODE != -942 THEN
@@ -113,7 +119,17 @@ EXCEPTION
       END IF;
 END;
 /
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE COUPLE_OF_KEYS';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
 --Tao table
+
 create table NHANVIEN 
 (	
 	MANV 	varchar2(5),
@@ -122,8 +138,8 @@ create table NHANVIEN
     NGAYSINH 	date,
 	DIACHI 	varchar2(50),
     SODT number(10),
-	LUONG 	number(10,2),
-    PHUCAP number(7,2),
+	LUONG 	varchar2(4000),
+    PHUCAP varchar2(4000),
     VAITRO varchar2(20),
 	MANQL 	varchar2(5),
 	PHG 	varchar2(5),
@@ -148,6 +164,7 @@ create table DEAN
 )TABLESPACE DA_ATBM;
 /
 
+
 create table PHANCONG 
 (
 	MANV	varchar2(5),
@@ -156,16 +173,15 @@ create table PHANCONG
 	CONSTRAINT pk_pc primary key (MANV, MADA)
 )TABLESPACE DA_ATBM;
 /
---phai tra loi trong lan dau dang nhap, va sư dung de lay lai mat khau khi quen
-create table CAUHOIBAOMAT 
-(
-	MANV	varchar2(5),
-	CAUHOI 	number(1),
-	CAUTRALOI varchar2(50),
-    SOLANTRALOI int default 5,
-	CONSTRAINT pk_chbm primary key (MANV)
+CREATE TABLE COUPLE_OF_KEYS (
+    MANV VARCHAR2(5) PRIMARY KEY,
+    public_key VARCHAR2(4000),
+    private_key VARCHAR2(4000)
 )TABLESPACE DA_ATBM;
 /
+
+--phai tra loi trong lan dau dang nhap, va sư dung de lay lai mat khau khi quen
+
 ALTER TABLE PHANCONG
 ADD CONSTRAINT fk_PCONG_NV
 FOREIGN KEY (MANV)
@@ -191,11 +207,11 @@ ADD CONSTRAINT fk_DA_PHGBAN
 FOREIGN KEY (PHONG)
 REFERENCES PHONGBAN(MAPHG);
 /
-ALTER TABLE CAUHOIBAOMAT
-ADD CONSTRAINT fk_CDBM_NHANVIEN
-FOREIGN KEY (MANV)
-REFERENCES NHANVIEN(MANV);
+ALTER TABLE COUPLE_OF_KEYS ADD CONSTRAINT keys_ma_nv_fk
+    FOREIGN KEY (MANV)
+    REFERENCES NHANVIEN (MANV);
 /
+
 --NHAP DU LIEU MAU
 INSERT ALL
 into PHONGBAN
@@ -207,112 +223,109 @@ values('PB03','Tài chính',null)
 into PHONGBAN
 values('PB04','Nhân sự',null)
 SELECT * FROM dual;
--- select * from PHONGBAN
 
-/
 INSERT ALL
-into NHANVIEN 
-values ('NV001', 'Trần Bá Hộ','Nam',TO_DATE('02/11/1970','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM', 0123456789, 5000, 500, 'Trưởng phòng', null,'PB01')
-
-into NHANVIEN 
-values ('NV002', 'Nguyễn Thanh Tùng','Nam',TO_DATE('20/08/1972','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Tp HCM', 0123157789, 1000, 400, 'QL trực tiếp', null,'PB01')
-
-into NHANVIEN 
-values ('NV003', 'Bùi Ngọc Hằng','Nam',TO_DATE('3/11/1984','dd/mm/yyyy'),'332 Nguyễn Thái Học, Tp HCM', 0123157143, 2500, 200, 'QL trực tiếp', null,'PB01')
-
-into NHANVIEN 
-values ('NV004', 'Lê Quỳnh Như','Nữ',TO_DATE('02/01/1992','dd/mm/yyyy'),'291 Hồ Văn Huê,  Tp HCM', 0123157789, 1300, 200, 'Nhân viên', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV005', 'Nguyễn Mạnh Hùng','Nam',TO_DATE('03/04/1985','dd/mm/yyyy'),'95 Bà Rịa, Vũng Tàu', 0123157632, 1800, 200, 'Nhân viên', 'NV002','PB01')
-
-into NHANVIEN 
-values ('NV006', 'Trần Thanh Tâm','Nam',TO_DATE('05/04/1975','dd/mm/yyyy'),'34 Mai Thị Lựu, Tp HCM', 0123109832, 1200, 200, 'Nhân viên', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV007', 'Trần Hồng Quang','Nam',TO_DATE('09/01/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Tp HCM', 0125609832, 2500, 200, 'Nhân viên', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV008', 'Phạm Văn Vinh','Nữ',TO_DATE('01/01/1999','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội', 0125609832, 2200, 200, 'Nhân viên', 'NV002','PB01')
-
-into NHANVIEN 
-values ('NV009', 'Đinh Văn Hoàng','Nam',TO_DATE('02/01/1971','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM', 0123456789, 3300, 200, 'Trưởng phòng', null,'PB02')
-
-into NHANVIEN 
-values ('NV010', 'Nguyễn Thanh Minh','Nam',TO_DATE('20/08/1997','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Tp HCM', 0123157789, 2000, 200, 'QL trực tiếp', null,'PB02')
-
-into NHANVIEN 
-values ('NV011', 'Hà Văn Nam','Nam',TO_DATE('02/11/1987','dd/mm/yyyy'),'332 Nguyễn Thái Công, Tp HCM', 0123157143, 2500, 300, 'QL trực tiếp', null,'PB02')
-
-
-into NHANVIEN 
-values ('NV012', 'Lê Bảo Ngọc','Nữ',TO_DATE('03/01/1997','dd/mm/yyyy'),'211 Hồ Văn Cường,  Tp HCM', 0123157789, 4300, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV013', 'Nguyễn Hùng Chung','Nam',TO_DATE('01/04/1997','dd/mm/yyyy'),'95 Bà Rịa, Long Thành', 0123157632, 3800, 200, 'Nhân viên', 'NV011','PB02')
-
-into NHANVIEN 
-values ('NV014', 'Trần Tâm Như','Nam',TO_DATE('05/04/1987','dd/mm/yyyy'),'156 Mai Thị Lựu, Tp HCM', 0123109832, 3200, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV015', 'Quách Đại Hiệp','Nam',TO_DATE('09/01/1995','dd/mm/yyyy'),'90 Lê Hồng Phong, Tp HCM', 0125609832, 2500, 200, 'Nhân viên', 'NV011','PB02')
-
-into NHANVIEN 
-values ('NV016', 'Hà Ánh Tuyết','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội', 0125609832, 2200, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV017', 'Lê Văn Hải','Nam',TO_DATE('01/11/1960','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương', 0373456789, 3000, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV018', 'Nguyễn Hải Châu','Nam',TO_DATE('26/08/2000','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Bình Dương', 0373157789, 4000, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV019', 'Bùi Minh Long','Nam',TO_DATE('3/11/1974','dd/mm/yyyy'),'332 Nguyễn Thái Học, Bình Dương', 0373157143, 2500, 200, 'Nhân viên', 'NV010','PB02')
-
-into NHANVIEN 
-values ('NV020', 'Lê Thị Quỳnh','Nữ',TO_DATE('02/09/1982','dd/mm/yyyy'),'291 Hồ Văn Huê,  Bình Dương', 0373157789, 4300, 500, 'Trưởng phòng', null,'PB03')
-
-into NHANVIEN 
-values ('NV021', 'Nguyễn Mạnh Cường','Nam',TO_DATE('03/08/1985','dd/mm/yyyy'),'95 Bà Rịa, Gia Lai', 0373157632, 2000, 400, 'Tài chính', null,'PB03')
-
-into NHANVIEN 
-values ('NV022', 'Trần Thanh Hà','Nam',TO_DATE('05/07/1995','dd/mm/yyyy'),'34 Mai Thị Lựu, Bình Dương', 0373109832, 2200, 500, 'Tài chính', null,'PB03')
-
-into NHANVIEN 
-values ('NV023', 'Trần Hồng Bàng','Nam',TO_DATE('09/05/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Bình Dương', 0375609832, 3000, 100, 'Trưởng phòng',null,'PB04')
-
-into NHANVIEN 
-values ('NV024', 'Phạm Văn Vũ','Nữ',TO_DATE('01/01/1989','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội', 0375609832, 1800, 200, 'Nhân sự',null,'PB04')
-
-into NHANVIEN 
-values ('NV025', 'Đinh Ngọc Hoàng','Nam',TO_DATE('02/01/1998','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương', 0373412789, 1500, 200, 'Nhân sự', null,'PB04')
-
-into NHANVIEN 
-values ('NV026', 'Nguyễn Hải Minh','Nam',TO_DATE('20/08/1996','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Bình Dương', 0373150089, 2000, 200, 'Tài chính', null,'PB03')
-
-into NHANVIEN 
-values ('NV027', 'Hà Hoàng Nam','Nam',TO_DATE('02/11/1989','dd/mm/yyyy'),'332 Nguyễn Thái Công, Bình Dương', 0373157103, 1500, 200,'Nhân viên','NV002','PB01')
-
-
-into NHANVIEN 
-values ('NV028', 'Nguyễn Ngọc Bích','Nữ',TO_DATE('03/01/1977','dd/mm/yyyy'),'211 Hồ Văn Cường,  Bình Dương', 0373157709, 2300, 200, 'Trưởng đề án','NV010','PB02')
-
-into NHANVIEN 
-values ('NV029', 'Nguyễn Hải Minh','Nam',TO_DATE('01/04/1999','dd/mm/yyyy'),'95 Bà Rịa, Long Thành', 0373157637, 3800, 200, 'Trưởng đề án', 'NV003','PB01')
-
-into NHANVIEN 
-values ('NV030', 'Trần Đại Phong','Nam',TO_DATE('05/04/1989','dd/mm/yyyy'),'156 Mai Thị Lựu, Bình Dương', 0373109831, 2000, 200, 'QL trực tiếp', null,'PB02')
-
-into NHANVIEN 
-values ('NV031', 'Quách Văn Tỉnh','Nam',TO_DATE('09/01/1999','dd/mm/yyyy'),'90 Lê Hồng Phong, Bình Dương', 0375609832, 1000, 200, 'Nhân viên', 'NV030','PB02')
-
-into NHANVIEN 
-values ('NV032', 'Hà Hồi Hạnh','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội', 0375609832, 1600, 120, 'Nhân viên', 'NV030','PB02')
-
-into NHANVIEN 
-values ('NV033', 'Hoàng Minh Tiến','Nam',TO_DATE('01/04/1979','dd/mm/yyyy'),'95 Bà Rịa, Đà Nẵng', 0373157637, 3800, 200, 'Trưởng đề án', 'NV003','PB04')
+into NHANVIEN
+values ('NV001', 'Trần Bá Hộ','Nam',TO_DATE('02/11/1970','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM',123456789,'5000','500', 'Trưởng phòng', null,'PB01')
+	
+into NHANVIEN
+values ('NV002', 'Nguyễn Thanh Tùng','Nam',TO_DATE('20/08/1972','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Tp HCM',123157789,'1000','400', 'QL trực tiếp', null,'PB01')
+	
+into NHANVIEN
+values ('NV003', 'Bùi Ngọc Hằng','Nam',TO_DATE('3/11/1984','dd/mm/yyyy'),'332 Nguyễn Thái Học, Tp HCM',123157143,'2500','200', 'QL trực tiếp', null,'PB01')
+	
+into NHANVIEN
+values ('NV004', 'Lê Quỳnh Như','Nữ',TO_DATE('02/01/1992','dd/mm/yyyy'),'291 Hồ Văn Huê,  Tp HCM',123157789,'1300','200', 'Nhân viên', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV005', 'Nguyễn Mạnh Hùng','Nam',TO_DATE('03/04/1985','dd/mm/yyyy'),'95 Bà Rịa, Vũng Tàu',123157632,'1800','200', 'Nhân viên', 'NV002','PB01')
+	
+into NHANVIEN
+values ('NV006', 'Trần Thanh Tâm','Nam',TO_DATE('05/04/1975','dd/mm/yyyy'),'34 Mai Thị Lựu, Tp HCM',123109832,'1200','200', 'Nhân viên', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV007', 'Trần Hồng Quang','Nam',TO_DATE('09/01/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Tp HCM',125609832,'2500','200', 'Nhân viên', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV008', 'Phạm Văn Vinh','Nữ',TO_DATE('01/01/1999','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội',125609832,'2200','200', 'Nhân viên', 'NV002','PB01')
+	
+into NHANVIEN
+values ('NV009', 'Đinh Văn Hoàng','Nam',TO_DATE('02/01/1971','dd/mm/yyyy'),'119 Cống Quỳnh, Tp HCM',123456789,'3300','200', 'Trưởng phòng', null,'PB02')
+	
+into NHANVIEN
+values ('NV010', 'Nguyễn Thanh Minh','Nam',TO_DATE('20/08/1997','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Tp HCM',123157789,'2000','200', 'QL trực tiếp', null,'PB02')
+	
+into NHANVIEN
+values ('NV011', 'Hà Văn Nam','Nam',TO_DATE('02/11/1987','dd/mm/yyyy'),'332 Nguyễn Thái Công, Tp HCM',123157143,'2500','300', 'QL trực tiếp', null,'PB02')
+	
+into NHANVIEN
+values ('NV012', 'Lê Bảo Ngọc','Nữ',TO_DATE('03/01/1997','dd/mm/yyyy'),'211 Hồ Văn Cường,  Tp HCM',123157789,'4300','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV013', 'Nguyễn Hùng Chung','Nam',TO_DATE('01/04/1997','dd/mm/yyyy'),'95 Bà Rịa, Long Thành',123157632,'3800','200', 'Nhân viên', 'NV011','PB02')
+	
+into NHANVIEN
+values ('NV014', 'Trần Tâm Như','Nam',TO_DATE('05/04/1987','dd/mm/yyyy'),'156 Mai Thị Lựu, Tp HCM',123109832,'3200','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV015', 'Quách Đại Hiệp','Nam',TO_DATE('09/01/1995','dd/mm/yyyy'),'90 Lê Hồng Phong, Tp HCM',125609832,'2500','200', 'Nhân viên', 'NV011','PB02')
+	
+into NHANVIEN
+values ('NV016', 'Hà Ánh Tuyết','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội',125609832,'2200','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV017', 'Lê Văn Hải','Nam',TO_DATE('01/11/1960','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương',373456789,'3000','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV018', 'Nguyễn Hải Châu','Nam',TO_DATE('26/08/2000','dd/mm/yyyy'),'222 Nguyễn Văn Cừ, Bình Dương',373157789,'4000','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV019', 'Bùi Minh Long','Nam',TO_DATE('3/11/1974','dd/mm/yyyy'),'332 Nguyễn Thái Học, Bình Dương',373157143,'2500','200', 'Nhân viên', 'NV010','PB02')
+	
+into NHANVIEN
+values ('NV020', 'Lê Thị Quỳnh','Nữ',TO_DATE('02/09/1982','dd/mm/yyyy'),'291 Hồ Văn Huê,  Bình Dương',373157789,'4300','500', 'Trưởng phòng', null,'PB03')
+	
+into NHANVIEN
+values ('NV021', 'Nguyễn Mạnh Cường','Nam',TO_DATE('03/08/1985','dd/mm/yyyy'),'95 Bà Rịa, Gia Lai',373157632,'2000','400', 'Tài chính', null,'PB03')
+	
+into NHANVIEN
+values ('NV022', 'Trần Thanh Hà','Nam',TO_DATE('05/07/1995','dd/mm/yyyy'),'34 Mai Thị Lựu, Bình Dương',373109832,'2200','500', 'Tài chính', null,'PB03')
+	
+into NHANVIEN
+values ('NV023', 'Trần Hồng Bàng','Nam',TO_DATE('09/05/1981','dd/mm/yyyy'),'80 Lê Hồng Phong, Bình Dương',375609832,'3000','100', 'Trưởng phòng',null,'PB04')
+	
+into NHANVIEN
+values ('NV024', 'Phạm Văn Vũ','Nữ',TO_DATE('01/01/1989','dd/mm/yyyy'),'5 Trưng Vương, Hà Nội',375609832,'1800','200', 'Nhân sự',null,'PB04')
+	
+into NHANVIEN
+values ('NV025', 'Đinh Ngọc Hoàng','Nam',TO_DATE('02/01/1998','dd/mm/yyyy'),'119 Cống Quỳnh, Bình Dương',373412789,'1500','200', 'Nhân sự', null,'PB04')
+	
+into NHANVIEN
+values ('NV026', 'Nguyễn Hải Minh','Nam',TO_DATE('20/08/1996','dd/mm/yyyy'),'222 Nguyễn Văn Mách, Bình Dương',373150089,'2000','200', 'Tài chính', null,'PB03')
+	
+into NHANVIEN
+values ('NV027', 'Hà Hoàng Nam','Nam',TO_DATE('02/11/1989','dd/mm/yyyy'),'332 Nguyễn Thái Công, Bình Dương',373157103,'1500','200','Nhân viên','NV002','PB01')
+	
+into NHANVIEN
+values ('NV028', 'Nguyễn Ngọc Bích','Nữ',TO_DATE('03/01/1977','dd/mm/yyyy'),'211 Hồ Văn Cường,  Bình Dương',373157709,'2300','200', 'Trưởng đề án','NV010','PB02')
+	
+into NHANVIEN
+values ('NV029', 'Nguyễn Hải Minh','Nam',TO_DATE('01/04/1999','dd/mm/yyyy'),'95 Bà Rịa, Long Thành',373157637,'3800','200', 'Trưởng đề án', 'NV003','PB01')
+	
+into NHANVIEN
+values ('NV030', 'Trần Đại Phong','Nam',TO_DATE('05/04/1989','dd/mm/yyyy'),'156 Mai Thị Lựu, Bình Dương',373109831,'2000','200', 'QL trực tiếp', null,'PB02')
+	
+into NHANVIEN
+values ('NV031', 'Quách Văn Tỉnh','Nam',TO_DATE('09/01/1999','dd/mm/yyyy'),'90 Lê Hồng Phong, Bình Dương',375609832,'1000','200', 'Nhân viên', 'NV030','PB02')
+	
+into NHANVIEN
+values ('NV032', 'Hà Hồi Hạnh','Nữ',TO_DATE('01/01/1985','dd/mm/yyyy'),'10 Trưng Vương, Hà Nội',375609832,'1600','120', 'Nhân viên', 'NV030','PB02')
+	
+into NHANVIEN
+values ('NV033', 'Hoàng Minh Tiến','Nam',TO_DATE('01/04/1979','dd/mm/yyyy'),'95 Bà Rịa, Đà Nẵng',373157637,'3800','200', 'Trưởng đề án', 'NV003','PB04')
 
 SELECT * FROM dual;
+/
 
 
 
@@ -347,7 +360,7 @@ values('DA09', 'Marketing hệ thống M1',TO_DATE('01/01/2021','dd/mm/yyyy'), '
 into DEAN
 values('DA10','Training nhân viên 1_2022', TO_DATE('01/01/2022','dd/mm/yyyy'), 'PB04')
 SELECT * FROM dual;
-
+/
 INSERT ALL
 into PHANCONG 
 values ('NV001','DA03',TO_DATE('01/01/2019','dd/mm/yyyy'))
@@ -547,7 +560,7 @@ into PHANCONG
 values ('NV033','DA10',TO_DATE('01/01/2022','dd/mm/yyyy'))
 SELECT * FROM dual;
 /
---tạo các role
+
 DECLARE
     MA_TRPHOG VARCHAR2(50):='123';
     MA_PHG VARCHAR2(50);
@@ -698,34 +711,35 @@ BEGIN
          execute immediate('GRANT TAICHINH TO ' || usr.MANV);
       ELSIF usr.VaiTro = 'Nhân sự' THEN
          execute immediate('GRANT NHANSU TO ' || usr.MANV);
+      ELSIF usr.VaiTro = 'Trưởng đề án' THEN
+         execute immediate('GRANT TRUONGDEAN TO ' || usr.MANV);
       END IF;
    END LOOP;
 
    CLOSE cur_nv;
 END;
 /
+
 BEGIN 
     sp_CreateUser;
 END;
 /
 
+
 -- Gắn view này cho role NHANVIEN
-CREATE VIEW LayVaiTro AS
+CREATE OR REPLACE VIEW LayVaiTro AS
 SELECT VAITRO 
 FROM NHANVIEN 
 WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER');
 /
 GRANT SELECT ON LayVaiTro TO NHANVIEN;
 /
-
----------------------- CHÍNH SÁCH #1 ----------------------
---CHÍNH SÁCH: CS#1
-create or replace view NV_CAUHOIBAOMAT
-as
-    select* from CAUHOIBAOMAT
-    where MaNV= SYS_CONTEXT('USERENV', 'SESSION_USER')
-/
-
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+-----------------------------------CHÍNH SÁCH: CS#1-----------------------------------
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
 --NhanVien quyền 1: xem thông tin cá nhân của chính mình
 create or replace view NV_XemThongTinChinhMinh
 as
@@ -738,20 +752,9 @@ create or replace view NV_XemThongTinPhanCong
 as
     select* from PhanCong
     where MaNV= SYS_CONTEXT('USERENV', 'SESSION_USER');
---NhanVien quyen 3: sua thong tin cua minh tren 
+--NhanVien quyen 3: 
 
 /
---NhanVien quyen 4: xem tat ca phong ban
-create or replace view NV_XemThongTinPhongBan
-as
-    select* from PhongBan;
---NhanVien quyen 5: xem tat ca
-/
-create or replace view NV_XemThongTinDeAn
-as
-    select* from DeAn;
-/
-
 --Nhan vien update thong tin NGAYSINH, DIACHI,SODT cua chinh minh
 CREATE OR REPLACE PROCEDURE NV_SUATHONGTIN(
     NGAYSINH_ IN DATE,
@@ -766,84 +769,29 @@ BEGIN
     COMMIT;
 END;
 /
-CREATE OR REPLACE PROCEDURE NV_ThemSua_CauHoiBaoMat(
-    p_CAUHOI IN CAUHOIBAOMAT.CAUHOI%TYPE,
-    p_CAUTRALOI IN CAUHOIBAOMAT.CAUTRALOI%TYPE
-)
-AS
-    v_MANV CAUHOIBAOMAT.MANV%TYPE;
-    v_COUNT NUMBER;
-BEGIN
-    -- Generate the employee code using SESSION_USER
-    v_MANV := SYS_CONTEXT('USERENV', 'SESSION_USER');
-    
-    -- Check if the record exists for the generated MANV
-    SELECT COUNT(*) INTO v_COUNT FROM CAUHOIBAOMAT WHERE MANV = v_MANV;
-    
-    IF v_COUNT > 0 THEN
-        -- Update the existing record
-        UPDATE CAUHOIBAOMAT
-        SET CAUHOI = p_CAUHOI,
-            CAUTRALOI = p_CAUTRALOI
-        WHERE MANV = v_MANV;
-    ELSE
-        -- Insert a new record
-        INSERT INTO CAUHOIBAOMAT (MANV, CAUHOI, CAUTRALOI, SOLANTRALOI)
-        VALUES (v_MANV, p_CAUHOI, p_CAUTRALOI, 5);
-    END IF;
-    
-    COMMIT; -- Commit the transaction
-END;
+--NhanVien quyen 4: xem tat ca phong ban
+create or replace view NV_XemThongTinPhongBan
+as
+    select* from PhongBan;
+--NhanVien quyen 5: xem tat ca
 /
-CREATE OR REPLACE PROCEDURE NV_QUENMATKHAU(
-    p_MANV IN CAUHOIBAOMAT.MANV%TYPE,
-    p_CAUHOI IN CAUHOIBAOMAT.CAUHOI%TYPE,
-    p_CAUTRALOI IN CAUHOIBAOMAT.CAUTRALOI%TYPE
-)
-AS
-    v_SOCAUTRALOI CAUHOIBAOMAT.SOCAUTRALOI%TYPE;
-BEGIN
-    -- Retrieve the current value of SOCAUTRALOI for the specified MANV and CAUHOI
-    SELECT SOCAUTRALOI INTO v_SOCAUTRALOI
-    FROM CAUHOIBAOMAT
-    WHERE MANV = p_MANV
-    AND CAUHOI = p_CAUHOI;
-
-    IF p_CAUTRALOI = CAUHOIBAOMAT.CAUTRALOI AND p_CAUHOI = CAUHOIBAOMAT.CAUHOI THEN
-        -- Set SOCAUTRALOI to 5 if the condition is true
-        v_SOCAUTRALOI := 5;
-    ELSE
-        -- Decrement SOCAUTRALOI by 1 if the condition is false and above 0
-        v_SOCAUTRALOI := v_SOCAUTRALOI - 1;
-        IF v_SOCAUTRALOI < 0 THEN
-            v_SOCAUTRALOI := 0;
-        END IF;
-    END IF;
-
-    -- Update the SOCAUTRALOI value in the CAUHOIBAOMAT table
-    UPDATE CAUHOIBAOMAT
-    SET SOCAUTRALOI = v_SOCAUTRALOI
-    WHERE MANV = p_MANV
-    AND CAUHOI = p_CAUHOI;
-
-    COMMIT; -- Commit the transaction
-
-    DBMS_OUTPUT.PUT_LINE('SOCAUTRALOI updated successfully for MANV: ' || p_MANV || ', CAUHOI: ' || p_CAUHOI);
-END;
+create or replace view NV_XemThongTinDeAn
+as
+    select* from DeAn;
 /
+
 
 --Grant cac quyen cho role NHANVIEN
 grant select,update On NV_XemThongTinChinhMinh to NhanVien;
 grant select On NV_XemThongTinPhanCong to NhanVien;
 grant select On NV_XemThongTinPhongBan to NhanVien;
 grant select On NV_XemThongTinDeAn to NhanVien;
-grant select, insert, update On NV_CAUHOIBAOMAT to NhanVien;
 grant execute On NV_SUATHONGTIN to NhanVien;
-grant execute On NV_ThemSua_CauHoiBaoMat to NhanVien;
 /
-select * from CAUHOIBAOMAT
-/
-
+---------------------- CHÍNH SÁCH #2 ----------------------
+---------------------- CHÍNH SÁCH #2 ----------------------
+---------------------- CHÍNH SÁCH #2 ----------------------
+---------------------- CHÍNH SÁCH #2 ----------------------
 ---------------------- CHÍNH SÁCH #2 ----------------------
 --cs2
 --Q có quyền như là một nhân viên thông thường (vai trò “Nhân viên”). Ngoài ra, với các dòng
@@ -887,13 +835,12 @@ as
 GRANT SELECT ON QL_XEMNHANVIEN TO QLTRUCTIEP;
 GRANT SELECT ON QL_XEMPHANCONG TO QLTRUCTIEP;
 /
---TEST
---select * from ATBM_ADMIN.QL_XEMNHANVIEN;
---select * from ATBM_ADMIN.QL_XEMPHANCONG;
-/
 
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
-
+---------------------- Chính sách #3 Trưởng Phòng ----------------------
+---------------------- Chính sách #3 Trưởng Phòng ----------------------
+---------------------- Chính sách #3 Trưởng Phòng ----------------------
+---------------------- Chính sách #3 Trưởng Phòng ----------------------
 -- T có quyền như là một nhân viên thông thường (vai trò “Nhân viên”). Ngoài ra, với các dòng trong quan hệ NHANVIEN liên quan đến các nhân viên thuộc phòng ban mà T làm trưởng phòng thì T có quyền xem tất cả các thuộc tính, trừ thuộc tính LUONG và PHUCAP.
 CREATE VIEW TP_NHANVIEN AS
 SELECT MANV, TENNV,	PHAI, NGAYSINH,	DIACHI, SODT, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),LUONG,NULL) LUONG, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),PHUCAP,NULL) PHUCAP, VAITRO,	MANQL, PHG
@@ -949,7 +896,163 @@ grant EXECUTE ON TP_ThemPhanCong to TRUONGPHONG;
 grant EXECUTE ON TP_SuaPhanCong to TRUONGPHONG;
 grant EXECUTE ON TP_XoaPhanCong to TRUONGPHONG;
 /
----------------------- CHÍNH SÁCH #4 ----------------------
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+-----------------------------------CHÍNH SÁCH: CS#4: TÀI CHÍNH------------------------
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW TC_XEMNHANVIEN AS
+SELECT *
+FROM ATBM_ADMIN.NHANVIEN ;
+/
+CREATE OR REPLACE VIEW TC_XEMPHANCONG AS
+SELECT *
+FROM ATBM_ADMIN.PHANCONG ;
+/
+-- Grant các quyền cho người dùng
+
+GRANT UPDATE (LUONG, PHUCAP) ON ATBM_ADMIN.TC_XEMNHANVIEN TO TAICHINH;
+/
+CREATE OR REPLACE PROCEDURE TC_UPD_LUONG_PHUCAP(
+  p_manv IN VARCHAR2,
+  LUONGMOI IN VARCHAR2,
+  PHUCAPMOI IN VARCHAR2
+) AS
+  v_count NUMBER;
+BEGIN
+    -- Kiểm tra sự tồn tại của MANV trong bảng TC_XEMNHANVIEN
+    SELECT COUNT(*) INTO v_count
+    FROM ATBM_ADMIN.TC_XEMNHANVIEN
+    WHERE MANV = p_manv;
+
+    IF v_count = 0 THEN
+        -- Thêm bản ghi mới nếu MANV không tồn tại
+        INSERT INTO ATBM_ADMIN.TC_XEMNHANVIEN (MANV, LUONG, PHUCAP)
+        VALUES (p_manv, LUONGMOI, PHUCAPMOI);
+    ELSE
+        -- Cập nhật LUONG và PHUCAP nếu MANV đã tồn tại
+        UPDATE ATBM_ADMIN.TC_XEMNHANVIEN
+        SET LUONG = LUONGMOI,
+            PHUCAP = PHUCAPMOI
+        WHERE MANV = p_manv;
+    END IF;
+
+    COMMIT;
+END;
+
+/
+GRANT EXECUTE ON TC_UPD_LUONG_PHUCAP TO TAICHINH;
+GRANT SELECT ON ATBM_ADMIN.TC_XEMNHANVIEN TO TAICHINH;
+GRANT SELECT ON ATBM_ADMIN.TC_XEMPHANCONG TO TAICHINH;
+/
+CREATE OR REPLACE FUNCTION keys_access_predicate (
+    schema_name IN VARCHAR2,
+    object_name IN VARCHAR2
+) RETURN VARCHAR2
+IS
+    predicate VARCHAR2(4000);
+    role_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO role_count
+    FROM ATBM_ADMIN.TC_XEMNHANVIEN
+    WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
+    AND VAITRO = 'Tài chính';
+
+    IF role_count = 1 THEN
+        predicate := '1 = 1'; -- Cho phép truy cập toàn bộ thông tin cho vai trò TAICHINH
+    ELSE
+        predicate := 'MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')'; -- Chỉ cho phép truy cập thông tin của riêng người dùng
+    END IF;
+    
+    RETURN predicate;
+END;
+/
+
+DECLARE
+    v_policy_exists NUMBER;
+BEGIN
+    -- Kiểm tra xem policy đã tồn tại hay chưa
+    SELECT COUNT(*)
+    INTO v_policy_exists
+    FROM DBA_POLICIES
+    WHERE object_owner = 'ATBM_ADMIN'
+      AND object_name = 'COUPLE_OF_KEYS'
+      AND policy_name = 'COUPLE_OF_KEYS_POLICY';
+
+    -- Nếu policy đã tồn tại, xóa nó đi trước khi tạo lại
+    IF v_policy_exists > 0 THEN
+        EXECUTE IMMEDIATE 'BEGIN DBMS_RLS.DROP_POLICY(
+            object_schema   => ''ATBM_ADMIN'',
+            object_name     => ''COUPLE_OF_KEYS'',
+            policy_name     => ''couple_of_keys_policy''
+        ); END;';
+    END IF;
+
+    -- Tạo policy mới
+    DBMS_RLS.ADD_POLICY(
+        object_schema   => 'ATBM_ADMIN',
+        object_name     => 'COUPLE_OF_KEYS',
+        policy_name     => 'couple_of_keys_policy',
+        policy_function => 'keys_access_predicate',
+        statement_types => 'SELECT',
+        update_check    => FALSE,
+        enable          => TRUE
+    );
+    
+    DBMS_OUTPUT.PUT_LINE('Policy has been created successfully.');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/
+
+CREATE OR REPLACE PROCEDURE manage_couple_of_keys (
+    p_MANV IN COUPLE_OF_KEYS.MANV%TYPE,
+    p_public_key IN COUPLE_OF_KEYS.public_key%TYPE,
+    p_private_key IN COUPLE_OF_KEYS.private_key%TYPE
+)
+IS
+    v_count NUMBER;
+BEGIN
+    -- Kiểm tra xem MANV đã tồn tại trong bảng hay chưa
+    SELECT COUNT(*)
+    INTO v_count
+    FROM COUPLE_OF_KEYS
+    WHERE MANV = p_MANV;
+
+    IF v_count > 0 THEN
+        -- Nếu MANV đã tồn tại, thực hiện cập nhật dữ liệu
+        UPDATE COUPLE_OF_KEYS
+        SET public_key = p_public_key,
+            private_key = p_private_key
+        WHERE MANV = p_MANV;
+        
+        DBMS_OUTPUT.PUT_LINE('Data has been updated for MANV: ' || p_MANV);
+    ELSE
+        -- Nếu MANV chưa tồn tại, thực hiện chèn dữ liệu mới
+        INSERT INTO COUPLE_OF_KEYS (MANV, public_key, private_key)
+        VALUES (p_MANV, p_public_key, p_private_key);
+        
+        DBMS_OUTPUT.PUT_LINE('Data has been inserted for MANV: ' || p_MANV);
+    END IF;
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+END;
+/
+GRANT EXECUTE ON ATBM_ADMIN.manage_couple_of_keys TO TAICHINH;
+/
+
+GRANT SELECT ON COUPLE_OF_KEYS TO NHANVIEN;
+/
+---------------------- CHÍNH SÁCH #5 ----------------------
+---------------------- CHÍNH SÁCH #5 ----------------------
+---------------------- CHÍNH SÁCH #5 ----------------------
 ---------------------- CHÍNH SÁCH #5 ----------------------
 --Thêm, cập nhật dữ liệu trong quan hệ NHANVIEN với giá trị các trường LUONG, PHUCAP
 --là mang giá trị mặc định là NULL, không được xem LUONG, PHUCAP của người khác và
@@ -983,10 +1086,10 @@ as
     from nhanvien
 /
 grant SELECT on NS_XEMNHANVIEN to NHANSU;
-grant SELECT, INSERT, UPDATE on NS_CNNHANVIEN to NHANSU;
+grant SELECT on NS_CNNHANVIEN to NHANSU;
 /
 --Được quyền thêm, cập nhật trên quan hệ PHONGBAN.
-grant select,insert,update on PHONGBAN to NHANSU;
+grant select on PHONGBAN to NHANSU;
 /
 CREATE OR REPLACE PROCEDURE NS_THEM_PHONGBAN (
     P_MAPHG     IN PHONGBAN.MAPHG%TYPE,
@@ -1041,6 +1144,7 @@ BEGIN
       ELSIF P_VAITRO = 'Nhân sự' THEN
          execute immediate('GRANT NHANSU TO ' || P_MANV);
       END IF;
+      COMMIT;
 END;
 /
 CREATE OR REPLACE PROCEDURE NS_SUA_NHANVIEN (
@@ -1078,4 +1182,81 @@ grant EXECUTE on NS_SUA_NHANVIEN to NHANSU;
 /
 
 
----------------------- CHÍNH SÁCH #6 ----------------------
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+-----------------------------------CHÍNH SÁCH: CS#6: TRƯỞNG ĐỀ ÁN-----------------------------------
+------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------
+
+--Thêm đề án
+CREATE OR REPLACE PROCEDURE TRGDA_THEMDEAN(
+    MADA_ IN VARCHAR2,
+    TENDA_ IN VARCHAR2,
+    NGAYBD_ IN DATE,
+    PHONG_ IN VARCHAR2
+)
+AS
+BEGIN
+    INSERT INTO NV_XemThongTinDeAn (MADA, TENDA, NGAYBD, PHONG)
+    VALUES (MADA_, TENDA_, NGAYBD_, PHONG_);
+    COMMIT;
+END;
+/
+--Xóa đề án
+CREATE OR REPLACE PROCEDURE TRGDA_XOADA(MADA_ IN VARCHAR2) 
+AS
+BEGIN
+    DELETE FROM NV_XemThongTinDeAn WHERE MADA = MADA_;
+    COMMIT;
+END;
+/
+--Sửa đề án
+CREATE OR REPLACE PROCEDURE TRGDA_UPDATEDA(MADA_ IN VARCHAR2, TENDA_ IN VARCHAR2, NGAYBD_ IN DATE, PHONG_ IN VARCHAR2) 
+AS
+BEGIN
+    UPDATE NV_XemThongTinDeAn
+    SET TENDA = TENDA_, NGAYBD = NGAYBD_, PHONG = PHONG_
+    WHERE MADA = MADA_;
+    COMMIT;
+END;
+/
+CREATE OR REPLACE VIEW TRGDA_XEMPHANCONG
+AS
+    SELECT distinct MADA FROM PHANCONG;
+
+GRANT INSERT, DELETE, UPDATE ON NV_XemThongTinDeAn TO TRUONGDEAN;
+GRANT SELECT ON TRGDA_XEMPHANCONG TO TRUONGDEAN;
+GRANT EXECUTE ON TRGDA_THEMDEAN TO TRUONGDEAN;
+GRANT EXECUTE ON TRGDA_UPDATEDA TO TRUONGDEAN;
+GRANT EXECUTE ON TRGDA_XOADA TO TRUONGDEAN;
+/
+--------------------------------------------ADMIN---------------------------------------
+--Thêm nhân viên của ADMIN
+CREATE OR REPLACE PROCEDURE THEM_NHANVIEN (
+    P_MANV      IN NHANVIEN.MANV%TYPE,
+    P_PASSWORD      varchar,
+    P_VAITRO    IN NHANVIEN.VAITRO%TYPE
+) AS
+BEGIN
+    -- Thêm mới NHANVIEN
+    INSERT INTO NHANVIEN (MANV, TENNV, PHAI, NGAYSINH, DIACHI, SODT, LUONG, PHUCAP, VAITRO, MANQL, PHG)
+    VALUES (P_MANV, null, null, null, null, null, NULL, NULL, P_VAITRO, null, null);
+    EXECUTE IMMEDIATE 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
+       execute immediate('CREATE USER ' || P_MANV || ' IDENTIFIED BY ' ||  P_PASSWORD ||' DEFAULT TABLESPACE DA_ATBM');
+      execute immediate('GRANT CREATE SESSION TO ' || P_MANV);
+      execute immediate('GRANT NHANVIEN TO ' || P_MANV);
+      IF P_VAITRO = 'Trưởng phòng' THEN
+         execute immediate('GRANT TRUONGPHONG TO ' || P_MANV);
+      ELSIF P_VAITRO = 'QL trực tiếp' THEN
+         execute immediate('GRANT QLTRUCTIEP TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Tài chính' THEN
+         execute immediate('GRANT TAICHINH TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Nhân sự' THEN
+         execute immediate('GRANT NHANSU TO ' || P_MANV);
+      END IF;
+      COMMIT;
+END;
+
+
+
