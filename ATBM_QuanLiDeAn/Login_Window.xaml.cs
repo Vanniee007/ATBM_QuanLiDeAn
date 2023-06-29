@@ -150,43 +150,6 @@ namespace ATBM_QuanLiDeAn
 
 
         }
-        private void Hd_HienMaLoi_Label(int ketqua)
-        {
-            //if (ketqua > 0)
-            //{
-            //    // đăng nhập thành công    
-            //    login_lb_error.Content = "Đăng nhập thành công";
-            //    login_lb_error.Foreground = Brushes.DarkGreen;
-            //}
-            //else
-            //{
-            //    // đăng nhập thất bại
-            //    switch (ketqua)
-            //    {
-            //        case -1:
-            //            login_lb_error.Content = "Có trường trống";
-            //            break;
-            //        case -2:
-            //            login_lb_error.Content = "username không được chứa khoảng trắng";
-            //            break;
-            //        case -3:
-            //            login_lb_error.Content = "password không được chứa khoảng trắng";
-            //            break;
-            //        case -4:
-            //            login_lb_error.Content = "username hoặc password sai";
-            //            break;
-            //        case -5:
-            //            login_lb_error.Content = "Tài khoản bị khoá";
-            //            break;
-            //        case 0:
-            //            login_lb_error.Content = "Lỗi hệ thống";
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //    login_lb_error.Foreground = Brushes.IndianRed;
-            //}
-        }
         private void Login_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -236,9 +199,5 @@ namespace ATBM_QuanLiDeAn
         }
 
 
-        private void QuenMatKhau_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
     }
 }

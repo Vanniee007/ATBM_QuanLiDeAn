@@ -1,3 +1,4 @@
+
 --DROP TABLESPACE DA_ATBM INCLUDING CONTENTS;
 
 /*
@@ -6,9 +7,12 @@
 CREATE TABLESPACE DA_ATBM
    DATAFILE 'D:\temp\DA_ATBM_data.dbf' 
    SIZE 500m;
+
 --drop user ATBM_ADMIN
 --TAO TAI KHOAN ADMIN
+
 ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+drop user ATBM_ADMIN cascade ;
 CREATE USER ATBM_ADMIN identified by 123 DEFAULT TABLESPACE DA_ATBM;
 GRANT ALL PRIVILEGES TO ATBM_ADMIN WITH ADMIN OPTION;
 GRANT DBA TO ATBM_ADMIN;
@@ -823,6 +827,7 @@ GRANT SELECT ON QL_XEMPHANCONG TO QLTRUCTIEP;
 /
 
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
+
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
