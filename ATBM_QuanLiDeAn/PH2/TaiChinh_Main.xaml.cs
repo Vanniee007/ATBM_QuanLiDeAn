@@ -67,7 +67,7 @@ namespace ATBM_QuanLiDeAn.PH2
 
         private void Tt_capnhatthongtincanhan_click(object sender, RoutedEventArgs e)
         {
-            TT_ThayDoiTTCaNhan(TT_tb_ngaysinh, TT_tb_diachi, TT_tb_sodienthoai, lb_error);
+            NhanVien_Main.TT_ThayDoiTTCaNhan(TT_tb_ngaysinh, TT_tb_diachi, TT_tb_sodienthoai, lb_error);
 
         }
         private void Tt_doimatkhau_loaded(object sender, RoutedEventArgs e)
@@ -81,87 +81,9 @@ namespace ATBM_QuanLiDeAn.PH2
         }
 
 
-        //có thể dùng lại ở các role khác
-        public static void TT_ThayDoiTTCaNhan(TextBox ngaySinhTextBox, TextBox diaChiTextBox, TextBox soDienThoaiTextBox, Label lb_error)
-        {
-            try
-            {
-                string ngaySinh = ngaySinhTextBox.Text;
-                string diaChi = diaChiTextBox.Text;
-                string soDienThoai = soDienThoaiTextBox.Text;
-
-                if (!InputValidation.ValidDate(ngaySinh))
-                {
-                    SupportFunction.ShowError(lb_error, "Ngày sinh không hợp lệ");
-                    return;
-                }
-                if (!InputValidation.ValidPhoneNumber(soDienThoai))
-                {
-                    SupportFunction.ShowError(lb_error, "Số điện thoại không hợp lệ");
-                    return;
-                }
-
-                string sql = "begin ATBM_ADMIN.NV_SUATHONGTIN(TO_DATE('" + ngaySinh + "','dd/mm/yyyy'),'" + diaChi + "','" + soDienThoai + "'); end;";
-                Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
-                bool kq = Class.DB_Config.RunSQL(sql);
-
-                if (kq)
-                {
-                    SupportFunction.ShowSuccess(lb_error, "Sửa thông tin thành công");
-                }
-                else
-                {
-                    SupportFunction.ShowError(lb_error, "Sửa thông tin thất bại");
-                }
-            }
-            catch { }
-        }
-
-        //có thể dùng lại ở các role khác
-        public static void TT_Load(TextBox Ma, TextBox Ten, TextBox NS, TextBox GioiTinh, TextBox DiaChi, TextBox SDT, TextBox Luong, TextBox PhuCap, TextBox VaiTro, TextBox PhongBan, Label lb_information)
-        {
-
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select * from ATBM_ADMIN.NV_XemThongTinChinhMinh";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                //Giải mã 
-                MaHoa mahoa = new MaHoa();
-                string manv= table_User.Rows[0]["MANV"].ToString();
-                string privateKey = mahoa.LoadPrivateKeyFromOracle(manv);
-                string encryptedLuong = table_User.Rows[0]["LUONG"].ToString();
-                string encryptedPhuCap = table_User.Rows[0]["PHUCAP"].ToString();
-                if (!string.IsNullOrEmpty(privateKey) && !string.IsNullOrEmpty(encryptedLuong) && !string.IsNullOrEmpty(encryptedPhuCap))
-                {
-                    byte[] encryptedLuongBytes = mahoa.Bytes(encryptedLuong);
-                    byte[] encryptedPhuCapBytes = mahoa.Bytes(encryptedPhuCap);
-                    string decryptedLuong = mahoa.RSADecrypt(encryptedLuongBytes, privateKey);
-                    string decryptedPhuCap = mahoa.RSADecrypt(encryptedPhuCapBytes, privateKey);
-                    // Xử lý giá trị mới của cột "Luong"
-                    Luong.Text = decryptedLuong;
-                    PhuCap.Text = decryptedPhuCap;
-
-                }
-             
-                //Truyền giữ liệu vào cb, tb...
-                Ma.Text = table_User.Rows[0]["MANV"].ToString();
-                Ten.Text = table_User.Rows[0]["TENNV"].ToString();
-                NS.Text = SupportFunction.FormatShortDate(table_User.Rows[0]["NGAYSINH"].ToString());
-                GioiTinh.Text = table_User.Rows[0]["PHAI"].ToString();
-                DiaChi.Text = table_User.Rows[0]["DIACHI"].ToString();
-                SDT.Text = "0" + table_User.Rows[0]["SODT"].ToString();
-                VaiTro.Text = table_User.Rows[0]["VAITRO"].ToString();
-                PhongBan.Text = table_User.Rows[0]["PHG"].ToString();
-                lb_information.Content = "Xin chào, " + Ten.Text;
-            }
-            catch { }
-        }
         private void TT_Tabitem_Loaded(object sender, RoutedEventArgs e)
         {
-            TT_Load(TT_tb_manv, TT_tb_hoten, TT_tb_ngaysinh, TT_tb_gioitinh, TT_tb_diachi, TT_tb_sodienthoai, TT_tb_luong, TT_tb_phucap, TT_tb_vaitro, TT_tb_phongban, lb_information);
+            NhanVien_Main.TT_Load(TT_tb_manv, TT_tb_hoten, TT_tb_ngaysinh, TT_tb_gioitinh, TT_tb_diachi, TT_tb_sodienthoai, TT_tb_luong, TT_tb_phucap, TT_tb_vaitro, TT_tb_phongban, lb_information);
         }
 
 
@@ -406,6 +328,12 @@ namespace ATBM_QuanLiDeAn.PH2
             DA_get_DSDeAn(DA_datagird);
         }
 
-        
+        private void Windows_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
     }
 }

@@ -118,34 +118,10 @@ namespace ATBM_QuanLiDeAn.PH2
         }
 
         //có thể dùng lại ở các role khác
-        public static void TT_Load(TextBox Ma, TextBox Ten, TextBox NS, TextBox GioiTinh, TextBox DiaChi, TextBox SDT, TextBox Luong, TextBox PhuCap, TextBox VaiTro, TextBox PhongBan, Label lb_information)
-        {
-
-            try
-            {
-                DataTable table_User;
-                string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "select * from ATBM_ADMIN.NV_XemThongTinChinhMinh";
-                table_User = Class.DB_Config.GetDataToTable(sql);
-                Ma.Text = table_User.Rows[0]["MANV"].ToString();
-                Ten.Text = table_User.Rows[0]["TENNV"].ToString();
-                NS.Text = SupportFunction.FormatShortDate(table_User.Rows[0]["NGAYSINH"].ToString());
-                GioiTinh.Text = table_User.Rows[0]["PHAI"].ToString();
-                DiaChi.Text = table_User.Rows[0]["DIACHI"].ToString();
-
-                SDT.Text = "0" + table_User.Rows[0]["SODT"].ToString();
-                Luong.Text = table_User.Rows[0]["LUONG"].ToString();
-                PhuCap.Text = table_User.Rows[0]["PHUCAP"].ToString();
-                VaiTro.Text = table_User.Rows[0]["VAITRO"].ToString();
-                PhongBan.Text = table_User.Rows[0]["PHG"].ToString();
-                lb_information.Content = "Xin chào, " + Ten.Text;
-            }
-            catch { }
-        }
+   
         private void TT_Tabitem_Loaded(object sender, RoutedEventArgs e)
         {
-            TT_Load(TT_tb_manv, TT_tb_hoten, TT_tb_ngaysinh, TT_tb_gioitinh, TT_tb_diachi, TT_tb_sodienthoai, TT_tb_luong, TT_tb_phucap, TT_tb_vaitro, TT_tb_phongban, lb_information);
+            NhanVien_Main.TT_Load(TT_tb_manv, TT_tb_hoten, TT_tb_ngaysinh, TT_tb_gioitinh, TT_tb_diachi, TT_tb_sodienthoai, TT_tb_luong, TT_tb_phucap, TT_tb_vaitro, TT_tb_phongban, lb_information);
         }
 
 

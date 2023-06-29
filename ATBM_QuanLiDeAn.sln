@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.33423.256
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATBM_QuanLiDeAn", "ATBM_QuanLiDeAn\ATBM_QuanLiDeAn.csproj", "{9D138517-B980-4329-89B9-D27C33811281}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptData", "EncryptData\EncryptData.csproj", "{594F12ED-94D5-417C-A676-AC0CBF5009BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9D138517-B980-4329-89B9-D27C33811281}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D138517-B980-4329-89B9-D27C33811281}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D138517-B980-4329-89B9-D27C33811281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{594F12ED-94D5-417C-A676-AC0CBF5009BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{594F12ED-94D5-417C-A676-AC0CBF5009BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{594F12ED-94D5-417C-A676-AC0CBF5009BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{594F12ED-94D5-417C-A676-AC0CBF5009BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -55,7 +55,7 @@ END;
 
 BEGIN
   EXECUTE IMMEDIATE 'ALTER TABLE NHANVIEN'
-            || ' DROP CONSTRAINT keys_ma_nv_fk';
+            || ' DROP CONSTRAINT fk_THUONG_MANV';
 EXCEPTION
   WHEN OTHERS THEN
     IF SQLCODE != -2443 AND SQLCODE != -942 THEN
@@ -65,15 +65,6 @@ END;
 /
 
 --xoa table neu da ton tai table
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE NHANVIEN';
-EXCEPTION
-   WHEN OTHERS THEN
-      IF SQLCODE != -942 THEN
-         RAISE;
-      END IF;
-END;
-/
 --
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE DEAN';
@@ -107,7 +98,16 @@ END;
 /
 
 BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE COUPLE_OF_KEYS';
+   EXECUTE IMMEDIATE 'DROP TABLE THUONG';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE NHANVIEN';
 EXCEPTION
    WHEN OTHERS THEN
       IF SQLCODE != -942 THEN
@@ -140,6 +140,7 @@ create table PHONGBAN
 	TRPHG 	varchar2(5),
 	CONSTRAINT pk_pb primary key (MAPHG)
 )TABLESPACE DA_ATBM;
+
 /
 create table DEAN 
 (
@@ -160,10 +161,10 @@ create table PHANCONG
 	CONSTRAINT pk_pc primary key (MANV, MADA)
 )TABLESPACE DA_ATBM;
 /
-CREATE TABLE COUPLE_OF_KEYS (
+CREATE TABLE THUONG (
     MANV VARCHAR2(5) PRIMARY KEY,
-    public_key VARCHAR2(4000),
-    private_key VARCHAR2(4000)
+    DIPTHUONG VARCHAR2(4000),
+    TIENTHUONG VARCHAR2(4000)
 )TABLESPACE DA_ATBM;
 /
 
@@ -194,7 +195,7 @@ ADD CONSTRAINT fk_DA_PHGBAN
 FOREIGN KEY (PHONG)
 REFERENCES PHONGBAN(MAPHG);
 /
-ALTER TABLE COUPLE_OF_KEYS ADD CONSTRAINT keys_ma_nv_fk
+ALTER TABLE THUONG ADD CONSTRAINT fk_THUONG_MANV
     FOREIGN KEY (MANV)
     REFERENCES NHANVIEN (MANV);
 /
@@ -833,7 +834,7 @@ GRANT SELECT ON QL_XEMPHANCONG TO QLTRUCTIEP;
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
 -- T có quyền như là một nhân viên thông thường (vai trò “Nhân viên”). Ngoài ra, với các dòng trong quan hệ NHANVIEN liên quan đến các nhân viên thuộc phòng ban mà T làm trưởng phòng thì T có quyền xem tất cả các thuộc tính, trừ thuộc tính LUONG và PHUCAP.
-CREATE VIEW TP_NHANVIEN AS
+CREATE OR REPLACE VIEW TP_NHANVIEN AS
 SELECT MANV, TENNV,	PHAI, NGAYSINH,	DIACHI, SODT, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),LUONG,NULL) LUONG, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),PHUCAP,NULL) PHUCAP, VAITRO,	MANQL, PHG
 FROM NHANVIEN 
 WHERE PHG = (select PHG from NHANVIEN where MANV =  SYS_CONTEXT('USERENV', 'SESSION_USER'));
@@ -969,36 +970,67 @@ BEGIN
     INTO v_policy_exists
     FROM DBA_POLICIES
     WHERE object_owner = 'ATBM_ADMIN'
-      AND object_name = 'COUPLE_OF_KEYS'
-      AND policy_name = 'COUPLE_OF_KEYS_POLICY';
+      AND object_name = 'THUONG'
+      AND policy_name = 'THUONG_POLICY';
 
     -- Nếu policy đã tồn tại, xóa nó đi trước khi tạo lại
     IF v_policy_exists > 0 THEN
         EXECUTE IMMEDIATE 'BEGIN DBMS_RLS.DROP_POLICY(
             object_schema   => ''ATBM_ADMIN'',
-            object_name     => ''COUPLE_OF_KEYS'',
-            policy_name     => ''couple_of_keys_policy''
+            object_name     => ''THUONG'',
+            policy_name     => ''THUONG_policy''
         ); END;';
     END IF;
 
     -- Tạo policy mới
     DBMS_RLS.ADD_POLICY(
         object_schema   => 'ATBM_ADMIN',
-        object_name     => 'COUPLE_OF_KEYS',
-        policy_name     => 'couple_of_keys_policy',
+        object_name     => 'THUONG',
+        policy_name     => 'THUONG_policy',
         policy_function => 'keys_access_predicate',
         statement_types => 'SELECT',
         update_check    => FALSE,
         enable          => TRUE
     );
-   
 END;
 /
 
-CREATE OR REPLACE PROCEDURE manage_couple_of_keys (
-    p_MANV IN COUPLE_OF_KEYS.MANV%TYPE,
-    p_public_key IN COUPLE_OF_KEYS.public_key%TYPE,
-    p_private_key IN COUPLE_OF_KEYS.private_key%TYPE
+DECLARE
+    v_policy_exists NUMBER;
+BEGIN
+    -- Kiểm tra xem policy đã tồn tại hay chưa
+    SELECT COUNT(*)
+    INTO v_policy_exists
+    FROM DBA_POLICIES
+    WHERE object_owner = 'ATBM_ADMIN'
+      AND object_name = 'THUONG'
+      AND policy_name = 'THUONG_policy_update';
+
+    -- Nếu policy đã tồn tại, xóa nó đi trước khi tạo lại
+    IF v_policy_exists > 0 THEN
+        EXECUTE IMMEDIATE 'BEGIN DBMS_RLS.DROP_POLICY(
+            object_schema   => ''ATBM_ADMIN'',
+            object_name     => ''THUONG'',
+            policy_name     => ''THUONG_policy_update''
+        ); END;';
+    END IF;
+
+    -- Tạo policy mới
+    DBMS_RLS.ADD_POLICY(
+        object_schema   => 'ATBM_ADMIN',
+        object_name     => 'THUONG',
+        policy_name     => 'THUONG_policy_update',
+        policy_function => 'keys_update_predicate',
+        statement_types => 'INSERT','UPDATE',
+        update_check    => FALSE,
+        enable          => TRUE
+    );
+END;
+/
+CREATE OR REPLACE PROCEDURE manage_THUONG (
+    p_MANV IN THUONG.MANV%TYPE,
+    p_DIPTHUONG IN THUONG.DIPTHUONG%TYPE,
+    p_TIENTHUONG IN THUONG.TIENTHUONG%TYPE
 )
 IS
     v_count NUMBER;
@@ -1006,21 +1038,21 @@ BEGIN
     -- Kiểm tra xem MANV đã tồn tại trong bảng hay chưa
     SELECT COUNT(*)
     INTO v_count
-    FROM COUPLE_OF_KEYS
+    FROM THUONG
     WHERE MANV = p_MANV;
 
     IF v_count > 0 THEN
         -- Nếu MANV đã tồn tại, thực hiện cập nhật dữ liệu
-        UPDATE COUPLE_OF_KEYS
-        SET public_key = p_public_key,
-            private_key = p_private_key
+        UPDATE THUONG
+        SET DIPTHUONG = p_DIPTHUONG,
+            TIENTHUONG = p_TIENTHUONG
         WHERE MANV = p_MANV;
         
        
     ELSE
         -- Nếu MANV chưa tồn tại, thực hiện chèn dữ liệu mới
-        INSERT INTO COUPLE_OF_KEYS (MANV, public_key, private_key)
-        VALUES (p_MANV, p_public_key, p_private_key);
+        INSERT INTO THUONG (MANV, DIPTHUONG, TIENTHUONG)
+        VALUES (p_MANV, p_DIPTHUONG, p_TIENTHUONG);
         
         
     END IF;
@@ -1032,11 +1064,37 @@ EXCEPTION
        
 END;
 /
-GRANT EXECUTE ON ATBM_ADMIN.manage_couple_of_keys TO TAICHINH;
+GRANT EXECUTE ON ATBM_ADMIN.manage_THUONG TO TAICHINH;
 /
 
-GRANT SELECT ON COUPLE_OF_KEYS TO NHANVIEN;
+GRANT SELECT ON THUONG TO NHANVIEN;
 /
+GRANT INSERT, UPDATE ON THUONG TO TAICHINH;
+/
+
+CREATE OR REPLACE FUNCTION keys_update_predicate (
+    schema_name IN VARCHAR2,
+    object_name IN VARCHAR2
+) RETURN VARCHAR2
+IS
+    predicate VARCHAR2(4000);
+    role_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO role_count
+    FROM ATBM_ADMIN.TC_XEMNHANVIEN
+    WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
+    AND VAITRO = 'Tài chính';
+
+    IF role_count = 1 THEN
+        predicate := '1 = 1'; -- Cho phép thêm hoặc sửa toàn bộ thông tin cho vai trò TAICHINH
+    END IF;
+    
+    RETURN predicate;
+END;
+/
+
+
 ---------------------- CHÍNH SÁCH #5 ----------------------
 ---------------------- CHÍNH SÁCH #5 ----------------------
 ---------------------- CHÍNH SÁCH #5 ----------------------

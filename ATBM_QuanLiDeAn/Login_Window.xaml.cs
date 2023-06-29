@@ -27,10 +27,10 @@ namespace ATBM_QuanLiDeAn
             InitializeComponent();
             tb_username.Text = username;
             tb_username.Focus();
-            tb_username.Text = "nv01";
-            tb_password.Password = "1";
-            tb_username.Text = "ATBM_ADMIN";
-            tb_password.Password = "123";
+            //tb_username.Text = "nv01";
+            //tb_password.Password = "1";
+            //tb_username.Text = "ATBM_ADMIN";
+            //tb_password.Password = "123";
         }
 
         //animation cửa số đăng nhập

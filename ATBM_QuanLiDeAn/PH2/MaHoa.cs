@@ -105,13 +105,13 @@ namespace ATBM_QuanLiDeAn.PH2
         public void SaveKeysToOracle(string employeeId, string publicKey, string privateKey)// hàm lưu trữ khóa vào bảng trong oracle 
         {
 
-            string procedureName = "ATBM_ADMIN.manage_couple_of_keys";
+            string procedureName = "ATBM_ADMIN.THUONG";
             OracleCommand command = new OracleCommand(procedureName, DB_Config.Conn);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.Add(new OracleParameter("p_MANV", OracleDbType.Varchar2)).Value = employeeId;
-            command.Parameters.Add(new OracleParameter("p_public_key", OracleDbType.Varchar2)).Value = publicKey;
-            command.Parameters.Add(new OracleParameter("p_private_key", OracleDbType.Varchar2)).Value = privateKey;
+            command.Parameters.Add(new OracleParameter("p_DIPTHUONG", OracleDbType.Varchar2)).Value = publicKey;
+            command.Parameters.Add(new OracleParameter("p_TIENTHUONG", OracleDbType.Varchar2)).Value = privateKey;
 
             try
             {
@@ -129,7 +129,7 @@ namespace ATBM_QuanLiDeAn.PH2
         public string LoadPublicKeyFromOracle(string employeeId)//hàm lấy ra publickey 
         {
             string publicKey = string.Empty;
-            string query = "SELECT public_key FROM ATBM_ADMIN.COUPLE_OF_KEYS WHERE MANV = :employeeId";
+            string query = "SELECT DIPTHUONG FROM ATBM_ADMIN.THUONG WHERE MANV = :employeeId";
             OracleCommand command = new OracleCommand(query, DB_Config.Conn);
             command.Parameters.Add(new OracleParameter("employeeId", OracleDbType.Varchar2)).Value = employeeId;
 
@@ -148,7 +148,7 @@ namespace ATBM_QuanLiDeAn.PH2
         public string LoadPrivateKeyFromOracle(string employeeId)//hàm lấy ra privatekey 
         {
             string privateKey = string.Empty;
-            string query = "SELECT private_key FROM ATBM_ADMIN.COUPLE_OF_KEYS WHERE MANV = :employeeId";
+            string query = "SELECT TIENTHUONG FROM ATBM_ADMIN.THUONG WHERE MANV = :employeeId";
             OracleCommand command = new OracleCommand(query, DB_Config.Conn);
             command.Parameters.Add(new OracleParameter("employeeId", OracleDbType.Varchar2)).Value = employeeId;
 

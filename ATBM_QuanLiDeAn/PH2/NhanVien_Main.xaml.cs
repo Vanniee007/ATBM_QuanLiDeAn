@@ -174,10 +174,8 @@ namespace ATBM_QuanLiDeAn.PH2
                 lb_information.Content = "Xin chào, " + Ten.Text;
                 if (table_User.Rows[0]["LUONG"].ToString() == "")
                     Luong.Text = "0";
-                else Luong.Text = table_User.Rows[0]["LUONG"].ToString();
                 if (table_User.Rows[0]["PHUCAP"].ToString() == "")
                     PhuCap.Text = "0";
-                else PhuCap.Text = table_User.Rows[0]["PHUCAP"].ToString();
             }
             catch { }
        
