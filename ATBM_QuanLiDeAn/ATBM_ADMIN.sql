@@ -47,16 +47,7 @@ EXCEPTION
     END IF;
 END;
 /
-BEGIN
-  EXECUTE IMMEDIATE 'ALTER TABLE CAUHOIBAOMAT'
-            || ' DROP CONSTRAINT fk_CDBM_NHANVIEN' ;
-EXCEPTION
-  WHEN OTHERS THEN
-    IF SQLCODE != -2443 AND SQLCODE != -942 THEN
-      RAISE;
-    END IF;
-END;
-/
+
 
 BEGIN
   EXECUTE IMMEDIATE 'ALTER TABLE NHANVIEN'
@@ -1000,11 +991,7 @@ BEGIN
         update_check    => FALSE,
         enable          => TRUE
     );
-    
-    DBMS_OUTPUT.PUT_LINE('Policy has been created successfully.');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+   
 END;
 /
 
@@ -1029,20 +1016,20 @@ BEGIN
             private_key = p_private_key
         WHERE MANV = p_MANV;
         
-        DBMS_OUTPUT.PUT_LINE('Data has been updated for MANV: ' || p_MANV);
+       
     ELSE
         -- Nếu MANV chưa tồn tại, thực hiện chèn dữ liệu mới
         INSERT INTO COUPLE_OF_KEYS (MANV, public_key, private_key)
         VALUES (p_MANV, p_public_key, p_private_key);
         
-        DBMS_OUTPUT.PUT_LINE('Data has been inserted for MANV: ' || p_MANV);
+        
     END IF;
     
     COMMIT;
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+       
 END;
 /
 GRANT EXECUTE ON ATBM_ADMIN.manage_couple_of_keys TO TAICHINH;
@@ -1115,7 +1102,7 @@ BEGIN
     WHERE MAPHG = P_MAPHG;
 END;
 /
-begin ATBM_ADMIN.NS_THEM_NHANVIEN('NV056','Lê Quỳnh Như','Nữ',TO_DATE('01/02/1997','dd/mm/yyyy'),'291 Hồ Văn Huê,  Tp HCM','0123157789','Nhân viên','NV003','PB01'); end;
+
 CREATE OR REPLACE PROCEDURE NS_THEM_NHANVIEN (
     P_MANV      IN NHANVIEN.MANV%TYPE,
     P_TENNV     IN NHANVIEN.TENNV%TYPE,
@@ -1143,6 +1130,8 @@ BEGIN
          execute immediate('GRANT TAICHINH TO ' || P_MANV);
       ELSIF P_VAITRO = 'Nhân sự' THEN
          execute immediate('GRANT NHANSU TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Trưởng đề án' THEN
+         execute immediate('GRANT TRUONGDEAN TO ' || P_MANV);  
       END IF;
       COMMIT;
 END;
@@ -1254,6 +1243,8 @@ BEGIN
          execute immediate('GRANT TAICHINH TO ' || P_MANV);
       ELSIF P_VAITRO = 'Nhân sự' THEN
          execute immediate('GRANT NHANSU TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Trưởng đề án' THEN
+         execute immediate('GRANT TRUONGDEAN TO ' || P_MANV);
       END IF;
       COMMIT;
 END;
