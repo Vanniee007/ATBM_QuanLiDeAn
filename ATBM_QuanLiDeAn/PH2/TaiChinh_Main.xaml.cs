@@ -141,15 +141,17 @@ namespace ATBM_QuanLiDeAn.PH2
                     string decryptedLuong = mahoa.RSADecrypt(encryptedLuongBytes, privateKey);
                     string decryptedPhuCap = mahoa.RSADecrypt(encryptedPhuCapBytes, privateKey);
                     // Xử lý giá trị mới của cột "Luong"
-
                     Luong.Text = decryptedLuong;
                     PhuCap.Text = decryptedPhuCap;
+
                 }
+             
                 //Truyền giữ liệu vào cb, tb...
                 Ma.Text = table_User.Rows[0]["MANV"].ToString();
                 Ten.Text = table_User.Rows[0]["TENNV"].ToString();
                 NS.Text = SupportFunction.FormatShortDate(table_User.Rows[0]["NGAYSINH"].ToString());
                 GioiTinh.Text = table_User.Rows[0]["PHAI"].ToString();
+                DiaChi.Text = table_User.Rows[0]["DIACHI"].ToString();
                 SDT.Text = "0" + table_User.Rows[0]["SODT"].ToString();
                 VaiTro.Text = table_User.Rows[0]["VAITRO"].ToString();
                 PhongBan.Text = table_User.Rows[0]["PHG"].ToString();
@@ -334,9 +336,13 @@ namespace ATBM_QuanLiDeAn.PH2
                 string sql;
                 MaHoa mahoa = new MaHoa();
                 string publicKey = mahoa.LoadPublicKeyFromOracle(NV_cb_MaNV.Text);
+                if (string.IsNullOrEmpty(publicKey))
+                {
+                    mahoa.GenerateAndSaveKeys(NV_cb_MaNV.Text);
+                    publicKey = mahoa.LoadPublicKeyFromOracle(NV_cb_MaNV.Text);
+                }
                 string luong = NV_tb_Luong.Text;
                 string phuCap = NV_tb_PhuCap.Text;
-
                 string encryptedLuong = mahoa.RSAEncrypt(luong, publicKey);
                 string encryptedPhuCap = mahoa.RSAEncrypt(phuCap, publicKey);
 
