@@ -735,7 +735,7 @@ GRANT SELECT ON LayVaiTro TO NHANVIEN;
 create or replace view NV_XemThongTinChinhMinh
 as
     select* from NhanVien
-    where MaNV= SYS_CONTEXT('USERENV', 'SESSION_USER');
+    where MANV= SYS_CONTEXT('USERENV', 'SESSION_USER');
 /
 
 --NhanVien quyen 2: xem thong tin phan cong cua chinh minh
@@ -1171,6 +1171,7 @@ grant EXECUTE on NS_SUA_NHANVIEN to NHANSU;
 /
 
 
+
 ------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------
@@ -1248,6 +1249,4 @@ BEGIN
       END IF;
       COMMIT;
 END;
-
-
 

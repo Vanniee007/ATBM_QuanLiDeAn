@@ -10,7 +10,7 @@
         Background="#6695ed"
         WindowStyle="None"
         Title="Trưởng đề án" Height="759" Width="843" >
-    <Grid>
+    <Grid  MouseDown="Windows_MouseDown">
         <TabControl x:Name="Tabcontrol" Margin="0,0,0,0" BorderBrush ="Gainsboro" TabStripPlacement="Top"  FontSize="16">
             <!--Định dạng memu-->
             <TabControl.Resources >

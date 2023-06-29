@@ -155,6 +155,12 @@ namespace ATBM_QuanLiDeAn.PH2
                 VaiTro.Text = table_User.Rows[0]["VAITRO"].ToString();
                 PhongBan.Text = table_User.Rows[0]["PHG"].ToString();
                 lb_information.Content = "Xin chào, " + Ten.Text;
+                if (table_User.Rows[0]["LUONG"].ToString() == "")
+                    Luong.Text = "0";
+                else Luong.Text = table_User.Rows[0]["LUONG"].ToString();
+                if (table_User.Rows[0]["PHUCAP"].ToString() == "")
+                    PhuCap.Text = "0";
+                else PhuCap.Text = table_User.Rows[0]["PHUCAP"].ToString();
             }
             catch { }
        
@@ -236,5 +242,13 @@ namespace ATBM_QuanLiDeAn.PH2
             DA_get_DSDeAn(DA_datagird);
         }
 
+        private void Windows_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
     }
 }
