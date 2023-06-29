@@ -3,6 +3,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using Oracle.ManagedDataAccess.Client;
+using System.Data;
 
 namespace ATBM_QuanLiDeAn.PH2
 {
@@ -10,27 +11,27 @@ namespace ATBM_QuanLiDeAn.PH2
     internal class MaHoa
     {
         private const int KeySize = 2048;//RSA 2048 
-                                         //public void GenerateAndSaveKeys(string employeeId)// hàm tạo cặp khóa key gồm container là manv+ngày tạo 
-                                         //{
-                                         //    string publicKey;
-                                         //    string privateKey;
-                                         //    string containerName = $"KeyContainer_{DateTime.Now.ToString("yyyyMMdd")}_{employeeId}";
+        public void GenerateAndSaveKeys(string employeeId)// hàm tạo cặp khóa key gồm container là manv+ngày tạo 
+        {
+            string publicKey;
+            string privateKey;
+            string containerName = $"KeyContainer_{DateTime.Now.ToString("yyyyMMdd")}_{employeeId}";
 
 
-        //    CspParameters cspParams = new CspParameters
-        //    {
-        //        KeyContainerName = containerName
-        //    };
+            CspParameters cspParams = new CspParameters
+            {
+                KeyContainerName = containerName
+            };
 
-        //    using (var rsa = new RSACryptoServiceProvider(KeySize, cspParams))
-        //    {
-        //        publicKey = Convert.ToBase64String(rsa.ExportCspBlob(false));
-        //        privateKey = Convert.ToBase64String(rsa.ExportCspBlob(true));
+            using (var rsa = new RSACryptoServiceProvider(KeySize, cspParams))
+            {
+                publicKey = Convert.ToBase64String(rsa.ExportCspBlob(false));
+                privateKey = Convert.ToBase64String(rsa.ExportCspBlob(true));
 
-        //        // Lưu khóa vào bảng trong Oracle
-        //        SaveKeysToOracle(employeeId, publicKey, privateKey);
-        //    }
-        //}
+                // Lưu khóa vào bảng trong Oracle
+                SaveKeysToOracle(employeeId, publicKey, privateKey);
+            }
+        }
         //public List<string> GetEmployeeIdsFromOracle()// hàm này lấy toàn bộ mã nv 
         //{
         //    List<string> employeeIds = new List<string>();
@@ -101,31 +102,29 @@ namespace ATBM_QuanLiDeAn.PH2
         }
 
 
-        //public void SaveKeysToOracle(string employeeId, string publicKey, string privateKey)// hàm lưu trữ khóa vào bảng trong oracle 
-        //{
-        //    using (OracleConnection connection = new OracleConnection(ConnectionString))
-        //    {
-        //        connection.Open();
+        public void SaveKeysToOracle(string employeeId, string publicKey, string privateKey)// hàm lưu trữ khóa vào bảng trong oracle 
+        {
 
-        //        string procedureName = "ATBM_ADMIN.manage_couple_of_keys";
-        //        OracleCommand command = new OracleCommand(procedureName, connection);
-        //        command.CommandType = CommandType.StoredProcedure;
+            string procedureName = "ATBM_ADMIN.manage_couple_of_keys";
+            OracleCommand command = new OracleCommand(procedureName, DB_Config.Conn);
+            command.CommandType = CommandType.StoredProcedure;
 
-        //        command.Parameters.Add(new OracleParameter("p_MANV", OracleDbType.Varchar2)).Value = employeeId;
-        //        command.Parameters.Add(new OracleParameter("p_public_key", OracleDbType.Varchar2)).Value = publicKey;
-        //        command.Parameters.Add(new OracleParameter("p_private_key", OracleDbType.Varchar2)).Value = privateKey;
+            command.Parameters.Add(new OracleParameter("p_MANV", OracleDbType.Varchar2)).Value = employeeId;
+            command.Parameters.Add(new OracleParameter("p_public_key", OracleDbType.Varchar2)).Value = publicKey;
+            command.Parameters.Add(new OracleParameter("p_private_key", OracleDbType.Varchar2)).Value = privateKey;
 
-        //        try
-        //        {
-        //            command.ExecuteNonQuery();
-        //            Console.WriteLine("Keys saved to Oracle.");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine("Error occurred: " + ex.Message);
-        //        }
-        //    }
-        //}
+            try
+            {
+                command.ExecuteNonQuery();
+               
+            }
+            catch
+            {
+                
+            }
+
+
+        }
 
         public string LoadPublicKeyFromOracle(string employeeId)//hàm lấy ra publickey 
         {
