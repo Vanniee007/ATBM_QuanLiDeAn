@@ -133,5 +133,14 @@ namespace ATBM_QuanLiDeAn.PH2
         {
             NhanVien_Main.PB_get_DSPhongBan(PB_datagird);
         }
+
+        private void Windows_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
     }
 }

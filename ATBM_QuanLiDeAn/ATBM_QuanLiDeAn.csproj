@@ -92,9 +92,6 @@
     <Compile Include="PH2\TaiChinh_Main.xaml.cs">
       <DependentUpon>TaiChinh_Main.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PH2\CauHoiBaoMat.xaml.cs">
-      <DependentUpon>CauHoiBaoMat.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PH2\NhanSu_ThemNhanVien.xaml.cs">
       <DependentUpon>NhanSu_ThemNhanVien.xaml</DependentUpon>
     </Compile>
