@@ -128,15 +128,31 @@ namespace ATBM_QuanLiDeAn.PH2
                 //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
                 sql = "select * from ATBM_ADMIN.NV_XemThongTinChinhMinh";
                 table_User = Class.DB_Config.GetDataToTable(sql);
+                //Giải mã 
+                MaHoa mahoa = new MaHoa();
+                string manv= table_User.Rows[0]["MANV"].ToString();
+                string privateKey = mahoa.LoadPrivateKeyFromOracle(manv);
+                string encryptedLuong = table_User.Rows[0]["LUONG"].ToString();
+                string encryptedPhuCap = table_User.Rows[0]["PHUCAP"].ToString();
+                if (!string.IsNullOrEmpty(privateKey) && !string.IsNullOrEmpty(encryptedLuong) && !string.IsNullOrEmpty(encryptedPhuCap))
+                {
+                    byte[] encryptedLuongBytes = mahoa.Bytes(encryptedLuong);
+                    byte[] encryptedPhuCapBytes = mahoa.Bytes(encryptedPhuCap);
+                    string decryptedLuong = mahoa.RSADecrypt(encryptedLuongBytes, privateKey);
+                    string decryptedPhuCap = mahoa.RSADecrypt(encryptedPhuCapBytes, privateKey);
+                    // Xử lý giá trị mới của cột "Luong"
+                    Luong.Text = decryptedLuong;
+                    PhuCap.Text = decryptedPhuCap;
+
+                }
+             
+                //Truyền giữ liệu vào cb, tb...
                 Ma.Text = table_User.Rows[0]["MANV"].ToString();
                 Ten.Text = table_User.Rows[0]["TENNV"].ToString();
                 NS.Text = SupportFunction.FormatShortDate(table_User.Rows[0]["NGAYSINH"].ToString());
                 GioiTinh.Text = table_User.Rows[0]["PHAI"].ToString();
                 DiaChi.Text = table_User.Rows[0]["DIACHI"].ToString();
-
                 SDT.Text = "0" + table_User.Rows[0]["SODT"].ToString();
-                Luong.Text = table_User.Rows[0]["LUONG"].ToString();
-                PhuCap.Text = table_User.Rows[0]["PHUCAP"].ToString();
                 VaiTro.Text = table_User.Rows[0]["VAITRO"].ToString();
                 PhongBan.Text = table_User.Rows[0]["PHG"].ToString();
                 lb_information.Content = "Xin chào, " + Ten.Text;
@@ -215,13 +231,33 @@ namespace ATBM_QuanLiDeAn.PH2
                 {
                     // Lấy giá trị cũ của cột "Luong"
                     string luong = row["LUONG"].ToString();
+                    string phucap = row["PHUCAP"].ToString();
+                    string manv = row["MANV"].ToString();
 
-                    // Xử lý giá trị mới của cột "Luong"
-                    luong += "abc";
+                    // Tạo đối tượng MaHoa
+                    MaHoa mahoa = new MaHoa();
+
+                    // Gọi phương thức trên đối tượng mahoa
+                    string privateKey = mahoa.LoadPrivateKeyFromOracle(manv);
+                    string encryptedLuong = mahoa.GetEncryptedSalaryFromOracle(manv);
+                    string encryptedPhuCap = mahoa.GetEncryptedAllowanceFromOracle(manv);
+
+                    if (!string.IsNullOrEmpty(privateKey) && !string.IsNullOrEmpty(encryptedLuong) && !string.IsNullOrEmpty(encryptedPhuCap))
+                    {
+                        byte[] encryptedLuongBytes = mahoa.Bytes(encryptedLuong);
+                        byte[] encryptedPhuCapBytes = mahoa.Bytes(encryptedPhuCap);
+                        string decryptedLuong = mahoa.RSADecrypt(encryptedLuongBytes, privateKey);
+                        string decryptedPhuCap = mahoa.RSADecrypt(encryptedPhuCapBytes, privateKey);
+                        // Xử lý giá trị mới của cột "Luong"
+
+                        luong = decryptedLuong;
+                        phucap = decryptedPhuCap;
+                    }
+
 
                     // Cập nhật giá trị mới vào cột "Luong"
                     row["LUONG"] = luong;
-
+                    row["PHUCAP"] = phucap;
                     // Tương tự, bạn có thể thực hiện xử lý và cập nhật cho cột "PhuCap" hoặc bất kỳ cột nào khác tùy theo yêu cầu của bạn
                 }
 
@@ -298,8 +334,19 @@ namespace ATBM_QuanLiDeAn.PH2
                     return;
                 }
                 string sql;
-                //sql = "select distinct MADA from ATBM_ADMIN.NV_DEAN";
-                sql = "begin ATBM_ADMIN.TC_UPD_LUONG_PHUCAP('" + NV_cb_MaNV.Text + "','" + NV_tb_Luong.Text + "','" + NV_tb_PhuCap.Text + "'); end;";
+                MaHoa mahoa = new MaHoa();
+                string publicKey = mahoa.LoadPublicKeyFromOracle(NV_cb_MaNV.Text);
+                if (string.IsNullOrEmpty(publicKey))
+                {
+                    mahoa.GenerateAndSaveKeys(NV_cb_MaNV.Text);
+                    publicKey = mahoa.LoadPublicKeyFromOracle(NV_cb_MaNV.Text);
+                }
+                string luong = NV_tb_Luong.Text;
+                string phuCap = NV_tb_PhuCap.Text;
+                string encryptedLuong = mahoa.RSAEncrypt(luong, publicKey);
+                string encryptedPhuCap = mahoa.RSAEncrypt(phuCap, publicKey);
+
+                sql = "begin ATBM_ADMIN.TC_UPD_LUONG_PHUCAP('" + NV_cb_MaNV.Text + "','" + encryptedLuong + "','" + encryptedPhuCap + "'); end;";
                 Class.DB_Config.RunSqlDel("ALTER SESSION SET \"_ORACLE_SCRIPT\" = TRUE");
                 bool kq = Class.DB_Config.RunSQL(sql);
                 if (kq)
