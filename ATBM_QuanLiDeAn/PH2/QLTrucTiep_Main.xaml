@@ -9,7 +9,7 @@
         MinWidth="1250"
         Background="#6695ed"
         WindowStyle="None"
-        Title="Trưởng phòng" Width="560" >
+        Title="Quản lý trực tiếp"  >
     <Grid  MouseDown="Windows_MouseDown">
         <TabControl x:Name="Tabcontrol" Margin="0,0,0,0" BorderBrush ="Gainsboro" TabStripPlacement="Top"  FontSize="16">
             <!--Định dạng memu-->
