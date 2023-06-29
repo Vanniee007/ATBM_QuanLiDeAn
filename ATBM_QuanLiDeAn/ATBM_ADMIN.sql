@@ -47,16 +47,7 @@ EXCEPTION
     END IF;
 END;
 /
-BEGIN
-  EXECUTE IMMEDIATE 'ALTER TABLE CAUHOIBAOMAT'
-            || ' DROP CONSTRAINT fk_CDBM_NHANVIEN' ;
-EXCEPTION
-  WHEN OTHERS THEN
-    IF SQLCODE != -2443 AND SQLCODE != -942 THEN
-      RAISE;
-    END IF;
-END;
-/
+
 
 BEGIN
   EXECUTE IMMEDIATE 'ALTER TABLE NHANVIEN'
@@ -110,15 +101,7 @@ EXCEPTION
       END IF;
 END;
 /
-BEGIN
-   EXECUTE IMMEDIATE 'DROP TABLE CAUHOIBAOMAT';
-EXCEPTION
-   WHEN OTHERS THEN
-      IF SQLCODE != -942 THEN
-         RAISE;
-      END IF;
-END;
-/
+
 BEGIN
    EXECUTE IMMEDIATE 'DROP TABLE COUPLE_OF_KEYS';
 EXCEPTION
@@ -690,29 +673,32 @@ CREATE OR REPLACE PROCEDURE sp_CreateUser AS
    CURSOR cur_nv IS
       SELECT *
       FROM NHANVIEN;
-      --WHERE MANV NOT IN (SELECT USERNAME FROM ALL_USERS);
      usr NHANVIEN%ROWTYPE;
+     password VARCHAR2(100);
 BEGIN
    OPEN cur_nv;
-   execute immediate 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
+   EXECUTE IMMEDIATE 'ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE';
    
    LOOP
       FETCH cur_nv INTO usr;
       EXIT WHEN cur_nv%NOTFOUND;
       
-      execute immediate('CREATE USER ' || usr.MANV || ' IDENTIFIED BY 1 DEFAULT TABLESPACE DA_ATBM');
-      execute immediate('GRANT CREATE SESSION TO ' || usr.MANV);
-      execute immediate('GRANT NHANVIEN TO ' || usr.MANV);
+      password := usr.MANV || '123#';
+
+      EXECUTE IMMEDIATE 'CREATE USER ' || usr.MANV || ' IDENTIFIED BY ' || password || ' DEFAULT TABLESPACE DA_ATBM';
+      EXECUTE IMMEDIATE 'GRANT CREATE SESSION TO ' || usr.MANV;
+      EXECUTE IMMEDIATE 'GRANT NHANVIEN TO ' || usr.MANV;
+
       IF usr.VaiTro = 'Trưởng phòng' THEN
-         execute immediate('GRANT TRUONGPHONG TO ' || usr.MANV);
+         EXECUTE IMMEDIATE 'GRANT TRUONGPHONG TO ' || usr.MANV;
       ELSIF usr.VaiTro = 'QL trực tiếp' THEN
-         execute immediate('GRANT QLTRUCTIEP TO ' || usr.MANV);
+         EXECUTE IMMEDIATE 'GRANT QLTRUCTIEP TO ' || usr.MANV;
       ELSIF usr.VaiTro = 'Tài chính' THEN
-         execute immediate('GRANT TAICHINH TO ' || usr.MANV);
+         EXECUTE IMMEDIATE 'GRANT TAICHINH TO ' || usr.MANV;
       ELSIF usr.VaiTro = 'Nhân sự' THEN
-         execute immediate('GRANT NHANSU TO ' || usr.MANV);
+         EXECUTE IMMEDIATE 'GRANT NHANSU TO ' || usr.MANV;
       ELSIF usr.VaiTro = 'Trưởng đề án' THEN
-         execute immediate('GRANT TRUONGDEAN TO ' || usr.MANV);
+         EXECUTE IMMEDIATE 'GRANT TRUONGDEAN TO ' || usr.MANV;
       END IF;
    END LOOP;
 
@@ -943,8 +929,8 @@ END;
 
 /
 GRANT EXECUTE ON TC_UPD_LUONG_PHUCAP TO TAICHINH;
-GRANT SELECT ON ATBM_ADMIN.TC_XEMNHANVIEN TO TAICHINH;
-GRANT SELECT ON ATBM_ADMIN.TC_XEMPHANCONG TO TAICHINH;
+GRANT SELECT ON TC_XEMNHANVIEN TO TAICHINH;
+GRANT SELECT ON TC_XEMPHANCONG TO TAICHINH;
 /
 CREATE OR REPLACE FUNCTION keys_access_predicate (
     schema_name IN VARCHAR2,
@@ -1000,11 +986,7 @@ BEGIN
         update_check    => FALSE,
         enable          => TRUE
     );
-    
-    DBMS_OUTPUT.PUT_LINE('Policy has been created successfully.');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+   
 END;
 /
 
@@ -1029,20 +1011,20 @@ BEGIN
             private_key = p_private_key
         WHERE MANV = p_MANV;
         
-        DBMS_OUTPUT.PUT_LINE('Data has been updated for MANV: ' || p_MANV);
+       
     ELSE
         -- Nếu MANV chưa tồn tại, thực hiện chèn dữ liệu mới
         INSERT INTO COUPLE_OF_KEYS (MANV, public_key, private_key)
         VALUES (p_MANV, p_public_key, p_private_key);
         
-        DBMS_OUTPUT.PUT_LINE('Data has been inserted for MANV: ' || p_MANV);
+        
     END IF;
     
     COMMIT;
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+       
 END;
 /
 GRANT EXECUTE ON ATBM_ADMIN.manage_couple_of_keys TO TAICHINH;
@@ -1115,7 +1097,7 @@ BEGIN
     WHERE MAPHG = P_MAPHG;
 END;
 /
-begin ATBM_ADMIN.NS_THEM_NHANVIEN('NV056','Lê Quỳnh Như','Nữ',TO_DATE('01/02/1997','dd/mm/yyyy'),'291 Hồ Văn Huê,  Tp HCM','0123157789','Nhân viên','NV003','PB01'); end;
+
 CREATE OR REPLACE PROCEDURE NS_THEM_NHANVIEN (
     P_MANV      IN NHANVIEN.MANV%TYPE,
     P_TENNV     IN NHANVIEN.TENNV%TYPE,
@@ -1143,6 +1125,8 @@ BEGIN
          execute immediate('GRANT TAICHINH TO ' || P_MANV);
       ELSIF P_VAITRO = 'Nhân sự' THEN
          execute immediate('GRANT NHANSU TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Trưởng đề án' THEN
+         execute immediate('GRANT TRUONGDEAN TO ' || P_MANV);  
       END IF;
       COMMIT;
 END;
@@ -1255,6 +1239,8 @@ BEGIN
          execute immediate('GRANT TAICHINH TO ' || P_MANV);
       ELSIF P_VAITRO = 'Nhân sự' THEN
          execute immediate('GRANT NHANSU TO ' || P_MANV);
+      ELSIF P_VAITRO = 'Trưởng đề án' THEN
+         execute immediate('GRANT TRUONGDEAN TO ' || P_MANV);
       END IF;
       COMMIT;
 END;
