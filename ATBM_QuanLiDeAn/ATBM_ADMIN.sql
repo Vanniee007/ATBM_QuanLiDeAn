@@ -1,8 +1,6 @@
 -- DROP TABLESPACE DA_ATBMM INCLUDING CONTENTS ;
 DROP TABLESPACE DA_ATBM INCLUDING CONTENTS AND DATAFILES;
 
-
-
 /*
 -----------------
 --TAO TABLESPACE
@@ -10,9 +8,10 @@ CREATE TABLESPACE DA_ATBM
    DATAFILE 'C:\Oracle\DA_ATBM_data.dbf' 
    SIZE 500m;
 
-drop user ATBM_ADMIN cascade ;
 --TAO TAI KHOAN ADMIN
+
 ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+drop user ATBM_ADMIN cascade ;
 CREATE USER ATBM_ADMIN identified by 123 DEFAULT TABLESPACE DA_ATBM;
 GRANT ALL PRIVILEGES TO ATBM_ADMIN WITH ADMIN OPTION;
 GRANT DBA TO ATBM_ADMIN;
@@ -794,53 +793,13 @@ BEGIN
     COMMIT; -- Commit the transaction
 END;
 /
-CREATE OR REPLACE PROCEDURE NV_QUENMATKHAU(
-    p_MANV IN CAUHOIBAOMAT.MANV%TYPE,
-    p_CAUHOI IN CAUHOIBAOMAT.CAUHOI%TYPE,
-    p_CAUTRALOI IN CAUHOIBAOMAT.CAUTRALOI%TYPE
-)
-AS
-    v_SOCAUTRALOI CAUHOIBAOMAT.SOCAUTRALOI%TYPE;
-BEGIN
-    -- Retrieve the current value of SOCAUTRALOI for the specified MANV and CAUHOI
-    SELECT SOCAUTRALOI INTO v_SOCAUTRALOI
-    FROM CAUHOIBAOMAT
-    WHERE MANV = p_MANV
-    AND CAUHOI = p_CAUHOI;
-
-    IF p_CAUTRALOI = CAUHOIBAOMAT.CAUTRALOI AND p_CAUHOI = CAUHOIBAOMAT.CAUHOI THEN
-        -- Set SOCAUTRALOI to 5 if the condition is true
-        v_SOCAUTRALOI := 5;
-    ELSE
-        -- Decrement SOCAUTRALOI by 1 if the condition is false and above 0
-        v_SOCAUTRALOI := v_SOCAUTRALOI - 1;
-        IF v_SOCAUTRALOI < 0 THEN
-            v_SOCAUTRALOI := 0;
-        END IF;
-    END IF;
-
-    -- Update the SOCAUTRALOI value in the CAUHOIBAOMAT table
-    UPDATE CAUHOIBAOMAT
-    SET SOCAUTRALOI = v_SOCAUTRALOI
-    WHERE MANV = p_MANV
-    AND CAUHOI = p_CAUHOI;
-
-    COMMIT; -- Commit the transaction
-
-    DBMS_OUTPUT.PUT_LINE('SOCAUTRALOI updated successfully for MANV: ' || p_MANV || ', CAUHOI: ' || p_CAUHOI);
-END;
-/
 
 --Grant cac quyen cho role NHANVIEN
 grant select,update On NV_XemThongTinChinhMinh to NhanVien;
 grant select On NV_XemThongTinPhanCong to NhanVien;
 grant select On NV_XemThongTinPhongBan to NhanVien;
 grant select On NV_XemThongTinDeAn to NhanVien;
-grant select, insert, update On NV_CAUHOIBAOMAT to NhanVien;
 grant execute On NV_SUATHONGTIN to NhanVien;
-grant execute On NV_ThemSua_CauHoiBaoMat to NhanVien;
-/
-select * from CAUHOIBAOMAT
 /
 
 ---------------------- CHÍNH SÁCH #2 ----------------------
@@ -892,7 +851,6 @@ GRANT SELECT ON QL_XEMPHANCONG TO QLTRUCTIEP;
 /
 
 ---------------------- Chính sách #3 Trưởng Phòng ----------------------
-
 -- T có quyền như là một nhân viên thông thường (vai trò “Nhân viên”). Ngoài ra, với các dòng trong quan hệ NHANVIEN liên quan đến các nhân viên thuộc phòng ban mà T làm trưởng phòng thì T có quyền xem tất cả các thuộc tính, trừ thuộc tính LUONG và PHUCAP.
 CREATE VIEW TP_NHANVIEN AS
 SELECT MANV, TENNV,	PHAI, NGAYSINH,	DIACHI, SODT, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),LUONG,NULL) LUONG, DECODE(MANV,SYS_CONTEXT('USERENV', 'SESSION_USER'),PHUCAP,NULL) PHUCAP, VAITRO,	MANQL, PHG
@@ -982,10 +940,10 @@ as
     from nhanvien
 /
 grant SELECT on NS_XEMNHANVIEN to NHANSU;
-grant SELECT, INSERT, UPDATE on NS_CNNHANVIEN to NHANSU;
+grant SELECT on NS_CNNHANVIEN to NHANSU;
 /
 --Được quyền thêm, cập nhật trên quan hệ PHONGBAN.
-grant select,insert,update on PHONGBAN to NHANSU;
+grant select on PHONGBAN to NHANSU;
 /
 CREATE OR REPLACE PROCEDURE NS_THEM_PHONGBAN (
     P_MAPHG     IN PHONGBAN.MAPHG%TYPE,
@@ -1080,7 +1038,7 @@ grant EXECUTE on NS_SUA_NHANVIEN to NHANSU;
 
 ---------------------- CHÍNH SÁCH #6 ----------------------
 
-
+--Thêm nhân viên của ADMIN
 CREATE OR REPLACE PROCEDURE THEM_NHANVIEN (
     P_MANV      IN NHANVIEN.MANV%TYPE,
     P_PASSWORD      varchar,
