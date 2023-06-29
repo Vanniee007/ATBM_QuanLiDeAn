@@ -102,7 +102,7 @@
                 <!--<Button Style="{StaticResource MyStyle_Button_Sua}" Margin="5,0"  HorizontalAlignment="Left" Height="15" Width="15" Click="bt_mini_click"/>-->
                 <!--<Button Style="{StaticResource MyStyle_Button_Xoa}" HorizontalAlignment="Left" Height="15" Width="15" Click="bt_close_click"/>-->
             </StackPanel>
-            <Label Content="Four fun" Margin="0,0,0,10" Foreground="Navy" Style="{StaticResource LoginStyle_TitleLabel}" VerticalAlignment="Bottom" FontSize="55"/>
+            <Label Content="Four Fun Inc" Margin="0,0,0,10" Foreground="Navy" Style="{StaticResource LoginStyle_TitleLabel}" VerticalAlignment="Bottom" FontSize="55"/>
         </Grid>
 
         <!--Khu vực login-->
@@ -142,7 +142,7 @@
         </Grid>
 
         <!--Copy right-->
-        <Label Content="Copyright 2023 by Group 11 - ATBMHTTT" FontSize="12" Margin="0,0,10,10" Foreground="Navy"  Style="{StaticResource LoginStyle_TitleLabel}" 
+        <Label Content="Copyright 2023 by Group 20H3T-04 - ATBMHTTT" FontSize="12" Margin="0,0,10,10" Foreground="Navy"  Style="{StaticResource LoginStyle_TitleLabel}" 
                            HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="2" Grid.Row="1"/>
         <Grid Grid.Column="2" Grid.Row="0">
 
