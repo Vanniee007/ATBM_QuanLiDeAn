@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ATBM_QuanLiDeAn.Class;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -72,12 +74,27 @@ namespace ATBM_QuanLiDeAn.PH2
         }
         private void Tt_doimatkhau_loaded(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void Tt_capnhatmatkhau_click(object sender, RoutedEventArgs e)
         {
+            if (TT_tb_matkhaumoi.Password != TT_tb_matkhaumoi_2.Password)
+            {
+                SupportFunction.ShowError(lb_error, "Mật khẩu mới không khớp");
+            }
+            string sql = "ALTER SESSION SET \"_ORACLE_SCRIPT\" = true";
+            bool kq_ = Class.DB_Config.RunSQL(sql);
+            sql = "alter user " + username + " IDENTIFIED BY " + TT_tb_matkhaumoi.Password + ";";
+            kq_ = Class.DB_Config.RunSQL(sql);
 
+            if (kq_)
+            {
+                SupportFunction.ShowSuccess(lb_error, "Đổi mật khẩu thành công");
+            }
+            else
+            {
+                SupportFunction.ShowError(lb_error, "Mật khẩu cũ không khớp");
+            }
         }
 
 
@@ -150,6 +167,7 @@ namespace ATBM_QuanLiDeAn.PH2
         private void TT_Tabitem_Loaded(object sender, RoutedEventArgs e)
         {
             TT_Load(TT_tb_manv, TT_tb_hoten, TT_tb_ngaysinh, TT_tb_gioitinh, TT_tb_diachi, TT_tb_sodienthoai, TT_tb_luong, TT_tb_phucap, TT_tb_vaitro, TT_tb_phongban, lb_information);
+            TT_tb_taikhoan.Text = TT_tb_manv.Text;
         }
 
 

@@ -7,6 +7,7 @@ using System.Data;
 using System.Windows;
 using Oracle.ManagedDataAccess.Client;
 using System.Configuration;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace ATBM_QuanLiDeAn.Class
 {
@@ -120,6 +121,9 @@ namespace ATBM_QuanLiDeAn.Class
             cmd.Dispose();
             cmd = null;
         }
+
+
+
     }
 
 }
