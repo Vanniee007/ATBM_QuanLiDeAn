@@ -116,7 +116,6 @@ EXCEPTION
 END;
 /
 --Tao table
-
 create table NHANVIEN 
 (	
 	MANV 	varchar2(5),
@@ -994,39 +993,6 @@ BEGIN
     );
 END;
 /
-
-DECLARE
-    v_policy_exists NUMBER;
-BEGIN
-    -- Kiểm tra xem policy đã tồn tại hay chưa
-    SELECT COUNT(*)
-    INTO v_policy_exists
-    FROM DBA_POLICIES
-    WHERE object_owner = 'ATBM_ADMIN'
-      AND object_name = 'THUONG'
-      AND policy_name = 'THUONG_policy_update';
-
-    -- Nếu policy đã tồn tại, xóa nó đi trước khi tạo lại
-    IF v_policy_exists > 0 THEN
-        EXECUTE IMMEDIATE 'BEGIN DBMS_RLS.DROP_POLICY(
-            object_schema   => ''ATBM_ADMIN'',
-            object_name     => ''THUONG'',
-            policy_name     => ''THUONG_policy_update''
-        ); END;';
-    END IF;
-
-    -- Tạo policy mới
-    DBMS_RLS.ADD_POLICY(
-        object_schema   => 'ATBM_ADMIN',
-        object_name     => 'THUONG',
-        policy_name     => 'THUONG_policy_update',
-        policy_function => 'keys_update_predicate',
-        statement_types => 'INSERT','UPDATE',
-        update_check    => FALSE,
-        enable          => TRUE
-    );
-END;
-/
 CREATE OR REPLACE PROCEDURE manage_THUONG (
     p_MANV IN THUONG.MANV%TYPE,
     p_DIPTHUONG IN THUONG.DIPTHUONG%TYPE,
@@ -1071,29 +1037,6 @@ GRANT SELECT ON THUONG TO NHANVIEN;
 /
 GRANT INSERT, UPDATE ON THUONG TO TAICHINH;
 /
-
-CREATE OR REPLACE FUNCTION keys_update_predicate (
-    schema_name IN VARCHAR2,
-    object_name IN VARCHAR2
-) RETURN VARCHAR2
-IS
-    predicate VARCHAR2(4000);
-    role_count NUMBER;
-BEGIN
-    SELECT COUNT(*)
-    INTO role_count
-    FROM ATBM_ADMIN.TC_XEMNHANVIEN
-    WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
-    AND VAITRO = 'Tài chính';
-
-    IF role_count = 1 THEN
-        predicate := '1 = 1'; -- Cho phép thêm hoặc sửa toàn bộ thông tin cho vai trò TAICHINH
-    END IF;
-    
-    RETURN predicate;
-END;
-/
-
 
 ---------------------- CHÍNH SÁCH #5 ----------------------
 ---------------------- CHÍNH SÁCH #5 ----------------------

@@ -30,7 +30,7 @@ namespace ATBM_QuanLiDeAn.PH1
         }
         private void DSRole()
         {
-            string sql = "SELECT object_name\r\nFROM all_objects\r\nwhere owner in (SELECT username FROM dba_users\r\n                where default_tablespace = 'ATBM_ADMIN' and EXpiry_date is not null) and object_type='TABLE' )";
+            string sql = "SELECT object_name FROM all_objects where owner in (SELECT username FROM dba_users  where default_tablespace = 'DA_ATBM' and EXpiry_date is not null) and object_type='TABLE' ";
             DataTable dt = new DataTable();
             dt = Class.DB_Config.GetDataToTable(sql);
             role_cq_cb_tab.Items.Clear();

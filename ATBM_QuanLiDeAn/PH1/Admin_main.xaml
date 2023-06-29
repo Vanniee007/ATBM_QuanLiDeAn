@@ -177,6 +177,37 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem x:Name="Tab_Audit" Loaded="Tab_Audit_Loaded">
+                <TabItem.Header>
+                    <TextBlock Style="{StaticResource MyStyle_TabHeader}" Text="Audit"    />
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="Audit_Datagrid" Grid.Column="0" AutoGenerateColumns="True" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <!--<DataGridTextColumn Header="Người sở hữu" Binding="{Binding OWNER, Mode=OneWay}"/>
+                            <DataGridTextColumn Header="Tên đối tượng" Binding="{Binding OBJECT_NAME, Mode=OneWay}" Width="*"/>
+                            <DataGridTextColumn Header="Loại đối tượng" Binding="{Binding OBJECT_TYPE, Mode=OneWay}"/>-->
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Column="1">
+                        <StackPanel>
+
+                            <ComboBox x:Name="Audit_ComboBox" Height="50" VerticalAlignment="Top" Margin="0,40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="Audit_ComboBox_SelectionChanged">
+                                <ComboBoxItem Content="Update on PHANCONG"/>
+                                <ComboBoxItem Content="Select on NV.LUONG_PHUCAP" />
+                                <ComboBoxItem Content="Update on NV.LUONG_PHUCAP" />
+                                <ComboBoxItem Content="System log" />
+                            </ComboBox>
+                            <Button Content="Xem" Style="{StaticResource MyStyle_Button}" Click="Audit_Button_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
         </TabControl>
         <Button x:Name="Button_Logout" Content="Đăng xuất" Style="{StaticResource MyStyle_Button}" Click="Button_Logout_Click" VerticalAlignment="Top"  Width="100" HorizontalAlignment="Right"/>
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -387,7 +388,7 @@ namespace ATBM_QuanLiDeAn.PH1
                 DataTable tbl = new DataTable();
                 string typeFunction = "";
                 typeFunction = DT_ComboBox.Text;
-                string sql = "SELECT * FROM DBA_OBJECTS WHERE object_type = '" + typeFunction + "'";
+                string sql = "SELECT * FROM DBA_OBJECTS WHERE object_type = '" + typeFunction + "' and OWNER = 'ATBM_ADMIN'";
                 tbl = Class.DB_Config.GetDataToTable(sql);
                 DT_Datagrid.ItemsSource = null;
                 DT_Datagrid.ItemsSource = tbl.DefaultView;
@@ -403,6 +404,46 @@ namespace ATBM_QuanLiDeAn.PH1
             this.Close();
             return;
 
+        }
+
+        private void Audit_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                ComboBoxItem comboBoxItem = (ComboBoxItem)e.AddedItems[0];
+                string type_ = comboBoxItem.Content.ToString();
+                string sql = "";
+                switch (type_)
+                {
+                    case "Update on PHANCONG":
+                        sql = "SELECT USRNAME, ACTION, NV_ID, DA_ID, COLUMN_NAME, OLD_VALUE, NEW_VALUE, ACTION_DATE FROM AUD_PHANCONG";
+                        break;
+                    case "Select on NV.LUONG_PHUCAP":
+                        sql = "select DB_USER, extended_timestamp, SQL_TEXT from dba_fga_audit_trail where POLICY_NAME = 'SLT_LG_PC_NHANVIEN'";
+                        break;
+                    case "Update on NV.LUONG_PHUCAP":
+                        sql = "select DB_USER, extended_timestamp, SQL_TEXT from dba_fga_audit_trail where POLICY_NAME ='UPD_LG_PC_NVTC'";
+                        break;
+                    case "System log":
+                        sql = "SELECT * FROM SYS.AUD$";
+                        break;
+
+
+                }
+                DataTable table_ = new DataTable();
+                table_ = Class.DB_Config.GetDataToTable(sql);
+                Audit_Datagrid.ItemsSource = table_.DefaultView;
+            }
+            catch { }
+        }
+
+        private void Tab_Audit_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Audit_Button_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

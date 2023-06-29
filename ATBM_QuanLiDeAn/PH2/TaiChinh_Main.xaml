@@ -320,6 +320,7 @@
                     </Grid>
                     <Grid Margin="20,300,0,0" HorizontalAlignment="Left"  Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Width="360" >
                         <Button x:Name="NV_bt_CapNhat" Content="Cập nhật" Width="110" Style="{StaticResource MyStyle_Button_Xanh}"  HorizontalAlignment="Center" VerticalAlignment="Top" Click="NV_bt_CapNhat_Click"  />
+                        <Button x:Name="NV_bt_CapNhatKhoa" Margin="50" Content="Đổi khoá" Width="110" Style="{StaticResource MyStyle_Button_Do}"  HorizontalAlignment="Center" VerticalAlignment="Top" Click="NV_bt_CapNhatKhoa_Click"  />
                         
                     </Grid>
 
