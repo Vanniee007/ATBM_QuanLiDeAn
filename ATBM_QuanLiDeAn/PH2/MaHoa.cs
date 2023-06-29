@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
+using System.Collections.Generic;
 
 namespace ATBM_QuanLiDeAn.PH2
 {
@@ -15,7 +16,7 @@ namespace ATBM_QuanLiDeAn.PH2
         {
             string publicKey;
             string privateKey;
-            string containerName = $"KeyContainer_{DateTime.Now.ToString("yyyyMMdd")}_{employeeId}";
+            string containerName = $"KeyContainer_{DateTime.Now.ToString("yyyyMMddhhmmss")}_{employeeId}";
 
 
             CspParameters cspParams = new CspParameters
@@ -32,34 +33,29 @@ namespace ATBM_QuanLiDeAn.PH2
                 SaveKeysToOracle(employeeId, publicKey, privateKey);
             }
         }
-        //public List<string> GetEmployeeIdsFromOracle()// hàm này lấy toàn bộ mã nv 
-        //{
-        //    List<string> employeeIds = new List<string>();
+        public List<string> GetEmployeeIdsFromOracle()// hàm này lấy toàn bộ mã nv 
+        {
+            List<string> employeeIds = new List<string>();
 
-        //    using (OracleConnection connection = new OracleConnection(ConnectionString))
-        //    {
-        //        connection.Open();
+            string query = "select MANV from ATBM_ADMIN.TC_XEMNHANVIEN";
+            OracleCommand command = new OracleCommand(query, DB_Config.Conn);
 
-        //        string query = "select MANV from ATBM_ADMIN.TC_XEMNHANVIEN";
-        //        OracleCommand command = new OracleCommand(query, connection);
+            try
+            {
+                OracleDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    string employeeId = reader.GetString(0);
+                    employeeIds.Add(employeeId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error occurred: " + ex.Message);
+            }
 
-        //        try
-        //        {
-        //            OracleDataReader reader = command.ExecuteReader();
-        //            while (reader.Read())
-        //            {
-        //                string employeeId = reader.GetString(0);
-        //                employeeIds.Add(employeeId);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine("Error occurred: " + ex.Message);
-        //        }
-        //    }
-
-        //    return employeeIds;
-        //}
+            return employeeIds;
+        }
         public byte[] Bytes(string hexString)
         {
             if (hexString.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
@@ -105,7 +101,7 @@ namespace ATBM_QuanLiDeAn.PH2
         public void SaveKeysToOracle(string employeeId, string publicKey, string privateKey)// hàm lưu trữ khóa vào bảng trong oracle 
         {
 
-            string procedureName = "ATBM_ADMIN.THUONG";
+            string procedureName = "ATBM_ADMIN.manage_THUONG";
             OracleCommand command = new OracleCommand(procedureName, DB_Config.Conn);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -116,7 +112,6 @@ namespace ATBM_QuanLiDeAn.PH2
             try
             {
                 command.ExecuteNonQuery();
-               
             }
             catch
             {
@@ -124,6 +119,39 @@ namespace ATBM_QuanLiDeAn.PH2
             }
 
 
+        }
+        public void UpdateKeys()
+        {
+            List<string> employeeIds = GetEmployeeIdsFromOracle();
+
+            foreach (string employeeId in employeeIds)
+            {
+                // Tạo cặp khóa mới cho giáo viên
+                string publicKey = LoadPublicKeyFromOracle(employeeId);
+                string privateKey = LoadPrivateKeyFromOracle(employeeId);
+                // Lấy dữ liệu đã mã hóa từ Oracle
+                string encryptedLuong = GetEncryptedSalaryFromOracle(employeeId);
+                string encryptedPhuCap = GetEncryptedAllowanceFromOracle(employeeId);
+
+                // Kiểm tra và giải mã dữ liệu nếu tồn tại
+                if (!string.IsNullOrEmpty(encryptedLuong) && !string.IsNullOrEmpty(encryptedPhuCap))
+                {
+                    byte[] encryptedLuongBytes = Bytes(encryptedLuong);
+                    byte[] encryptedPhuCapBytes = Bytes(encryptedPhuCap);
+                    string decryptedLuong = RSADecrypt(encryptedLuongBytes, privateKey);
+                    string decryptedPhuCap = RSADecrypt(encryptedPhuCapBytes, privateKey);
+
+                    GenerateAndSaveKeys(employeeId);
+                    publicKey = LoadPublicKeyFromOracle(employeeId);
+                    // Mã hóa lại dữ liệu bằng khóa công khai mới
+                    string reencryptedLuong = RSAEncrypt(decryptedLuong, publicKey);
+                    string reencryptedPhuCap = RSAEncrypt(decryptedPhuCap, publicKey);
+
+                    // Cập nhật giá trị đã mã hóa mới vào Oracle
+                    SaveEncryptedValuesToOracle(employeeId, reencryptedLuong, reencryptedPhuCap);
+
+                }
+            }
         }
 
         public string LoadPublicKeyFromOracle(string employeeId)//hàm lấy ra publickey 
@@ -163,31 +191,26 @@ namespace ATBM_QuanLiDeAn.PH2
             }
             return privateKey;
         }
-        //public void SaveEncryptedValuesToOracle(string employeeId, string encryptedLuong, string encryptedPhuCap)// hàm này cập nhật giá trị mã hóa lương và phụ cấp mới 
-        //{
-        //    using (OracleConnection connection = new OracleConnection(ConnectionString))
-        //    {
-        //        connection.Open();
+        public void SaveEncryptedValuesToOracle(string employeeId, string encryptedLuong, string encryptedPhuCap)// hàm này cập nhật giá trị mã hóa lương và phụ cấp mới 
+        {
+            string procedureName = "ATBM_ADMIN.TC_UPD_LUONG_PHUCAP";
+            OracleCommand command = new OracleCommand(procedureName, DB_Config.Conn);
+            command.CommandType = CommandType.StoredProcedure;
 
-        //        string procedureName = "ATBM_ADMIN.TC_UPD_LUONG_PHUCAP";
-        //        OracleCommand command = new OracleCommand(procedureName, connection);
-        //        command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.Add(new OracleParameter("p_manv", OracleDbType.Varchar2)).Value = employeeId;
+            command.Parameters.Add(new OracleParameter("LUONGMOI", OracleDbType.Varchar2)).Value = encryptedLuong;
+            command.Parameters.Add(new OracleParameter("PHUCAPMOI", OracleDbType.Varchar2)).Value = encryptedPhuCap;
 
-        //        command.Parameters.Add(new OracleParameter("p_manv", OracleDbType.Varchar2)).Value = employeeId;
-        //        command.Parameters.Add(new OracleParameter("LUONGMOI", OracleDbType.Varchar2)).Value = encryptedLuong;
-        //        command.Parameters.Add(new OracleParameter("PHUCAPMOI", OracleDbType.Varchar2)).Value = encryptedPhuCap;
-
-        //        try
-        //        {
-        //            command.ExecuteNonQuery();
-        //            Console.WriteLine("Encrypted values saved to Oracle for employee: " + employeeId);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine("Error occurred: " + ex.Message);
-        //        }
-        //    }
-        //}
+            try
+            {
+                command.ExecuteNonQuery();
+                Console.WriteLine("Encrypted values saved to Oracle for employee: " + employeeId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error occurred: " + ex.Message);
+            }
+        }
         //public void DecryptSalaryAndAllowanceForAllEmployees()// hàm này dùng để giải mã toàn bộ lương và phụ cấp 
         //{
         //    KeyGenerator keyGenerator = new KeyGenerator();

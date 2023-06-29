@@ -335,5 +335,12 @@ namespace ATBM_QuanLiDeAn.PH2
                 this.DragMove();
             }
         }
+
+        private void NV_bt_CapNhatKhoa_Click(object sender, RoutedEventArgs e)
+        {
+            MaHoa mh = new MaHoa();
+            mh.UpdateKeys();
+            SupportFunction.ShowSuccess(lb_error, "Cập nhật key mới thành công");
+        }
     }
 }

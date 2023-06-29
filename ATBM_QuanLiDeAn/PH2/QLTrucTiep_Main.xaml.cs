@@ -92,12 +92,8 @@ namespace ATBM_QuanLiDeAn.PH2
         }
         /*=============================================TABITEM: CONGVIEC============================================
          * =========================================================================================================*/
- 
-    
-        private void CV_datagird_Loaded(object sender, RoutedEventArgs e)
-        {
-            NhanVien_Main.CV_get_DSCongViec(CV_datagird);
-        }
+
+
         /*=============================================TABITEM:PHONGBAN============================================
         * =========================================================================================================*/
 
@@ -118,6 +114,7 @@ namespace ATBM_QuanLiDeAn.PH2
             }
             catch { }
         }
+
         private void NV_datagird_Loaded(object sender, RoutedEventArgs e)
         {
             NV_LayDanhSach_NhanVien();
@@ -141,6 +138,30 @@ namespace ATBM_QuanLiDeAn.PH2
             {
                 this.DragMove();
             }
+        }
+
+        private void Cv_cb_DSNhanVien_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+             
+        }
+
+        private void CV_get_DSCongViec(DataGrid dataGrid)
+        {
+            try
+            {
+                DataTable table_User;
+                string sql;
+                sql = "select * from ATBM_ADMIN.QL_XEMPHANCONG";
+                table_User = Class.DB_Config.GetDataToTable(sql); // Đọc dữ liệu từ bảng
+                dataGrid.ItemsSource = null;
+                dataGrid.ItemsSource = table_User.DefaultView; // Nguồn dữ liệu
+
+            }
+            catch { }
+        }
+        private void CV_datagird_Loaded(object sender, RoutedEventArgs e)
+        {
+            CV_get_DSCongViec(CV_datagird);
         }
     }
 }
